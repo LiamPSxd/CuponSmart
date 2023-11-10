@@ -3,13 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/liami/OneDrive/Escritorio/Semestre%207/Integración%20de%20Soluciones/Proyecto%20Final%20-%20CuponSmart/Back_End_CuponSmart/APICuponSmart/src/java/utils/Constantes.java</file>
-            <file>file:/C:/Users/liami/OneDrive/Escritorio/Semestre%207/Integración%20de%20Soluciones/Proyecto%20Final%20-%20CuponSmart/Back_End_CuponSmart/APICuponSmart/src/java/utils/Verificaciones.java</file>
-            <file>file:/C:/Users/liami/OneDrive/Escritorio/Semestre%207/Integración%20de%20Soluciones/Proyecto%20Final%20-%20CuponSmart/Back_End_CuponSmart/APICuponSmart/src/java/modelo/pojo/RespuestaCategoria.java</file>
-            <file>file:/C:/Users/liami/OneDrive/Escritorio/Semestre%207/Integración%20de%20Soluciones/Proyecto%20Final%20-%20CuponSmart/Back_End_CuponSmart/APICuponSmart/src/java/modelo/pojo/Mensaje.java</file>
-            <file>file:/C:/Users/liami/OneDrive/Escritorio/Semestre%207/Integración%20de%20Soluciones/Proyecto%20Final%20-%20CuponSmart/Back_End_CuponSmart/APICuponSmart/src/java/modelo/CategoriaDAO.java</file>
-            <file>file:/C:/Users/liami/OneDrive/Escritorio/Semestre%207/Integración%20de%20Soluciones/Proyecto%20Final%20-%20CuponSmart/Back_End_CuponSmart/APICuponSmart/src/java/mybatis/mapper/categoria-mapper.xml</file>
-            <file>file:/C:/Users/liami/OneDrive/Escritorio/Semestre%207/Integración%20de%20Soluciones/Proyecto%20Final%20-%20CuponSmart/Back_End_CuponSmart/APICuponSmart/src/java/ws/CategoriaWS.java</file>
+            <file>file:/C:/Users/breay/OneDrive/Documentos/Repositorios/Back_End_CuponSmart/APICuponSmart/src/java/modelo/CategoriaDAO.java</file>
         </group>
     </open-files>
 </project-private>
