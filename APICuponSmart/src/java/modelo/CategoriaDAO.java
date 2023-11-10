@@ -26,7 +26,7 @@ public class CategoriaDAO{
                 }else{
                     respuesta.mensajeSinDatos();
                 }
-            }catch(Exception e){
+            }catch(Exception e){                
                 respuesta.setMensaje(Constantes.Excepciones.EXCEPTION);
             }finally{
                 conexionBD.close();
