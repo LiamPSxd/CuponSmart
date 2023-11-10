@@ -38,15 +38,14 @@ public class MunicipioDAO{
         return respuesta;
     }
     
-    public static RespuestaMunicipio obtenerMunicipioPorEstado(Integer idEstado){
+    public static RespuestaMunicipio obtenerMunicipiosPorEstado(Integer idEstado){
         RespuestaMunicipio respuesta = new RespuestaMunicipio();
         
         SqlSession conexionBD = MyBatisUtil.getSession();
         
         if(conexionBD != null){
             try{
-                List<Municipio> municipios = new ArrayList<>();
-                municipios.add(conexionBD.selectOne("municipios.obtenerMunicipiosPorEstado", idEstado));
+                List<Municipio> municipios = conexionBD.selectList("municipios.obtenerMunicipiosPorEstado", idEstado);
                 
                 if(Verificaciones.Datos.listaNoVacia(municipios)){
                     respuesta.setError(false);

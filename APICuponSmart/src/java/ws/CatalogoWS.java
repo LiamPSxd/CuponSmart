@@ -120,7 +120,7 @@ public class CatalogoWS {
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaMunicipio obtenerMunicipiosPorEstado(@PathParam("idEstado") Integer idEstado){
         if(Verificaciones.Datos.numerico(idEstado)){
-            return MunicipioDAO.obtenerMunicipioPorEstado(idEstado);
+            return MunicipioDAO.obtenerMunicipiosPorEstado(idEstado);
         }else{
             return (RespuestaMunicipio) Verificaciones.Excepciones.badRequest();
         }

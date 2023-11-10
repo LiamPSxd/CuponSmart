@@ -20,17 +20,17 @@ DROP TABLE IF EXISTS municipio;
 CREATE TABLE IF NOT EXISTS municipio(
 	id INT AUTO_INCREMENT NOT NULL,
     nombre VARCHAR(20) NOT NULL,
-    PRIMARY KEY (id)
+	idEstado INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (idEstado) REFERENCES estado(id)
 );
 
 DROP TABLE IF EXISTS ciudad;
 CREATE TABLE IF NOT EXISTS ciudad(
 	id INT AUTO_INCREMENT NOT NULL,
     nombre VARCHAR(30) NOT NULL,
-	idEstado INT,
     idMunicipio INT,
     PRIMARY KEY (id),
-    FOREIGN KEY (idEstado) REFERENCES estado(id),
     FOREIGN KEY (idMunicipio) REFERENCES municipio(id)
 );
 
