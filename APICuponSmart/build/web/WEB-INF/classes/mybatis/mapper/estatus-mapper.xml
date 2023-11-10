@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="estatus">
+    <select id="obtenerEstatus" resultType="modelo.pojo.entidad.Estatus">
+        SELECT * FROM estatus
+    </select>
+    
+    <select id="obtenerEstatusPorId" resultType="modelo.pojo.entidad.Estatus" parameterType="Integer">
+        SELECT * FROM estatus 
+        WHERE id = #{id}
+    </select>
+    
+    <select id="obtenerEstatusPorEstado" resultType="modelo.pojo.entidad.Estatus" parameterType="String">
+        SELECT * FROM estatus 
+        WHERE estado = #{estado}
+    </select>
+    
+    <insert id="registrarEstatus" parameterType="modelo.pojo.entidad.Estatus">
+        INSERT INTO estatus(estado) 
+        VALUE (#{estado})
+    </insert>
+    
+    <update id="modificarEstatus" parameterType="modelo.pojo.entidad.Estatus">
+        UPDATE estatus 
+        SET estado = #{estado} 
+        WHERE id = #{id}
+    </update>
+    
+    <delete id="eliminarEstatus" parameterType="Integer">
+        DELETE FROM estatus 
+        WHERE id = #{id}
+    </delete>
+</mapper>

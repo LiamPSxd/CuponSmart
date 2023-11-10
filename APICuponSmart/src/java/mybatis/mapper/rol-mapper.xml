@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="roles">
+    <select id="obtenerRoles" resultType="modelo.pojo.entidad.Rol">
+        SELECT * FROM rol
+    </select>
+    
+    <select id="obtenerRolPorId" resultType="modelo.pojo.entidad.Rol" parameterType="Integer">
+        SELECT * FROM rol 
+        WHERE id = #{id}
+    </select>
+    
+    <select id="obtenerRolPorNombre" resultType="modelo.pojo.entidad.Rol" parameterType="String">
+        SELECT * FROM rol 
+        WHERE nombre = #{nombre}
+    </select>
+    
+    <insert id="registrarRol" parameterType="modelo.pojo.entidad.Rol">
+        INSERT INTO rol(nombre) 
+        VALUE (#{nombre})
+    </insert>
+    
+    <update id="modificarRol" parameterType="modelo.pojo.entidad.Rol">
+        UPDATE rol 
+        SET nombre = #{nombre} 
+        WHERE id = #{id}
+    </update>
+    
+    <delete id="eliminarRol" parameterType="Integer">
+        DELETE FROM rol 
+        WHERE id = #{id}
+    </delete>
+</mapper>

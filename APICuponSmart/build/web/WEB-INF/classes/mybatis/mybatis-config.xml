@@ -21,5 +21,10 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 
     <mappers>
         <mapper resource="mybatis/mapper/categoria-mapper.xml"/>
+        <mapper resource="mybatis/mapper/estado-mapper.xml"/>
+        <mapper resource="mybatis/mapper/estatus-mapper.xml"/>
+        <mapper resource="mybatis/mapper/rol-mapper.xml"/>
+        <mapper resource="mybatis/mapper/tipopromocion-mapper.xml"/>
+        <mapper resource="mybatis/mapper/municipio-mapper.xml"/>
     </mappers>
 </configuration>
