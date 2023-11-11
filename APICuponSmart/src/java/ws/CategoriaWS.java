@@ -36,11 +36,7 @@ public class CategoriaWS{
     @Path("obtenerCategoriaPorId/{idCategoria}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaCategoria obtenerCategoriaPorId(@PathParam("idCategoria") Integer idCategoria){
-        if(Verificaciones.Datos.numerico(idCategoria)){
-            return CategoriaDAO.obtenerCategoriaPorId(idCategoria);
-        }else{
-            return (RespuestaCategoria) Verificaciones.Excepciones.badRequest();
-        }
+        return Verificaciones.Datos.numerico(idCategoria) ? CategoriaDAO.obtenerCategoriaPorId(idCategoria) : (RespuestaCategoria) Verificaciones.Excepciones.badRequest();
     }
     
     @POST
@@ -93,10 +89,6 @@ public class CategoriaWS{
     @Path("eliminar")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaCategoria eliminarCategoria(@FormParam("idCategoria") Integer idCategoria){
-        if(Verificaciones.Datos.numerico(idCategoria)){
-            return CategoriaDAO.eliminarCategoria(idCategoria);
-        }else{
-            return (RespuestaCategoria) Verificaciones.Excepciones.badRequest();
-        }
+        return Verificaciones.Datos.numerico(idCategoria) ? CategoriaDAO.eliminarCategoria(idCategoria) : (RespuestaCategoria) Verificaciones.Excepciones.badRequest();
     }
 }
