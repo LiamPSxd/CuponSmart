@@ -2,9 +2,8 @@ package modelo.pojo.entidad;
 
 public class Municipio{
     private Integer id;
-
-    private Integer idEstado;
     private String nombre;
+    private Integer idEstado;
     
     public Municipio(){}
 
@@ -21,14 +20,6 @@ public class Municipio{
     public void setId(Integer id){
         this.id = id;
     }
-    
-    public Integer getIdEstado() {
-        return idEstado;
-    }
-
-    public void setIdEstado(Integer idEstado) {
-        this.idEstado = idEstado;
-    }
 
     public String getNombre(){
         return nombre;
@@ -36,5 +27,13 @@ public class Municipio{
 
     public void setNombre(String nombre){
         this.nombre = nombre;
+    }
+    
+    public Integer getIdEstado() {
+        return idEstado;
+    }
+
+    public void setIdEstado(Integer idEstado) {
+        this.idEstado = idEstado;
     }
 }
