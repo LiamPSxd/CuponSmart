@@ -130,9 +130,7 @@ public class MunicipioDAO{
         
         if(conexionBD != null){
             try{
-                Municipio existe = conexionBD.selectOne("municipios.obtenerMunicipioPorNombre", municipio.getNombre());
-                
-                if(Verificaciones.Datos.claseNula(existe)){
+                if(Verificaciones.Datos.claseNula(conexionBD.selectOne("municipios.obtenerMunicipioPorNombre", municipio.getNombre()))){
                     int numFilasAfectadas = conexionBD.update("municipios.modificarMunicipio", municipio);
                     conexionBD.commit();
                     
