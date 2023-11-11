@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="promociones">
+    <select id="obtenerPromociones" resultType="modelo.pojo.entidad.Promocion">
+        SELECT * FROM promocion
+    </select>
+    
+    <select id="obtenerPromocionesPorFechaInicio" resultType="modelo.pojo.entidad.Promocion" parameterType="String">
+        SELECT * FROM promocion 
+        WHERE fechaInicion = #{fechaInicion}
+    </select>
+    
+    <select id="obtenerPromocionesPorFechaTermino" resultType="modelo.pojo.entidad.Promocion" parameterType="String">
+        SELECT * FROM promocion 
+        WHERE fechaTermino = #{fechaTermino}
+    </select>
+    
+    <select id="obtenerPromocionesPorNombre" resultType="modelo.pojo.entidad.Promocion" parameterType="String">
+        SELECT * FROM promocion 
+        WHERE nombre = #{nombre}
+    </select>
+    
+    <select id="obtenerPromocionPorId" resultType="modelo.pojo.entidad.Promocion" parameterType="Integer">
+        SELECT * FROM promocion 
+        WHERE id = #{id}
+    </select>
+    
+    <insert id="registrarPromocion" parameterType="modelo.pojo.entidad.Promocion">
+        INSERT INTO promocion(nombre, descripcion, imagen, fechaInicio, fechaTermino, restricciones, numeroCupones, codigo, valor, idEstatus, idCategoria, idEmpresa, idTipoPromocion) 
+        VALUE (#{nombre}, #{descripcion}, #{imagen}, #{fechaInicio}, #{fechaTermino}, #{restricciones}, #{numeroCupones}, #{codigo}, #{valor}, #{idEstatus}, #{idCategoria}, #{idEmpresa}, #{idTipoPromocion})
+    </insert>
+    
+    <update id="modificarPromocion" parameterType="modelo.pojo.entidad.Promocion">
+        UPDATE promocion 
+        SET nombre = #{nombre}, descripcion = #{descripcion}, imagen = #{imagen}, fechaInicio = #{fechaInicio}, fechaTermino = #{fechaTermino}, restricciones = #{restricciones}, numeroCupones = #{numeroCupones}, codigo = #{codigo}, valor = #{valor}, idEstatus = #{idEstatus}, idCategoria = #{idCategoria}, idEmpresa = #{idEmpresa}, idTipoPromocion = #{idTipoPromocion} 
+        WHERE id = #{id}
+    </update>
+    
+    <delete id="eliminarPromocion" parameterType="Integer">
+        DELETE FROM promocion 
+        WHERE id = #{id}
+    </delete>
+</mapper>
