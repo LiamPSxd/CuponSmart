@@ -1,14 +1,14 @@
-- Estado (A)
-- Municipio (A)
-Ciudad (L)
-- Rol (A)
-- Estatus (A)
-- Categoria
-Cliente (B)
-Direccion (B)
-Empresa (B)
-Promocion (L)
-PromocionSucursal (L)
-Sucursal (L)
-- TipoPromocion (A)
-Usuario (B)
+1. Estado (A) - Completado
+2. Municipio (A) - Completado
+3. Ciudad (L) - Completado
+4. Rol (A) - Completado
+5. Estatus (A) - Completado
+6. Categoria (L) - Completado
+7. Cliente (B)
+8. Direccion (B)
+9. Empresa (B)
+10. Promocion (L)
+11. PromocionSucursal (L)
+12. Sucursal (L)
+13. TipoPromocion (A) - Completado
+14. Usuario (B)
