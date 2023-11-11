@@ -7,7 +7,7 @@
 7. Cliente (B)
 8. Direccion (B)
 9. Empresa (B)
-10. Promocion (L)
+10. Promocion (L) - Completado
 11. PromocionSucursal (L)
 12. Sucursal (L)
 13. TipoPromocion (A) - Completado
