@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="clientes">
+    <select id="obtenerClientes" resultType="modelo.pojo.entidad.Cliente">
+        SELECT * FROM cliente
+    </select>
+    
+    <select id="obtenerClientePorId" resultType="modelo.pojo.entidad.Cliente" parameterType="Integer">
+        SELECT * FROM cliente 
+        WHERE id = #{id}
+    </select>
+    
+    <select id="obtenerClientePorNombre" resultType="modelo.pojo.entidad.Cliente" parameterType="String">
+        SELECT * FROM cliente 
+        WHERE nombre = #{nombre}
+    </select>
+    
+    <insert id="registrarCliente" parameterType="modelo.pojo.entidad.Cliente">
+        INSERT INTO cliente (nombre, apellidoPaterno, apellidoMaterno, telefono, correo, fechaNacimiento, contrasenia, idDireccion) 
+        values (#{nombre}, #{apellidoPaterno}, #{apellidoMaterno}, #{telefono}, #{correo}, #{fechaNacimiento}, #{contrasenia}, #{idDireccion})
+    </insert>
+    
+    <update id="modificarCliente" parameterType="modelo.pojo.entidad.Cliente">
+        UPDATE categoria 
+        SET nombre = #{nombre} 
+        WHERE id = #{id}
+    </update>
+    
+    <delete id="eliminarCliente" parameterType="Integer">
+        DELETE FROM cliente 
+        WHERE id = #{id}
+    </delete>
+</mapper>
