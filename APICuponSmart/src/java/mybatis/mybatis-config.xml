@@ -30,5 +30,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         <mapper resource="mybatis/mapper/ciudad-mapper.xml"/>
         <mapper resource="mybatis/mapper/promocion-mapper.xml"/>
         <mapper resource="mybatis/mapper/promocion-sucursal-mapper.xml"/>
+        <mapper resource="mybatis/mapper/sucursal-mapper.xml"/>
     </mappers>
 </configuration>
