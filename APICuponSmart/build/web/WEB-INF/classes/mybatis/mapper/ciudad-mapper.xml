@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ciudades">
+    <select id="obtenerCiudades" resultType="modelo.pojo.entidad.Ciudad">
+        SELECT * FROM ciudad
+    </select>
+    
+    <select id="obtenerCiudadPorId" resultType="modelo.pojo.entidad.Ciudad" parameterType="Integer">
+        SELECT * FROM ciudad 
+        WHERE id = #{id}
+    </select>
+    
+    <select id="obtenerCiudadPorNombreYIdMunicipio" resultType="modelo.pojo.entidad.Ciudad" parameterType="modelo.pojo.entidad.Ciudad">
+        SELECT * FROM ciudad 
+        WHERE nombre = #{nombre} AND idMunicipio = #{idMunicipio}
+    </select>
+    
+    <insert id="registrarCiudad" parameterType="modelo.pojo.entidad.Ciudad">
+        INSERT INTO ciudad(nombre, idMunicipio) 
+        VALUE (#{nombre}, #{idMunicipio})
+    </insert>
+    
+    <update id="modificarCiudad" parameterType="modelo.pojo.entidad.Ciudad">
+        UPDATE ciudad 
+        SET nombre = #{nombre}, idMunicipio = #{idMunicipio} 
+        WHERE id = #{id}
+    </update>
+    
+    <delete id="eliminarCiudad" parameterType="Integer">
+        DELETE FROM ciudad 
+        WHERE id = #{id}
+    </delete>
+</mapper>

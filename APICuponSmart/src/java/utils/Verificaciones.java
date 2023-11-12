@@ -23,7 +23,13 @@ public class Verificaciones{
         }
 
         public static Boolean listaNoVacia(List<?> lista){
-            return lista.size() > 0;
+            Boolean respuesta = true;
+            
+            for(Object object : lista){
+                respuesta = object != null;
+            }
+            
+            return lista.size() > 0 && respuesta;
         }
     }
     

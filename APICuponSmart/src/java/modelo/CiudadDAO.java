@@ -2,27 +2,27 @@ package modelo;
 
 import java.util.ArrayList;
 import java.util.List;
-import modelo.pojo.entidad.TipoPromocion;
-import modelo.pojo.respuesta.RespuestaTipoPromocion;
+import modelo.pojo.entidad.Ciudad;
+import modelo.pojo.respuesta.RespuestaCiudad;
 import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
 import utils.Constantes;
 import utils.Verificaciones;
 
-public class TipoPromocionDAO{
-    public static RespuestaTipoPromocion obtenerTiposPromocion(){
-        RespuestaTipoPromocion respuesta = new RespuestaTipoPromocion();
+public class CiudadDAO{
+    public static RespuestaCiudad obtenerCiudades(){
+        RespuestaCiudad respuesta = new RespuestaCiudad();
         
         SqlSession conexionBD = MyBatisUtil.getSession();
         
         if(conexionBD != null){
             try{
-                List<TipoPromocion> tipospromocion = conexionBD.selectList("tipospromocion.obtenerTiposPromocion");
+                List<Ciudad> ciudades = conexionBD.selectList("ciudades.obtenerCiudades");
                 
-                if(Verificaciones.Datos.listaNoVacia(tipospromocion)){
+                if(Verificaciones.Datos.listaNoVacia(ciudades)){
                     respuesta.setError(false);
                     respuesta.mensajeSuccess();
-                    respuesta.setContenido(tipospromocion);
+                    respuesta.setContenido(ciudades);
                 }else{
                     respuesta.mensajeSinDatos();
                 }
@@ -38,20 +38,20 @@ public class TipoPromocionDAO{
         return respuesta;
     }
     
-    public static RespuestaTipoPromocion obtenerTipoPromocionPorId(Integer idTipoPromocion){
-        RespuestaTipoPromocion respuesta = new RespuestaTipoPromocion();
+    public static RespuestaCiudad obtenerCiudadPorId(Integer idCiudad){
+        RespuestaCiudad respuesta = new RespuestaCiudad();
         
         SqlSession conexionBD = MyBatisUtil.getSession();
         
         if(conexionBD != null){
             try{
-                List<TipoPromocion> tipospromocion = new ArrayList<>();
-                tipospromocion.add(conexionBD.selectOne("tipospromocion.obtenerTipoPromocionPorId", idTipoPromocion));
+                List<Ciudad> ciudades = new ArrayList<>();
+                ciudades.add(conexionBD.selectOne("ciudades.obtenerCiudadPorId", idCiudad));
                 
-                if(Verificaciones.Datos.listaNoVacia(tipospromocion)){
+                if(Verificaciones.Datos.listaNoVacia(ciudades)){
                     respuesta.setError(false);
                     respuesta.mensajeSuccess();
-                    respuesta.setContenido(tipospromocion);
+                    respuesta.setContenido(ciudades);
                 }else{
                     respuesta.mensajeNoId();
                 }
@@ -67,14 +67,14 @@ public class TipoPromocionDAO{
         return respuesta;
     }
     
-    public static RespuestaTipoPromocion registrarTipoPromocion(TipoPromocion tipopromocion){
-        RespuestaTipoPromocion respuesta = new RespuestaTipoPromocion();
+    public static RespuestaCiudad registrarCiudad(Ciudad ciudad){
+        RespuestaCiudad respuesta = new RespuestaCiudad();
         
         SqlSession conexionBD = MyBatisUtil.getSession();
         
         if(conexionBD != null){
             try{
-                int numFilasAfectadas = conexionBD.insert("tipospromocion.registrarTipoPromocion", tipopromocion);
+                int numFilasAfectadas = conexionBD.insert("ciudades.registrarCiudad", ciudad);
                 conexionBD.commit();
                 
                 if(Verificaciones.Datos.numerico(numFilasAfectadas)){
@@ -95,15 +95,15 @@ public class TipoPromocionDAO{
         return respuesta;
     }
     
-    public static RespuestaTipoPromocion modificarTipoPromocion(TipoPromocion tipopromocion){
-        RespuestaTipoPromocion respuesta = new RespuestaTipoPromocion();
+    public static RespuestaCiudad modificarCiudad(Ciudad ciudad){
+        RespuestaCiudad respuesta = new RespuestaCiudad();
         
         SqlSession conexionBD = MyBatisUtil.getSession();
         
         if(conexionBD != null){
             try{
-                if(Verificaciones.Datos.claseNula(conexionBD.selectOne("tipospromocion.obtenerTipoPromocionPorTipo", tipopromocion.getTipo()))){
-                    int numFilasAfectadas = conexionBD.update("tipospromocion.modificarTipoPromocion", tipopromocion);
+                if(Verificaciones.Datos.claseNula(conexionBD.selectOne("ciudades.obtenerCiudadPorNombreYIdMunicipio", ciudad))){
+                    int numFilasAfectadas = conexionBD.update("ciudades.modificarCiudad", ciudad);
                     conexionBD.commit();
                     
                     if(Verificaciones.Datos.numerico(numFilasAfectadas)){
@@ -127,14 +127,14 @@ public class TipoPromocionDAO{
         return respuesta;
     }
     
-    public static RespuestaTipoPromocion eliminarTipoPromocion(Integer idTipoPromocion){
-        RespuestaTipoPromocion respuesta = new RespuestaTipoPromocion();
+    public static RespuestaCiudad eliminarCiudad(Integer idCiudad){
+        RespuestaCiudad respuesta = new RespuestaCiudad();
         
         SqlSession conexionBD = MyBatisUtil.getSession();
         
         if(conexionBD != null){
             try{
-                int numFilasAfectadas = conexionBD.delete("tipospromocion.eliminarTipoPromocion", idTipoPromocion);
+                int numFilasAfectadas = conexionBD.delete("ciudades.eliminarCiudad", idCiudad);
                 conexionBD.commit();
                 
                 if(Verificaciones.Datos.numerico(numFilasAfectadas)){

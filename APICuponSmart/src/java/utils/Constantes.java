@@ -26,4 +26,10 @@ public class Constantes{
         public static final String SECURITY = "Se ha producido una violación de seguridad, " + VERIFICAR;
         public static final String JSON_SYNTAX = "Se ha encontrado un error de sintaxis en el JSON proporcionado, " + VERIFICAR;
     }
+    
+    public class Datos{
+        public static final String FECHA_INICIO = "FechaInicio";
+        public static final String FECHA_TERMINO = "FechaTermino";
+        public static final String NOMBRE = "Nombre";
+    }
 }

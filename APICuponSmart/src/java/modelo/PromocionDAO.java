@@ -2,27 +2,27 @@ package modelo;
 
 import java.util.ArrayList;
 import java.util.List;
-import modelo.pojo.entidad.TipoPromocion;
-import modelo.pojo.respuesta.RespuestaTipoPromocion;
+import modelo.pojo.entidad.Promocion;
+import modelo.pojo.respuesta.RespuestaPromocion;
 import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
 import utils.Constantes;
 import utils.Verificaciones;
 
-public class TipoPromocionDAO{
-    public static RespuestaTipoPromocion obtenerTiposPromocion(){
-        RespuestaTipoPromocion respuesta = new RespuestaTipoPromocion();
+public class PromocionDAO{
+    public static RespuestaPromocion obtenerPromociones(){
+        RespuestaPromocion respuesta = new RespuestaPromocion();
         
         SqlSession conexionBD = MyBatisUtil.getSession();
         
         if(conexionBD != null){
             try{
-                List<TipoPromocion> tipospromocion = conexionBD.selectList("tipospromocion.obtenerTiposPromocion");
+                List<Promocion> promociones = conexionBD.selectList("promociones.obtenerPromociones");
                 
-                if(Verificaciones.Datos.listaNoVacia(tipospromocion)){
+                if(Verificaciones.Datos.listaNoVacia(promociones)){
                     respuesta.setError(false);
                     respuesta.mensajeSuccess();
-                    respuesta.setContenido(tipospromocion);
+                    respuesta.setContenido(promociones);
                 }else{
                     respuesta.mensajeSinDatos();
                 }
@@ -38,20 +38,48 @@ public class TipoPromocionDAO{
         return respuesta;
     }
     
-    public static RespuestaTipoPromocion obtenerTipoPromocionPorId(Integer idTipoPromocion){
-        RespuestaTipoPromocion respuesta = new RespuestaTipoPromocion();
+    public static RespuestaPromocion obtenerPromocionesPorFechaInicioTerminoONombre(String tipo, String param){
+        RespuestaPromocion respuesta = new RespuestaPromocion();
         
         SqlSession conexionBD = MyBatisUtil.getSession();
         
         if(conexionBD != null){
             try{
-                List<TipoPromocion> tipospromocion = new ArrayList<>();
-                tipospromocion.add(conexionBD.selectOne("tipospromocion.obtenerTipoPromocionPorId", idTipoPromocion));
+                List<Promocion> promociones = conexionBD.selectList("promociones.obtenerPromocionesPor" + tipo, param);
                 
-                if(Verificaciones.Datos.listaNoVacia(tipospromocion)){
+                if(Verificaciones.Datos.listaNoVacia(promociones)){
                     respuesta.setError(false);
                     respuesta.mensajeSuccess();
-                    respuesta.setContenido(tipospromocion);
+                    respuesta.setContenido(promociones);
+                }else{
+                    respuesta.mensajeSinDatos();
+                }
+            }catch(Exception e){
+                respuesta.setMensaje(Constantes.Excepciones.EXCEPTION);
+            }finally{
+                conexionBD.close();
+            }
+        }else{
+            respuesta.mensajeSinConexionBD();
+        }
+        
+        return respuesta;
+    }
+    
+    public static RespuestaPromocion obtenerPromocionPorId(Integer idPromocion){
+        RespuestaPromocion respuesta = new RespuestaPromocion();
+        
+        SqlSession conexionBD = MyBatisUtil.getSession();
+        
+        if(conexionBD != null){
+            try{
+                List<Promocion> promociones = new ArrayList<>();
+                promociones.add(conexionBD.selectOne("promociones.obtenerPromocionPorId", idPromocion));
+                
+                if(Verificaciones.Datos.listaNoVacia(promociones)){
+                    respuesta.setError(false);
+                    respuesta.mensajeSuccess();
+                    respuesta.setContenido(promociones);
                 }else{
                     respuesta.mensajeNoId();
                 }
@@ -67,14 +95,14 @@ public class TipoPromocionDAO{
         return respuesta;
     }
     
-    public static RespuestaTipoPromocion registrarTipoPromocion(TipoPromocion tipopromocion){
-        RespuestaTipoPromocion respuesta = new RespuestaTipoPromocion();
+    public static RespuestaPromocion registrarPromocion(Promocion promocion){
+        RespuestaPromocion respuesta = new RespuestaPromocion();
         
         SqlSession conexionBD = MyBatisUtil.getSession();
         
         if(conexionBD != null){
             try{
-                int numFilasAfectadas = conexionBD.insert("tipospromocion.registrarTipoPromocion", tipopromocion);
+                int numFilasAfectadas = conexionBD.insert("promociones.registrarPromocion", promocion);
                 conexionBD.commit();
                 
                 if(Verificaciones.Datos.numerico(numFilasAfectadas)){
@@ -95,15 +123,15 @@ public class TipoPromocionDAO{
         return respuesta;
     }
     
-    public static RespuestaTipoPromocion modificarTipoPromocion(TipoPromocion tipopromocion){
-        RespuestaTipoPromocion respuesta = new RespuestaTipoPromocion();
+    public static RespuestaPromocion modificarPromocion(Promocion promocion){
+        RespuestaPromocion respuesta = new RespuestaPromocion();
         
         SqlSession conexionBD = MyBatisUtil.getSession();
         
         if(conexionBD != null){
             try{
-                if(Verificaciones.Datos.claseNula(conexionBD.selectOne("tipospromocion.obtenerTipoPromocionPorTipo", tipopromocion.getTipo()))){
-                    int numFilasAfectadas = conexionBD.update("tipospromocion.modificarTipoPromocion", tipopromocion);
+                if(Verificaciones.Datos.claseNula(conexionBD.selectOne("promociones.obtenerPromocionPorId", promocion.getId()))){
+                    int numFilasAfectadas = conexionBD.update("promociones.modificarPromocion", promocion);
                     conexionBD.commit();
                     
                     if(Verificaciones.Datos.numerico(numFilasAfectadas)){
@@ -127,14 +155,14 @@ public class TipoPromocionDAO{
         return respuesta;
     }
     
-    public static RespuestaTipoPromocion eliminarTipoPromocion(Integer idTipoPromocion){
-        RespuestaTipoPromocion respuesta = new RespuestaTipoPromocion();
+    public static RespuestaPromocion eliminarPromocion(Integer idPromocion){
+        RespuestaPromocion respuesta = new RespuestaPromocion();
         
         SqlSession conexionBD = MyBatisUtil.getSession();
         
         if(conexionBD != null){
             try{
-                int numFilasAfectadas = conexionBD.delete("tipospromocion.eliminarTipoPromocion", idTipoPromocion);
+                int numFilasAfectadas = conexionBD.delete("promociones.eliminarPromocion", idPromocion);
                 conexionBD.commit();
                 
                 if(Verificaciones.Datos.numerico(numFilasAfectadas)){

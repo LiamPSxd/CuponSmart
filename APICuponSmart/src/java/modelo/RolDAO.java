@@ -84,7 +84,6 @@ public class RolDAO{
                     respuesta.setMensaje(Constantes.Errores.REGISTRO);
                 }
             }catch(Exception e){
-                System.out.println(e.getMessage());
                 respuesta.setMensaje(Constantes.Excepciones.EXCEPTION);
             }finally{
                 conexionBD.close();
@@ -103,9 +102,7 @@ public class RolDAO{
         
         if(conexionBD != null){
             try{
-                Rol existe = conexionBD.selectOne("roles.obtenerRolPorNombre", rol.getNombre());
-                
-                if(Verificaciones.Datos.claseNula(existe)){
+                if(Verificaciones.Datos.claseNula(conexionBD.selectOne("roles.obtenerRolPorNombre", rol.getNombre()))){
                     int numFilasAfectadas = conexionBD.update("roles.modificarRol", rol);
                     conexionBD.commit();
                     

@@ -27,5 +27,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         <mapper resource="mybatis/mapper/rol-mapper.xml"/>
         <mapper resource="mybatis/mapper/tipopromocion-mapper.xml"/>
         <mapper resource="mybatis/mapper/municipio-mapper.xml"/>
+        <mapper resource="mybatis/mapper/ciudad-mapper.xml"/>
+        <mapper resource="mybatis/mapper/promocion-mapper.xml"/>
     </mappers>
 </configuration>

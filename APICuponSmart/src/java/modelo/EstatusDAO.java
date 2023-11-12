@@ -84,7 +84,6 @@ public class EstatusDAO{
                     respuesta.setMensaje(Constantes.Errores.REGISTRO);
                 }
             }catch(Exception e){
-                System.out.println(e.getMessage());
                 respuesta.setMensaje(Constantes.Excepciones.EXCEPTION);
             }finally{
                 conexionBD.close();
@@ -103,9 +102,7 @@ public class EstatusDAO{
         
         if(conexionBD != null){
             try{
-                Estatus existe = conexionBD.selectOne("estatus.obtenerEstatusPorEstado", estatus.getEstado());
-                
-                if(Verificaciones.Datos.claseNula(existe)){
+                if(Verificaciones.Datos.claseNula(conexionBD.selectOne("estatus.obtenerEstatusPorEstado", estatus.getEstado()))){
                     int numFilasAfectadas = conexionBD.update("estatus.modificarEstatus", estatus);
                     conexionBD.commit();
                     

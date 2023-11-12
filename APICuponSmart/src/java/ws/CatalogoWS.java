@@ -19,10 +19,8 @@ import modelo.pojo.respuesta.RespuestaRol;
 import modelo.pojo.respuesta.RespuestaTipoPromocion;
 import utils.Verificaciones;
 
-
 @Path("catalogo")
-public class CatalogoWS {
-
+public class CatalogoWS{
     @Context
     private UriInfo context;
 
@@ -37,11 +35,7 @@ public class CatalogoWS {
     @Path("obtenerEstadoPorId/{idEstado}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaEstado obtenerEstadoPorId(@PathParam("idEstado") Integer idEstado){
-        if(Verificaciones.Datos.numerico(idEstado)){
-            return EstadoDAO.obtenerEstadoPorId(idEstado);
-        }else{
-            return (RespuestaEstado) Verificaciones.Excepciones.badRequest();
-        }
+        return Verificaciones.Datos.numerico(idEstado) ? EstadoDAO.obtenerEstadoPorId(idEstado) : (RespuestaEstado) Verificaciones.Excepciones.badRequest();
     }
     
     @GET
@@ -55,11 +49,7 @@ public class CatalogoWS {
     @Path("obtenerEstatusPorId/{idEstatus}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaEstatus obtenerEstatusPorId(@PathParam("idEstatus") Integer idEstatus){
-        if(Verificaciones.Datos.numerico(idEstatus)){
-            return EstatusDAO.obtenerEstatusPorId(idEstatus);
-        }else{
-            return (RespuestaEstatus) Verificaciones.Excepciones.badRequest();
-        }
+        return Verificaciones.Datos.numerico(idEstatus) ? EstatusDAO.obtenerEstatusPorId(idEstatus) : (RespuestaEstatus) Verificaciones.Excepciones.badRequest();
     }
     
     @GET
@@ -73,11 +63,7 @@ public class CatalogoWS {
     @Path("obtenerRolPorId/{idRol}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaRol obtenerRolPorId(@PathParam("idRol") Integer idRol){
-        if(Verificaciones.Datos.numerico(idRol)){
-            return RolDAO.obtenerRolPorId(idRol);
-        }else{
-            return (RespuestaRol) Verificaciones.Excepciones.badRequest();
-        }
+        return Verificaciones.Datos.numerico(idRol) ? RolDAO.obtenerRolPorId(idRol) : (RespuestaRol) Verificaciones.Excepciones.badRequest();
     }
     
     @GET
@@ -91,11 +77,7 @@ public class CatalogoWS {
     @Path("obtenerTipoPromocionPorId/{idTipoPromocion}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaTipoPromocion obtenerTipoPromocion(@PathParam("idTipoPromocion") Integer idTipoPromocion){
-        if(Verificaciones.Datos.numerico(idTipoPromocion)){
-            return TipoPromocionDAO.obtenerTipoPromocionPorId(idTipoPromocion);
-        }else{
-            return (RespuestaTipoPromocion) Verificaciones.Excepciones.badRequest();
-        }
+        return Verificaciones.Datos.numerico(idTipoPromocion) ? TipoPromocionDAO.obtenerTipoPromocionPorId(idTipoPromocion) : (RespuestaTipoPromocion) Verificaciones.Excepciones.badRequest();
     }
     
     @GET
@@ -109,20 +91,13 @@ public class CatalogoWS {
     @Path("obtenerMunicipio/{idMunicipio}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaMunicipio obtenerMunicipio(@PathParam("idMunicipio") Integer idMunicipio){
-        if(Verificaciones.Datos.numerico(idMunicipio)){
-            return MunicipioDAO.obtenerMunicipioPorId(idMunicipio);
-        }else{
-            return (RespuestaMunicipio) Verificaciones.Excepciones.badRequest();
-        }
+        return Verificaciones.Datos.numerico(idMunicipio) ? MunicipioDAO.obtenerMunicipioPorId(idMunicipio) : (RespuestaMunicipio) Verificaciones.Excepciones.badRequest();
     }
+    
     @GET
     @Path("obtenerMunicipiosPorEstado/{idEstado}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaMunicipio obtenerMunicipiosPorEstado(@PathParam("idEstado") Integer idEstado){
-        if(Verificaciones.Datos.numerico(idEstado)){
-            return MunicipioDAO.obtenerMunicipiosPorEstado(idEstado);
-        }else{
-            return (RespuestaMunicipio) Verificaciones.Excepciones.badRequest();
-        }
+        return Verificaciones.Datos.numerico(idEstado) ? MunicipioDAO.obtenerMunicipiosPorEstado(idEstado) : (RespuestaMunicipio) Verificaciones.Excepciones.badRequest();
     }
 }
