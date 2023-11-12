@@ -9,6 +9,6 @@
 9. Empresa (B)
 10. Promocion (L) - Completado
 11. PromocionSucursal (L) - Completado
-12. Sucursal (L)
+12. Sucursal (L) - Completado
 13. TipoPromocion (A) - Completado
 14. Usuario (B)
