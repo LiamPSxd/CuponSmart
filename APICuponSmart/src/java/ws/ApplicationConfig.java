@@ -20,5 +20,6 @@ public class ApplicationConfig extends Application{
         resources.add(ws.ClienteWS.class);
         resources.add(ws.PromocionSucursalWS.class);
         resources.add(ws.PromocionWS.class);
+        resources.add(ws.SucursalWS.class);
     }
 }
