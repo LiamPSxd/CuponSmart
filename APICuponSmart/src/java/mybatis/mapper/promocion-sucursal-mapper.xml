@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="promocionesSucursales">
+    <select id="obtenerPromocionesSucursales" resultType="modelo.pojo.entidad.PromocionSucursal">
+        SELECT * FROM promocionsucursal
+    </select>
+    
+    <select id="obtenerPromocionesSucursalesPorIdPromocion" resultType="modelo.pojo.entidad.PromocionSucursal" parameterType="Integer">
+        SELECT * FROM promocionsucursal 
+        WHERE idPromocion = #{idPromocion}
+    </select>
+    
+    <select id="obtenerPromocionesSucursalesPorIdSucursal" resultType="modelo.pojo.entidad.PromocionSucursal" parameterType="Integer">
+        SELECT * FROM promocionsucursal 
+        WHERE idSucursal = #{idSucursal}
+    </select>
+    
+    <insert id="registrarPromocionSucursal" parameterType="modelo.pojo.entidad.PromocionSucursal">
+        INSERT INTO promocionsucursal 
+        VALUE (#{idPromocion}, #{idSucursal})
+    </insert>
+    
+    <delete id="eliminarPromocionSucursal" parameterType="modelo.pojo.entidad.PromocionSucursal">
+        DELETE FROM promocionsucursal 
+        WHERE idPromocion = #{idPromocion} AND idSucursal = #{idSucursal}
+    </delete>
+</mapper>
