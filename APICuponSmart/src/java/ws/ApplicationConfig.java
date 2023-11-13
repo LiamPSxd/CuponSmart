@@ -16,11 +16,11 @@ public class ApplicationConfig extends Application{
         resources.add(ws.AutenticacionWS.class);
         resources.add(ws.CatalogoWS.class);
         resources.add(ws.CategoriaWS.class);
-<<<<<<< HEAD
-        resources.add(ws.ClienteWS.class);
-=======
         resources.add(ws.CiudadWS.class);
+        resources.add(ws.ClienteWS.class);
+        resources.add(ws.DireccionWS.class);
+        resources.add(ws.EmpresaWS.class);
         resources.add(ws.PromocionWS.class);
->>>>>>> c538cbfb488b73122e0e60ae6bb2bbf6683c396c
+        resources.add(ws.UsuarioWS.class);
     }
 }

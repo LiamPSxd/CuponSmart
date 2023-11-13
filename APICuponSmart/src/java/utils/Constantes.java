@@ -25,6 +25,7 @@ public class Constantes{
         public static final String NO_SUCH_METHOD = "El método en particular no ha podido ser encontrado, " + VERIFICAR;
         public static final String SECURITY = "Se ha producido una violación de seguridad, " + VERIFICAR;
         public static final String JSON_SYNTAX = "Se ha encontrado un error de sintaxis en el JSON proporcionado, " + VERIFICAR;
+        public static final String PERSISTENCE = "El correo ya ha sido registrado, " + VERIFICAR;
     }
     
     public class Datos{

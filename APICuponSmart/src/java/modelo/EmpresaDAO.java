@@ -2,34 +2,33 @@ package modelo;
 
 import java.util.ArrayList;
 import java.util.List;
-import modelo.pojo.entidad.Cliente;
-import modelo.pojo.respuesta.RespuestaCliente;
+import modelo.pojo.entidad.Empresa;
+import modelo.pojo.respuesta.RespuestaEmpresa;
 import mybatis.MyBatisUtil;
-import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import utils.Constantes;
 import utils.Verificaciones;
 
-public class ClienteDAO {
-    public static RespuestaCliente obtenerClientes(){
-        RespuestaCliente respuesta = new RespuestaCliente();
+public class EmpresaDAO {
+    public static RespuestaEmpresa obtenerEmpresas(){
+        RespuestaEmpresa respuesta = new RespuestaEmpresa();
         
-        SqlSession conexionBD = MyBatisUtil.getSession();
-        if(conexionBD != null){
+        SqlSession conexionDB = MyBatisUtil.getSession();
+        
+        if(conexionDB != null){
             try {
-                List<Cliente> clientes = conexionBD.selectList("clientes.obtenerClientes");
-                
-                if(Verificaciones.Datos.listaNoVacia(clientes)){
+                List<Empresa> empresas = conexionDB.selectList("empresas.obtenerEmpresas");
+                if(Verificaciones.Datos.listaNoVacia(empresas)){
                     respuesta.setError(false);
                     respuesta.mensajeSuccess();
-                    respuesta.setContenido(clientes);
+                    respuesta.setContenido(empresas);
                 }else{
                     respuesta.mensajeSinDatos();
                 }
-            } catch (Exception e) {                
+            } catch (Exception e) {
                 respuesta.setMensaje(Constantes.Excepciones.EXCEPTION);
             }finally{
-                conexionBD.close();
+                conexionDB.close();
             }
         }else{
             respuesta.mensajeSinConexionBD();
@@ -37,19 +36,19 @@ public class ClienteDAO {
         return respuesta;
     }
     
-    public static RespuestaCliente obtenerClientePorId(Integer id){
-        RespuestaCliente respuesta = new RespuestaCliente();
+    public static RespuestaEmpresa obtenerEmpresaPorId(Integer id){
+        RespuestaEmpresa respuesta = new RespuestaEmpresa();
         
         SqlSession conexionDB = MyBatisUtil.getSession();
         
         if(conexionDB != null){
             try {
-                List<Cliente> clientes = new ArrayList<>();
-                clientes.add(conexionDB.selectOne("clientes.obtenerClientePorId", id));                
-                if(Verificaciones.Datos.listaNoVacia(clientes)){
+                List<Empresa> empresas = new ArrayList<>();
+                empresas.add(conexionDB.selectOne("empresas.obtenerEmpresaPorId", id));                
+                if(Verificaciones.Datos.listaNoVacia(empresas)){
                     respuesta.setError(false);
                     respuesta.mensajeSuccess();
-                    respuesta.setContenido(clientes);
+                    respuesta.setContenido(empresas);
                 }else{
                     respuesta.mensajeNoId();
                 }
@@ -64,51 +63,35 @@ public class ClienteDAO {
         return respuesta;
     }
     
-    public static RespuestaCliente registrarCliente(Cliente cliente){
-        RespuestaCliente respuesta = new RespuestaCliente();
-        
-        SqlSession conexionBD = MyBatisUtil.getSession();
-        
-        if(conexionBD != null){
-            try {
-                int numFilasAfectadas = conexionBD.insert("clientes.registrarCliente", cliente);
-                conexionBD.commit();
-                
-                if(Verificaciones.Datos.numerico(numFilasAfectadas)){
-                    respuesta.setError(false);                    
-                    respuesta.setMensaje(Constantes.Retornos.REGISTRO);
-                }else{
-                    respuesta.setMensaje(Constantes.Errores.REGISTRO);
-                }
-            } catch (PersistenceException p) {               
-                respuesta.setMensaje(Constantes.Excepciones.PERSISTENCE);
-            }catch(Exception e){
-                respuesta.setMensaje(Constantes.Excepciones.EXCEPTION);
-            }finally{
-                conexionBD.close();
-            }
-        }else{
-            respuesta.mensajeSinConexionBD();
-        }        
-        return respuesta;
-    }
-    
-    public static RespuestaCliente modificarCliente(Cliente cliente){
-        RespuestaCliente respuesta = new RespuestaCliente();
+    public static RespuestaEmpresa obtenerEmpresaPorCadena(String criterio, String parametro){
+        RespuestaEmpresa respuesta = new RespuestaEmpresa();
         
         SqlSession conexionDB = MyBatisUtil.getSession();
         
         if(conexionDB != null){
             try {
-                int numFilasAfectadas = conexionDB.update("clientes.modificarCliente", cliente);
-                conexionDB.commit();
+                List<Empresa> empresas = new ArrayList<>();
+                switch(criterio){
+                    case "Nombre":
+                        empresas.add(conexionDB.selectOne("empresas.obtenerEmpresaPorNombre", parametro));
+                        break;
+                    case "RFC":
+                        empresas.add(conexionDB.selectOne("empresas.obtenerEmpresaPorRFC", parametro));
+                        break;
+                    case "Representante":                        
+                        empresas.add(conexionDB.selectOne("empresas.obtenerEmpresaPorRepresentante", parametro));
+                        break;
+                    default:
+                        break;
+                }
                 
-                if(Verificaciones.Datos.numerico(numFilasAfectadas)){
+                if(Verificaciones.Datos.listaNoVacia(empresas)){
                     respuesta.setError(false);
-                    respuesta.setMensaje(Constantes.Retornos.MODIFICACION);                    
+                    respuesta.mensajeSuccess();
+                    respuesta.setContenido(empresas);
                 }else{
-                    respuesta.setMensaje(Constantes.Errores.MODIFICACION);
-                }                
+                    respuesta.mensajeNoId();
+                }
             } catch (Exception e) {
                 respuesta.setMensaje(Constantes.Excepciones.EXCEPTION);
             }finally{
@@ -120,14 +103,68 @@ public class ClienteDAO {
         return respuesta;
     }
     
-    public static RespuestaCliente eliminarCliente(Integer idCliente){
-        RespuestaCliente respuesta = new RespuestaCliente();
+    public static RespuestaEmpresa registrarEmpresa(Empresa cliente){
+        RespuestaEmpresa respuesta = new RespuestaEmpresa();
+        
+        SqlSession conexionBD = MyBatisUtil.getSession();
+        
+        if(conexionBD != null){
+            try {
+                int numFilasAfectadas = conexionBD.insert("empresas.registrarEmpresa", cliente);
+                conexionBD.commit();
+                
+                if(Verificaciones.Datos.numerico(numFilasAfectadas)){
+                    respuesta.setError(false);                    
+                    respuesta.setMensaje(Constantes.Retornos.REGISTRO);
+                }else{
+                    respuesta.setMensaje(Constantes.Errores.REGISTRO);
+                }
+            } catch (Exception e) {                
+                respuesta.setMensaje(Constantes.Excepciones.EXCEPTION);
+            }finally{
+                conexionBD.close();
+            }
+        }else{
+            respuesta.mensajeSinConexionBD();
+        }        
+        return respuesta;
+    }
+    
+    public static RespuestaEmpresa modificarEmpresa(Empresa cliente){
+        RespuestaEmpresa respuesta = new RespuestaEmpresa();
         
         SqlSession conexionDB = MyBatisUtil.getSession();
         
         if(conexionDB != null){
             try {
-                int numFilasAfectadas = conexionDB.delete("clientes.eliminarCliente", idCliente);
+                int numFilasAfectadas = conexionDB.update("empresas.modificarEmpresa", cliente);
+                conexionDB.commit();
+                
+                if(Verificaciones.Datos.numerico(numFilasAfectadas)){
+                    respuesta.setError(false);
+                    respuesta.setMensaje(Constantes.Retornos.MODIFICACION);                    
+                }else{
+                    respuesta.setMensaje(Constantes.Errores.MODIFICACION);
+                }                
+            } catch (Exception e) {
+                respuesta.setMensaje(e.getMessage());
+            }finally{
+                conexionDB.close();
+            }
+        }else{
+            respuesta.mensajeSinConexionBD();
+        }        
+        return respuesta;
+    }
+    
+    public static RespuestaEmpresa eliminarEmpresa(Integer idEmpresa){
+        RespuestaEmpresa respuesta = new RespuestaEmpresa();
+        
+        SqlSession conexionDB = MyBatisUtil.getSession();
+        
+        if(conexionDB != null){
+            try {
+                int numFilasAfectadas = conexionDB.delete("empresas.eliminarEmpresa", idEmpresa);
                 conexionDB.commit();
                 
                 if(Verificaciones.Datos.numerico(numFilasAfectadas)){

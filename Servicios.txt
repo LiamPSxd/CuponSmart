@@ -4,11 +4,11 @@
 4. Rol (A) - Completado
 5. Estatus (A) - Completado
 6. Categoria (L) - Completado
-7. Cliente (B)
-8. Direccion (B)
-9. Empresa (B)
+7. Cliente (B) - Completado
+8. Direccion (B) - Completado
+9. Empresa (B) - SemiCompletado
 10. Promocion (L) - Completado
 11. PromocionSucursal (L)
 12. Sucursal (L)
 13. TipoPromocion (A) - Completado
-14. Usuario (B)
+14. Usuario (B) - Completado

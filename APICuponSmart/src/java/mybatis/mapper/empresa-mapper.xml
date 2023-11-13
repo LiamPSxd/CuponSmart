@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="empresas">
+    <select id="obtenerEmpresas" resultType="modelo.pojo.entidad.Empresa">
+        SELECT * FROM empresa
+    </select>
+    
+    <select id="obtenerEmpresaPorId" resultType="modelo.pojo.entidad.Empresa" parameterType="Integer">
+        SELECT * FROM empresa 
+        WHERE id = #{id}
+    </select>
+    
+    <select id="obtenerEmpresaPorNombre" resultType="modelo.pojo.entidad.Empresa" parameterType="String">
+        SELECT * FROM empresa 
+        WHERE nombre = #{nombre}
+    </select>
+    
+    <select id="obtenerEmpresaPorRFC" resultType="modelo.pojo.entidad.Empresa" parameterType="String">
+        SELECT * FROM empresa 
+        WHERE RFC = #{RFC}
+    </select>
+    
+    <select id="obtenerEmpresaPorRepresentante" resultType="modelo.pojo.entidad.Empresa" parameterType="String">
+        SELECT * FROM empresa 
+        WHERE nombreRepresentanteLegal = #{nombreRepresentanteLegal}
+    </select>
+    
+    <select id="obtenerSucursalesPorIdEmpresa" resultType="modelo.pojo.entidad.Sucursal" parameterType="Integer">
+        SELECT * FROM empresa 
+        WHERE nombreRepresentanteLegal = #{nombreRepresentanteLegal}
+    </select>        
+                            
+    <insert id="registrarEmpresa" parameterType="modelo.pojo.entidad.Empresa">
+        INSERT INTO empresa (nombre, nombreComercial, nombreRepresentanteLegal, correo, telefono, paginaWeb, rfc, idEstatus, idDireccion) 
+        VALUES (#{nombre}, #{nombreComercial}, #{nombreRepresentanteLegal}, #{correo}, #{telefono}, #{paginaWeb}, #{rfc}, #{idEstatus}, #{idDireccion})
+    </insert>
+    
+    <update id="modificarEmpresa" parameterType="modelo.pojo.entidad.Empresa">
+        UPDATE empresa 
+        SET nombre=#{nombre}, nombreComercial=#{nombreComercial}, nombreRepresentanteLegal=#{nombreRepresentanteLegal}, correo=#{correo}, telefono=#{telefono}, paginaWeb=#{paginaWeb}, idEstatus=#{idEstatus}, idDireccion=#{idDireccion} 
+        WHERE id = #{id}
+    </update>
+    
+    <delete id="eliminarEmpresa" parameterType="Integer">
+        DELETE FROM empresa  
+        WHERE id = #{id}
+    </delete>
+</mapper>

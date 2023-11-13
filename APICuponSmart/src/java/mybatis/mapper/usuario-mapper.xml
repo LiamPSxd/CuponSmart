@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="usuarios">
+    <select id="obtenerUsuarios" resultType="modelo.pojo.entidad.Usuario">
+        SELECT * FROM usuario
+    </select>
+    
+    <select id="obtenerUsuarioPorId" resultType="modelo.pojo.entidad.Usuario" parameterType="Integer">
+        SELECT * FROM usuario 
+        WHERE id = #{id}
+    </select>
+    
+    <select id="obtenerUsuarioPorRol" resultType="modelo.pojo.entidad.Usuario" parameterType="Integer">
+        SELECT * FROM usuario 
+        WHERE idRol = #{idRol}
+    </select>
+    
+    <select id="obtenerUsuarioPorNombre" resultType="modelo.pojo.entidad.Usuario" parameterType="String">
+        SELECT * FROM usuario 
+        WHERE nombre = #{nombre}
+    </select>
+    
+    <select id="obtenerUsuarioPorUsername" resultType="modelo.pojo.entidad.Usuario" parameterType="String">
+        SELECT * FROM usuario 
+        WHERE username = #{username}
+    </select>        
+            
+    <insert id="registrarUsuario" parameterType="modelo.pojo.entidad.Usuario">
+        INSERT INTO usuario (nombre, apellidoPaterno, apellidoMaterno, curp, correo, username, contrasenia, idRol, idEmpresa) 
+        VALUES (#{nombre}, #{apellidoPaterno}, #{apellidoMaterno}, #{curp}, #{correo}, #{username}, #{contrasenia}, #{idRol}, #{idEmpresa})
+    </insert>
+    
+    <update id="modificarUsuario" parameterType="modelo.pojo.entidad.Usuario">
+        UPDATE usuario 
+        SET nombre=#{nombre}, apellidoPaterno=#{apellidoPaterno}, apellidoMaterno=#{apellidoMaterno}, curp=#{curp}, correo=#{correo}, username=#{username}, contrasenia=#{contrasenia}, idEmpresa=#{idEmpresa} 
+        WHERE id = #{id}
+    </update>
+    
+    <delete id="eliminarUsuario" parameterType="Integer">
+        DELETE FROM usuario  
+        WHERE id = #{id}
+    </delete>
+</mapper>

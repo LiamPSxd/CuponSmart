@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="direcciones">
+    <select id="obtenerDirecciones" resultType="modelo.pojo.entidad.Direccion">
+        SELECT * FROM direccion
+    </select>
+    
+    <select id="obtenerDireccionPorIdCliente" resultType="modelo.pojo.entidad.Direccion" parameterType="Integer">
+        SELECT d.id, d.calle, d.codigoPostal, d.colonia, d.latitud, d.longitud, d.idCiudad 
+        FROM cliente c, direccion d 
+        WHERE c.id = #{idCliente} AND c.idDireccion = d.id;
+    </select>
+    
+    <insert id="registrarDireccion" parameterType="modelo.pojo.entidad.Direccion">
+        INSERT INTO direccion (calle, numero, codigoPostal, colonia, latitud, longitud, idCiudad) 
+        VALUES (#{calle}, #{numero}, #{codigoPostal}, #{colonia}, #{latitud}, #{longitud}, #{idCiudad})
+    </insert>
+    
+    <update id="modificarDireccion" parameterType="modelo.pojo.entidad.Direccion">
+        UPDATE direccion 
+        SET calle = #{calle}, numero = #{numero}, codigoPostal = #{codigoPostal}, colonia= #{colonia}, latitud = #{latitud}, longitud = #{longitud}, idCiudad = #{idCiudad} 
+        WHERE id = #{id}
+    </update>
+    
+    <delete id="eliminarDireccion" parameterType="Integer">
+        DELETE FROM direccion 
+        WHERE id = #{id}
+    </delete>
+</mapper>

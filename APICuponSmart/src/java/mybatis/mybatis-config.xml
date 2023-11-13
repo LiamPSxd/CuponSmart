@@ -22,6 +22,8 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     <mappers>
         <mapper resource="mybatis/mapper/categoria-mapper.xml"/>
         <mapper resource="mybatis/mapper/cliente-mapper.xml"/>
+        <mapper resource="mybatis/mapper/direccion-mapper.xml"/>
+        <mapper resource="mybatis/mapper/empresa-mapper.xml"/>
         <mapper resource="mybatis/mapper/estado-mapper.xml"/>
         <mapper resource="mybatis/mapper/estatus-mapper.xml"/>
         <mapper resource="mybatis/mapper/rol-mapper.xml"/>
@@ -29,5 +31,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         <mapper resource="mybatis/mapper/municipio-mapper.xml"/>
         <mapper resource="mybatis/mapper/ciudad-mapper.xml"/>
         <mapper resource="mybatis/mapper/promocion-mapper.xml"/>
+        <mapper resource="mybatis/mapper/usuario-mapper.xml"/>
     </mappers>
 </configuration>
