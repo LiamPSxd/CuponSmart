@@ -14,7 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE nombre = #{nombre}
     </select>
     
-    <select id="obtenerSucursalesPorIdDireccion" resultType="modelo.pojo.entidad.Sucursal" parameterType="Integer">
+    <select id="obtenerSucursalPorIdDireccion" resultType="modelo.pojo.entidad.Sucursal" parameterType="Integer">
         SELECT * FROM sucursal 
         WHERE idDireccion = #{idDireccion}
     </select>

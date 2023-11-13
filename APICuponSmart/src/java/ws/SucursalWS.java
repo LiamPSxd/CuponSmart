@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -40,17 +39,17 @@ public class SucursalWS{
     }
     
     @GET
-    @Path("obtenerSucursalesPorIdDireccion/{idDireccion}")
+    @Path("obtenerSucursalPorIdDireccion/{idDireccion}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaSucursal obtenerSucursalesPorIdDireccion(@PathParam("idDireccion") Integer idDireccion){
-        return Verificaciones.Datos.numerico(idDireccion) ? SucursalDAO.obtenerSucursalesPorIdDireccion(idDireccion) : (RespuestaSucursal) Verificaciones.Excepciones.badRequest();
+        return Verificaciones.Datos.numerico(idDireccion) ? SucursalDAO.obtenerSucursalPorIdSucursalOIdDireccion(Constantes.Datos.ID_DIRECCION, idDireccion) : (RespuestaSucursal) Verificaciones.Excepciones.badRequest();
     }
     
     @GET
     @Path("obtenerSucursalPorId/{idSucursal}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaSucursal obtenerSucursalPorId(@PathParam("idSucursal") Integer idSucursal){
-        return Verificaciones.Datos.numerico(idSucursal) ? SucursalDAO.obtenerSucursalPorId(idSucursal) : (RespuestaSucursal) Verificaciones.Excepciones.badRequest();
+        return Verificaciones.Datos.numerico(idSucursal) ? SucursalDAO.obtenerSucursalPorIdSucursalOIdDireccion(Constantes.Datos.ID, idSucursal) : (RespuestaSucursal) Verificaciones.Excepciones.badRequest();
     }
     
     @POST
@@ -100,9 +99,9 @@ public class SucursalWS{
     }
     
     @DELETE
-    @Path("eliminar")
+    @Path("eliminar/{idSucursal}")
     @Produces(MediaType.APPLICATION_JSON)
-    public RespuestaSucursal eliminarSucursal(@FormParam("idSucursal") Integer idSucursal){
+    public RespuestaSucursal eliminarSucursal(@PathParam("idSucursal") Integer idSucursal){
         return Verificaciones.Datos.numerico(idSucursal) ? SucursalDAO.eliminarSucursal(idSucursal) : (RespuestaSucursal) Verificaciones.Excepciones.badRequest();
     }
 }

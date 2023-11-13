@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -86,9 +85,9 @@ public class CiudadWS{
     }
     
     @DELETE
-    @Path("eliminar")
+    @Path("eliminar/{idCiudad}")
     @Produces(MediaType.APPLICATION_JSON)
-    public RespuestaCiudad eliminarCiudad(@FormParam("idCiudad") Integer idCiudad){
+    public RespuestaCiudad eliminarCiudad(@PathParam("idCiudad") Integer idCiudad){
         return Verificaciones.Datos.numerico(idCiudad) ? CiudadDAO.eliminarCiudad(idCiudad) : (RespuestaCiudad) Verificaciones.Excepciones.badRequest();
     }
 }

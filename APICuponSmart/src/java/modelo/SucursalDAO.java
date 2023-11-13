@@ -66,35 +66,7 @@ public class SucursalDAO{
         return respuesta;
     }
     
-    public static RespuestaSucursal obtenerSucursalesPorIdDireccion(Integer idDireccion){
-        RespuestaSucursal respuesta = new RespuestaSucursal();
-        
-        SqlSession conexionBD = MyBatisUtil.getSession();
-        
-        if(conexionBD != null){
-            try{
-                List<Sucursal> sucursales = conexionBD.selectList("sucursales.obtenerSucursalesPorIdDireccion", idDireccion);
-                
-                if(Verificaciones.Datos.listaNoVacia(sucursales)){
-                    respuesta.setError(false);
-                    respuesta.mensajeSuccess();
-                    respuesta.setContenido(sucursales);
-                }else{
-                    respuesta.mensajeSinDatos();
-                }
-            }catch(Exception e){
-                respuesta.setMensaje(Constantes.Excepciones.EXCEPTION);
-            }finally{
-                conexionBD.close();
-            }
-        }else{
-            respuesta.mensajeSinConexionBD();
-        }
-        
-        return respuesta;
-    }
-    
-    public static RespuestaSucursal obtenerSucursalPorId(Integer idSucursal){
+    public static RespuestaSucursal obtenerSucursalPorIdSucursalOIdDireccion(String tipo, Integer id){
         RespuestaSucursal respuesta = new RespuestaSucursal();
         
         SqlSession conexionBD = MyBatisUtil.getSession();
@@ -102,7 +74,7 @@ public class SucursalDAO{
         if(conexionBD != null){
             try{
                 List<Sucursal> sucursales = new ArrayList<>();
-                sucursales.add(conexionBD.selectOne("sucursales.obtenerSucursalPorId", idSucursal));
+                sucursales.add(conexionBD.selectOne("sucursales.obtenerSucursalPor" + tipo, id));
                 
                 if(Verificaciones.Datos.listaNoVacia(sucursales)){
                     respuesta.setError(false);
