@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cuponsmart.controlador.FXMLFormUsuarioController">
+   <children>
+      <AnchorPane layoutX="66.0" layoutY="110.0" prefHeight="680.0" prefWidth="700.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 30;">
+         <children>
+            <TextField layoutX="55.0" layoutY="134.0" prefHeight="50.0" prefWidth="590.0">
+               <font>
+                  <Font name="Century Gothic" size="24.0" />
+               </font>
+            </TextField>
+            <Label layoutX="50.0" layoutY="74.0" text="Nombre">
+               <font>
+                  <Font name="Century Gothic Bold" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="50.0" layoutY="214.0" text="Apellido Paterno">
+               <font>
+                  <Font name="Century Gothic Bold" size="30.0" />
+               </font>
+            </Label>
+            <TextField layoutX="55.0" layoutY="274.0" prefHeight="50.0" prefWidth="590.0">
+               <font>
+                  <Font name="Century Gothic" size="24.0" />
+               </font>
+            </TextField>
+            <TextField layoutX="55.0" layoutY="414.0" prefHeight="50.0" prefWidth="590.0">
+               <font>
+                  <Font name="Century Gothic" size="24.0" />
+               </font>
+            </TextField>
+            <Label layoutX="50.0" layoutY="354.0" text="Apellido Materno">
+               <font>
+                  <Font name="Century Gothic Bold" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="50.0" layoutY="494.0" text="CURP">
+               <font>
+                  <Font name="Century Gothic Bold" size="30.0" />
+               </font>
+            </Label>
+            <TextField layoutX="55.0" layoutY="554.0" prefHeight="50.0" prefWidth="590.0">
+               <font>
+                  <Font name="Century Gothic" size="24.0" />
+               </font>
+            </TextField>
+         </children>
+      </AnchorPane>
+      <Label layoutX="609.0" layoutY="25.0" text="Registrar Usuario">
+         <font>
+            <Font name="Century Gothic Bold" size="48.0" />
+         </font>
+      </Label>
+      <Button layoutX="704.0" layoutY="815.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" style="-fx-border-radius: 30;" text="Registrar">
+         <font>
+            <Font name="Century Gothic Bold" size="24.0" />
+         </font>
+      </Button>
+      <AnchorPane layoutX="834.0" layoutY="110.0" prefHeight="680.0" prefWidth="700.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 30;">
+         <children>
+            <Label layoutX="50.0" layoutY="415.0" text="Confirmar Contraseña">
+               <font>
+                  <Font name="Century Gothic Bold" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="50.0" layoutY="295.0" text="Contraseña">
+               <font>
+                  <Font name="Century Gothic Bold" size="30.0" />
+               </font>
+            </Label>
+            <TextField layoutX="55.0" layoutY="225.0" prefHeight="50.0" prefWidth="590.0">
+               <font>
+                  <Font name="Century Gothic" size="24.0" />
+               </font>
+            </TextField>
+            <Label layoutX="50.0" layoutY="175.0" text="Correo">
+               <font>
+                  <Font name="Century Gothic Bold" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="50.0" layoutY="55.0" text="Username">
+               <font>
+                  <Font name="Century Gothic Bold" size="30.0" />
+               </font>
+            </Label>
+            <TextField layoutX="55.0" layoutY="105.0" prefHeight="50.0" prefWidth="590.0">
+               <font>
+                  <Font name="Century Gothic" size="24.0" />
+               </font>
+            </TextField>
+            <ComboBox layoutX="55.0" layoutY="585.0" prefHeight="40.0" prefWidth="250.0" />
+            <Label layoutX="50.0" layoutY="535.0" text="Rol">
+               <font>
+                  <Font name="Century Gothic Bold" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="385.0" layoutY="535.0" text="Empresa">
+               <font>
+                  <Font name="Century Gothic Bold" size="30.0" />
+               </font>
+            </Label>
+            <ComboBox layoutX="390.0" layoutY="585.0" prefHeight="40.0" prefWidth="250.0" />
+            <PasswordField layoutX="55.0" layoutY="345.0" prefHeight="50.0" prefWidth="590.0">
+               <font>
+                  <Font name="Century Gothic" size="24.0" />
+               </font>
+            </PasswordField>
+            <PasswordField layoutX="57.0" layoutY="465.0" prefHeight="50.0" prefWidth="590.0">
+               <font>
+                  <Font name="Century Gothic" size="24.0" />
+               </font>
+            </PasswordField>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

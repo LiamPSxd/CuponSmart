@@ -8,7 +8,7 @@
 8. Direccion (B) - Completado
 9. Empresa (B) - SemiCompletado
 10. Promocion (L) - Completado
-11. PromocionSucursal (L)
-12. Sucursal (L)
+11. PromocionSucursal (L) - Completado
+12. Sucursal (L) - Completado
 13. TipoPromocion (A) - Completado
 14. Usuario (B) - Completado

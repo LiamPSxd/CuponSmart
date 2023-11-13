@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -107,9 +106,9 @@ public class PromocionWS{
     }
     
     @DELETE
-    @Path("eliminar")
+    @Path("eliminar/{idPromocion}")
     @Produces(MediaType.APPLICATION_JSON)
-    public RespuestaPromocion eliminarPromocion(@FormParam("idPromocion") Integer idPromocion){
+    public RespuestaPromocion eliminarPromocion(@PathParam("idPromocion") Integer idPromocion){
         return Verificaciones.Datos.numerico(idPromocion) ? PromocionDAO.eliminarPromocion(idPromocion) : (RespuestaPromocion) Verificaciones.Excepciones.badRequest();
     }
 }

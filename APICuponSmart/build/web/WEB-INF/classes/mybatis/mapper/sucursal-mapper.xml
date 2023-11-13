@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sucursales">
+    <select id="obtenerSucursales" resultType="modelo.pojo.entidad.Sucursal">
+        SELECT * FROM sucursal
+    </select>
+    
+    <select id="obtenerSucursalesPorNombre" resultType="modelo.pojo.entidad.Sucursal" parameterType="String">
+        SELECT * FROM sucursal 
+        WHERE nombre = #{nombre}
+    </select>
+    
+    <select id="obtenerSucursalPorIdDireccion" resultType="modelo.pojo.entidad.Sucursal" parameterType="Integer">
+        SELECT * FROM sucursal 
+        WHERE idDireccion = #{idDireccion}
+    </select>
+    
+    <select id="obtenerSucursalPorId" resultType="modelo.pojo.entidad.Sucursal" parameterType="Integer">
+        SELECT * FROM sucursal 
+        WHERE id = #{id}
+    </select>
+    
+    <insert id="registrarSucursal" parameterType="modelo.pojo.entidad.Sucursal">
+        INSERT INTO sucursal(nombre, telefono, nombreEncargado, idDireccion, idEmpresa) 
+        VALUE (#{nombre}, #{telefono}, #{nombreEncargado}, #{idDireccion}, #{idEmprea})
+    </insert>
+    
+    <update id="modificarSucursal" parameterType="modelo.pojo.entidad.Sucursal">
+        UPDATE sucursal 
+        SET nombre = #{nombre}, telefono = #{telefono}, nombreEncargado = #{nombreEncargado}, idDireccion = #{idDireccion}, idEmpresa = #{idEmprea} 
+        WHERE id = #{id}
+    </update>
+    
+    <delete id="eliminarSucursal" parameterType="Integer">
+        DELETE FROM sucursal 
+        WHERE id = #{id}
+    </delete>
+</mapper>

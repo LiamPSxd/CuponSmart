@@ -32,5 +32,9 @@ public class Constantes{
         public static final String FECHA_INICIO = "FechaInicio";
         public static final String FECHA_TERMINO = "FechaTermino";
         public static final String NOMBRE = "Nombre";
+        public static final String PROMOCION = "Promocion";
+        public static final String SUCURSAL = "Sucursal";
+        public static final String ID = "Id";
+        public static final String ID_DIRECCION = "IdDireccion";
     }
 }
