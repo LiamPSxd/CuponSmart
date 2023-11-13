@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #ebe4d8;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clienteescritorionutricion.FXMLAdminPacientesController">
+   <children>
+      <AnchorPane layoutX="50.0" layoutY="100.0" prefHeight="650.0" prefWidth="1100.0" style="-fx-background-color: #fdfcfd; -fx-background-radius: 30;">
+         <children>
+            <TextField layoutX="26.0" layoutY="43.0" prefHeight="40.0" prefWidth="350.0" promptText="Buscar paciente" style="-fx-background-color: #f7f5ef; -fx-background-radius: 30;">
+               <font>
+                  <Font name="Tw Cen MT" size="20.0" />
+               </font>
+            </TextField>
+            <Button fx:id="btnEditar" layoutX="574.0" layoutY="43.0" mnemonicParsing="false" onAction="#irFormularioEditar" prefHeight="40.0" prefWidth="110.0" style="-fx-background-color: #f9eee7; -fx-background-radius: 30;" text="Editar">
+               <font>
+                  <Font name="Tw Cen MT Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button layoutX="720.0" layoutY="43.0" mnemonicParsing="false" onAction="#eliminar" prefHeight="40.0" prefWidth="110.0" style="-fx-background-color: #f9eee7; -fx-background-radius: 30;" text="Eliminar">
+               <font>
+                  <Font name="Tw Cen MT Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnAgregar" layoutX="430.0" layoutY="43.0" mnemonicParsing="false" onAction="#irFormularioRegistrar" prefHeight="40.0" prefWidth="110.0" style="-fx-background-color: #f9eee7; -fx-background-radius: 30;" text="Agregar">
+               <font>
+                  <Font name="Tw Cen MT Bold" size="20.0" />
+               </font>
+            </Button>
+            <TableView fx:id="tbPacientes" layoutX="26.0" layoutY="124.0" prefHeight="500.0" prefWidth="1050.0" style="-fx-background-color: #f7f5ef; -fx-background-radius: 30;">
+              <columns>
+                <TableColumn fx:id="colNombre" minWidth="20.0" prefWidth="175.0" text="Nombre" />
+                <TableColumn fx:id="colApellidoPaterno" minWidth="20.0" prefWidth="175.0" text="Apellido Paterno" />
+                  <TableColumn fx:id="colApellidoMaterno" minWidth="20.0" prefWidth="175.0" text="Apellido Materno" />
+                  <TableColumn fx:id="colFechaNacimiento" minWidth="20.0" prefWidth="175.0" text="Fecha de Nacimiento" />
+                  <TableColumn fx:id="colCorreo" minWidth="20.0" prefWidth="175.0" text="Correo Electrónico" />
+                  <TableColumn fx:id="colTelefono" minWidth="20.0" prefWidth="175.0" text="Teléfono" />
+              </columns>
+            </TableView>
+            <Button layoutX="868.0" layoutY="43.0" mnemonicParsing="false" onAction="#gestionarDomicilio" prefHeight="40.0" prefWidth="110.0" style="-fx-background-color: #f9eee7; -fx-background-radius: 30;" text="Domicilio">
+               <font>
+                  <Font name="Tw Cen MT Bold" size="20.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+      <Label fx:id="etqPacientes" alignment="CENTER" layoutX="50.0" layoutY="30.0" prefHeight="40.0" prefWidth="350.0" text="Gestión de Pacientes">
+         <font>
+            <Font name="Tw Cen MT Bold" size="35.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
