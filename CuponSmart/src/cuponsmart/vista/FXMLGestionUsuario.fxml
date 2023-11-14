@@ -11,7 +11,7 @@
    <children>
       <AnchorPane layoutX="50.0" layoutY="100.0" minHeight="700.0" minWidth="1100.0" prefHeight="700.0" prefWidth="1100.0" style="-fx-background-color: #fdfcfd; -fx-background-radius: 30;">
          <children>
-            <TextField fx:id="tfBusqueda" layoutX="26.0" layoutY="136.0" prefHeight="40.0" prefWidth="350.0" promptText="Buscar empresa" style="-fx-background-color: #f7f5ef; -fx-background-radius: 30;">
+            <TextField fx:id="tfBusqueda" layoutX="26.0" layoutY="136.0" prefHeight="40.0" prefWidth="350.0" promptText="Buscar Usuario" style="-fx-background-color: #f7f5ef; -fx-background-radius: 30;">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
@@ -23,22 +23,22 @@
             </Button>
             <ComboBox fx:id="cbFiltro" layoutX="401.0" layoutY="139.0" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #f9eee7; -fx-border-radius: 30;" />
             <ScrollPane layoutX="34.0" layoutY="216.0" prefHeight="392.0" prefWidth="1034.0">
-              <content>
-                <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="386.0" prefWidth="1030.0">
+               <content>
+                  <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="386.0" prefWidth="1030.0">
                      <children>
-                        <TableView fx:id="tbEmpresas" layoutX="104.0" layoutY="163.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="386.0" prefWidth="1032.0" style="-fx-background-color: #f7f5ef; -fx-background-radius: 30;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TableView fx:id="tbUsuarios" layoutX="104.0" layoutY="163.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="386.0" prefWidth="1032.0" style="-fx-background-color: #f7f5ef; -fx-background-radius: 30;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <columns>
                               <TableColumn fx:id="colNombre" minWidth="-1.0" prefWidth="172.0" text="Nombre" />
-                              <TableColumn fx:id="colRepresentante" minWidth="-Infinity" prefWidth="172.0" text="Representante" />
+                              <TableColumn fx:id="colApellidoPaterno" minWidth="-Infinity" prefWidth="172.0" text="Apellido Paterno" />
+                              <TableColumn fx:id="colApellidoMaterno" minWidth="-Infinity" prefWidth="172.0" text="Apellido Materno" />
                               <TableColumn fx:id="colCorreo" minWidth="-Infinity" prefWidth="172.0" text="Correo" />
-                              <TableColumn fx:id="colTelefono" minWidth="-Infinity" prefWidth="172.0" text="Teléfono" />
-                              <TableColumn fx:id="colRFC" minWidth="-Infinity" prefWidth="172.0" text="RFC" />
-                              <TableColumn fx:id="colEstatus" minWidth="-Infinity" prefWidth="172.0" text="Estatus" />
+                              <TableColumn fx:id="colRol" minWidth="-Infinity" prefWidth="172.0" text="Rol" />
+                              <TableColumn fx:id="colEmpresa" minWidth="-Infinity" prefWidth="172.0" text="Empresa" />
                            </columns>
                         </TableView>
                      </children>
                   </AnchorPane>
-              </content>
+               </content>
             </ScrollPane>
             <Button layoutX="828.0" layoutY="127.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #f9eee7; -fx-background-radius: 30;">
                <font>
@@ -62,7 +62,7 @@
             </Button>
          </children>
       </AnchorPane>
-      <Label alignment="CENTER" layoutX="50.0" layoutY="30.0" prefHeight="40.0" prefWidth="350.0" text="Gestión de Empresa">
+      <Label alignment="CENTER" layoutX="50.0" layoutY="30.0" prefHeight="40.0" prefWidth="350.0" text="Gestión de Usuarios">
          <font>
             <Font name="Century Gothic" size="35.0" />
          </font>
