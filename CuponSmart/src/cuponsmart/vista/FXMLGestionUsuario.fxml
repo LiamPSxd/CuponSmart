@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" minHeight="900.0" minWidth="1200.0" style="-fx-background-color: #ebe4d8;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clienteescritorionutricion.FXMLAdminPacientesController">
+   <children>
+      <AnchorPane layoutX="50.0" layoutY="100.0" minHeight="700.0" minWidth="1100.0" prefHeight="700.0" prefWidth="1100.0" style="-fx-background-color: #fdfcfd; -fx-background-radius: 30;">
+         <children>
+            <TextField fx:id="tfBusqueda" layoutX="26.0" layoutY="136.0" prefHeight="40.0" prefWidth="350.0" promptText="Buscar Usuario" style="-fx-background-color: #f7f5ef; -fx-background-radius: 30;">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+            </TextField>
+            <Button fx:id="btnBuscar" layoutX="581.0" layoutY="136.0" mnemonicParsing="false" onAction="#realizarBusqueda" prefHeight="40.0" prefWidth="110.0" style="-fx-background-color: #f9eee7; -fx-background-radius: 30;" text="Buscar">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+            </Button>
+            <ComboBox fx:id="cbFiltro" layoutX="401.0" layoutY="139.0" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #f9eee7; -fx-border-radius: 30;" />
+            <ScrollPane layoutX="34.0" layoutY="216.0" prefHeight="392.0" prefWidth="1034.0">
+               <content>
+                  <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="386.0" prefWidth="1030.0">
+                     <children>
+                        <TableView fx:id="tbUsuarios" layoutX="104.0" layoutY="163.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="386.0" prefWidth="1032.0" style="-fx-background-color: #f7f5ef; -fx-background-radius: 30;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <columns>
+                              <TableColumn fx:id="colNombre" minWidth="-1.0" prefWidth="172.0" text="Nombre" />
+                              <TableColumn fx:id="colApellidoPaterno" minWidth="-Infinity" prefWidth="172.0" text="Apellido Paterno" />
+                              <TableColumn fx:id="colApellidoMaterno" minWidth="-Infinity" prefWidth="172.0" text="Apellido Materno" />
+                              <TableColumn fx:id="colCorreo" minWidth="-Infinity" prefWidth="172.0" text="Correo" />
+                              <TableColumn fx:id="colRol" minWidth="-Infinity" prefWidth="172.0" text="Rol" />
+                              <TableColumn fx:id="colEmpresa" minWidth="-Infinity" prefWidth="172.0" text="Empresa" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
+            <Button layoutX="828.0" layoutY="127.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #f9eee7; -fx-background-radius: 30;">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <Button layoutX="947.0" layoutY="127.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #f9eee7; -fx-background-radius: 30;">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <Label alignment="CENTER" layoutX="426.0" layoutY="96.0" prefHeight="40.0" prefWidth="100.0" text="Filtro">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+            </Label>
+            <Button layoutX="46.0" layoutY="26.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #f9eee7; -fx-background-radius: 30;">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+      <Label alignment="CENTER" layoutX="50.0" layoutY="30.0" prefHeight="40.0" prefWidth="350.0" text="Gestión de Usuarios">
+         <font>
+            <Font name="Century Gothic" size="35.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
