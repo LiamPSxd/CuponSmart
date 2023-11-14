@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cuponsmart.vista;
+package cuponsmart.controlador;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -14,7 +14,7 @@ import javafx.fxml.Initializable;
  *
  * @author ameya
  */
-public class FXMLStartController implements Initializable {
+public class FXMLFormPromocionController implements Initializable {
 
     /**
      * Initializes the controller class.
