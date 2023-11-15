@@ -19,7 +19,7 @@ public class CuponSmart extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLStart.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLInicioSesion.fxml"));
         
         Scene scene = new Scene(root);
         

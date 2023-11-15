@@ -2,7 +2,7 @@ package cuponsmart.modelo.pojo.entidad;
 
 public class Promocion{
     private Integer id;
-    private String nombre;
+    private String nombre; 
     private String descripcion;
     private String imagen;
     private String imagenBase64;
