@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -40,7 +39,7 @@ public class UsuarioWS {
     }
     
     @GET
-    @Path("obtenerUsuarioPorRol/{idRol}")
+    @Path("obtenerUsuarioPorIdRol/{idRol}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaUsuario obtenerUsuarioPorRol(@PathParam("idRol") Integer idRol){
         return Verificaciones.Datos.numerico(idRol) ? UsuarioDAO.obtenerUsuarioPorId("Rol",idRol): (RespuestaUsuario) Verificaciones.Excepciones.badRequest();
@@ -101,9 +100,9 @@ public class UsuarioWS {
     }
     
     @DELETE
-    @Path("eliminar")
+    @Path("eliminar/{idUsuario}")
     @Produces(MediaType.APPLICATION_JSON)
-    public RespuestaUsuario eliminarUsuario(@FormParam("id") Integer idUsuario){
+    public RespuestaUsuario eliminarUsuario(@PathParam("idUsuario") Integer idUsuario){
         return Verificaciones.Datos.numerico(idUsuario) ? UsuarioDAO.eliminarUsuario(idUsuario) : (RespuestaUsuario) Verificaciones.Excepciones.badRequest();
     }
 }

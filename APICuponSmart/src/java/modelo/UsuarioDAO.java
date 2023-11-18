@@ -46,17 +46,7 @@ public class UsuarioDAO {
                 List<Usuario> usuarios = new ArrayList<>();
                 
                 usuarios.add(conexionDB.selectOne("usuarios.obtenerUsuarioPor" + criterio, id));
-                /*switch(criterio){
-                    case "Id":
-                        usuarios.add(conexionDB.selectOne("usuarios.obtenerUsuarioPorId", id));                
-                        break;
-                    case "Rol":                        
-                        usuarios.add(conexionDB.selectOne("usuarios.obtenerUsuarioPorRol", id));                
-                        break;
-                    default:
-                        break;
-                }*/    
-                
+                                    
                 if(Verificaciones.Datos.listaNoVacia(usuarios)){
                     respuesta.setError(false);
                     respuesta.mensajeSuccess();
@@ -83,18 +73,8 @@ public class UsuarioDAO {
         if(conexionDB != null){
             try {
                 List<Usuario> usuarios = new ArrayList<>();                
-                usuarios.add(conexionDB.selectOne("usuarios.obtenerUsuarioPor" + criterio, parametro));
                 
-                /*switch(criterio){
-                    case "Nombre":
-                        usuarios.add(conexionDB.selectOne("usuarios.obtenerUsuarioPorNombre", parametro));
-                        break;
-                    case "Username":                        
-                        usuarios.add(conexionDB.selectOne("usuarios.obtenerUsuarioPorUsername", parametro));
-                        break;
-                    default:
-                        break;
-                } */ 
+                usuarios.add(conexionDB.selectOne("usuarios.obtenerUsuarioPor" + criterio, parametro));                
                 
                 if(Verificaciones.Datos.listaNoVacia(usuarios)){
                     respuesta.setError(false);

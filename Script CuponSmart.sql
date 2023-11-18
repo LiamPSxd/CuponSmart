@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS usuario(
     apellidoPaterno VARCHAR(20) NOT NULL,
     apellidoMaterno VARCHAR(20) NOT NULL,
     curp VARCHAR(18) NOT NULL UNIQUE,
-    correo VARCHAR(50) NOT NULL,
+    correo VARCHAR(50) NOT NULL UNIQUE,
     username VARCHAR(20) NOT NULL UNIQUE,
     contrasenia VARCHAR(30) NOT NULL,
     idRol INT,

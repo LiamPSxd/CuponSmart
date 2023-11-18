@@ -71,20 +71,7 @@ public class EmpresaDAO {
         if(conexionDB != null){
             try {
                 List<Empresa> empresas = new ArrayList<>();
-                switch(criterio){
-                    case "Nombre":
-                        empresas.add(conexionDB.selectOne("empresas.obtenerEmpresaPorNombre", parametro));
-                        break;
-                    case "RFC":
-                        empresas.add(conexionDB.selectOne("empresas.obtenerEmpresaPorRFC", parametro));
-                        break;
-                    case "Representante":                        
-                        empresas.add(conexionDB.selectOne("empresas.obtenerEmpresaPorRepresentante", parametro));
-                        break;
-                    default:
-                        break;
-                }
-                
+                empresas.add(conexionDB.selectOne("empresas.obtenerEmpresaPor"+criterio, parametro));          
                 if(Verificaciones.Datos.listaNoVacia(empresas)){
                     respuesta.setError(false);
                     respuesta.mensajeSuccess();
