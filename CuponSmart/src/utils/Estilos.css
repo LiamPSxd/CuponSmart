@@ -1,0 +1,48 @@
+#fondo{
+    -fx-background-color: #ebe4d8;
+}
+
+#tarjeta{
+    -fx-background-color: #f2eee9;
+    -fx-background-radius: 30px;
+}
+
+#elemento{
+    -fx-background-color: #fcfdfd;
+    -fx-background-radius: 30px;
+}
+
+#boton{
+    -fx-background-color: #f9efe6;
+    -fx-background-radius: 30px;
+}
+
+#botonSeleccion{
+    -fx-background-color: #fdfdfc;
+    -fx-background-radius: 30px;
+}
+
+#titulo{
+    -fx-font-family: "Century Gothic";
+    -fx-font-weight: bold;
+    -fx-font-size: 36px;
+    -fx-text-fill: black;
+    -fx-text-alignment: center;
+}
+
+#subtitulo{
+    -fx-font-family: "Century Gothic";
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+    -fx-text-fill: black;
+    -fx-text-alignment: left;
+}
+
+#entrada{
+    -fx-font-family: "Century Gothic";
+    -fx-font-size: 24px;
+    -fx-text-fill: black;
+    -fx-text-alignment: justify;
+    -fx-background-color: #fdfdfc;
+    -fx-background-radius: 30px;
+}

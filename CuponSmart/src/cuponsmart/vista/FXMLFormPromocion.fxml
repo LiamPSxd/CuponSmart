@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -8,127 +9,132 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cuponsmart.controlador.FXMLFormPromocionController">
+<AnchorPane id="fondo" prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: #ebe4d8;" stylesheets="@../../utils/Estilos.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cuponsmart.controlador.FXMLFormEmpresaController">
    <children>
-      <Label layoutX="584.0" layoutY="26.0" text="Registrar Promoción">
+      <Label id="titulo" layoutX="513.0" layoutY="25.0" stylesheets="@../../utils/Estilos.css" text="Registrar Promoción" textAlignment="CENTER">
          <font>
             <Font name="Century Gothic Bold" size="48.0" />
          </font>
       </Label>
-      <ScrollPane layoutX="55.0" layoutY="100.0" prefHeight="700.0" prefWidth="1490.0">
+      <ScrollPane id="fondo" layoutY="110.0" prefHeight="658.0" prefWidth="1366.0" stylesheets="@../../utils/Estilos.css">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="850.0" prefWidth="1488.0">
+          <AnchorPane id="fondo" minHeight="0.0" minWidth="0.0" prefHeight="850.0" prefWidth="1345.0" stylesheets="@../../utils/Estilos.css">
                <children>
-                  <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="800.0" prefWidth="700.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 30;">
+                  <AnchorPane id="tarjeta" layoutX="15.0" prefHeight="700.0" prefWidth="650.0" stylesheets="@../../utils/Estilos.css">
                      <children>
-                        <Label layoutX="370.0" layoutY="74.0" text="Nombre">
-                           <font>
-                              <Font name="Century Gothic Bold" size="30.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="50.0" layoutY="354.0" text="Fecha de inicio">
-                           <font>
-                              <Font name="Century Gothic Bold" size="30.0" />
-                           </font>
-                        </Label>
-                        <TextField layoutX="375.0" layoutY="554.0" prefHeight="50.0" prefWidth="270.0">
-                           <font>
-                              <Font name="Century Gothic" size="24.0" />
-                           </font>
-                        </TextField>
-                        <Label layoutX="50.0" layoutY="494.0" text="Tipo de promoción">
-                           <font>
-                              <Font name="Century Gothic Bold" size="30.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="50.0" layoutY="634.0" text="Número de cupones">
-                           <font>
-                              <Font name="Century Gothic Bold" size="30.0" />
-                           </font>
-                        </Label>
-                        <TextField layoutX="55.0" layoutY="694.0" prefHeight="50.0" prefWidth="590.0">
-                           <font>
-                              <Font name="Century Gothic" size="24.0" />
-                           </font>
-                        </TextField>
-                        <DatePicker layoutX="55.0" layoutY="414.0" prefHeight="50.0" prefWidth="270.0" />
-                        <DatePicker layoutX="375.0" layoutY="414.0" prefHeight="50.0" prefWidth="270.0" />
-                        <Label layoutX="370.0" layoutY="354.0" text="Fecha de término">
-                           <font>
-                              <Font name="Century Gothic Bold" size="30.0" />
-                           </font>
-                        </Label>
-                        <ComboBox layoutX="55.0" layoutY="554.0" prefHeight="50.0" prefWidth="271.0" />
-                        <Label layoutX="370.0" layoutY="494.0" text="Valor">
-                           <font>
-                              <Font name="Century Gothic Bold" size="30.0" />
-                           </font>
-                        </Label>
-                        <Circle fx:id="imgFoto" fill="#f0ece9" layoutX="180.0" layoutY="130.0" radius="120.0" stroke="#f2eee9" strokeLineJoin="ROUND" strokeType="INSIDE" />
-                        <Button fx:id="btnFoto" layoutX="147.0" layoutY="274.0" mnemonicParsing="false" onAction="#subirFoto" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #f9eee7; -fx-background-radius: 30;">
+                        <Circle fx:id="imgFoto" fill="#f7f4f5" layoutX="150.0" layoutY="150.0" radius="120.0" stroke="#f7f4f5" strokeLineJoin="ROUND" strokeType="INSIDE" />
+                        <Button id="botonSeleccion" fx:id="btnFoto" layoutX="120.0" layoutY="290.0" mnemonicParsing="false" onAction="#subirFoto" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Button>
-                        <TextField layoutX="375.0" layoutY="134.0" prefHeight="50.0" prefWidth="270.0">
-                           <font>
-                              <Font name="Century Gothic" size="24.0" />
-                           </font>
-                        </TextField>
-                        <TextField layoutX="375.0" layoutY="274.0" prefHeight="50.0" prefWidth="270.0">
-                           <font>
-                              <Font name="Century Gothic" size="24.0" />
-                           </font>
-                        </TextField>
-                        <Label layoutX="370.0" layoutY="214.0" text="Código">
+                        <Label id="subtitulo" layoutX="300.0" layoutY="50.0" stylesheets="@../../utils/Estilos.css" text="Nombre">
                            <font>
                               <Font name="Century Gothic Bold" size="30.0" />
                            </font>
                         </Label>
+                        <TextField id="entrada" layoutX="320.0" layoutY="100.0" prefHeight="50.0" prefWidth="300.0" promptText="2x1" stylesheets="@../../utils/Estilos.css">
+                           <font>
+                              <Font name="Century Gothic" size="24.0" />
+                           </font>
+                        </TextField>
+                        <Label id="subtitulo" layoutX="300.0" layoutY="180.0" stylesheets="@../../utils/Estilos.css" text="Valor">
+                           <font>
+                              <Font name="Century Gothic Bold" size="30.0" />
+                           </font>
+                        </Label>
+                        <TextField id="entrada" layoutX="320.0" layoutY="230.0" prefHeight="50.0" prefWidth="300.0" promptText="100%" stylesheets="@../../utils/Estilos.css">
+                           <font>
+                              <Font name="Century Gothic" size="24.0" />
+                           </font>
+                        </TextField>
+                        <Label id="subtitulo" layoutX="300.0" layoutY="310.0" stylesheets="@../../utils/Estilos.css" text="Código">
+                           <font>
+                              <Font name="Century Gothic Bold" size="30.0" />
+                           </font>
+                        </Label>
+                        <TextField id="entrada" layoutX="320.0" layoutY="360.0" prefHeight="50.0" prefWidth="300.0" promptText="l4mbd450ft" stylesheets="@../../utils/Estilos.css">
+                           <font>
+                              <Font name="Century Gothic" size="24.0" />
+                           </font>
+                        </TextField>
+                        <Label id="subtitulo" layoutX="30.0" layoutY="440.0" stylesheets="@../../utils/Estilos.css" text="Fecha de Inicio">
+                           <font>
+                              <Font name="Century Gothic Bold" size="30.0" />
+                           </font>
+                        </Label>
+                        <DatePicker id="entrada" layoutX="50.0" layoutY="490.0" prefHeight="50.0" prefWidth="250.0" promptText="01/01/2023" stylesheets="@../../utils/Estilos.css" />
+                        <Label id="subtitulo" layoutX="330.0" layoutY="440.0" stylesheets="@../../utils/Estilos.css" text="Fecha de Término">
+                           <font>
+                              <Font name="Century Gothic Bold" size="30.0" />
+                           </font>
+                        </Label>
+                        <DatePicker id="entrada" layoutX="350.0" layoutY="490.0" prefHeight="50.0" prefWidth="250.0" promptText="02/01/2023" stylesheets="@../../utils/Estilos.css" />
+                        <Label id="subtitulo" layoutX="30.0" layoutY="570.0" stylesheets="@../../utils/Estilos.css" text="Tipo">
+                           <font>
+                              <Font name="Century Gothic Bold" size="30.0" />
+                           </font>
+                        </Label>
+                        <ComboBox id="entrada" layoutX="50.0" layoutY="620.0" prefHeight="50.0" prefWidth="250.0" promptText="Seleccione tipo" stylesheets="@../../utils/Estilos.css" />
+                        <Label id="subtitulo" layoutX="330.0" layoutY="570.0" stylesheets="@../../utils/Estilos.css" text="Número de Cupones">
+                           <font>
+                              <Font name="Century Gothic Bold" size="30.0" />
+                           </font>
+                        </Label>
+                        <TextField id="entrada" layoutX="350.0" layoutY="620.0" prefHeight="50.0" prefWidth="250.0" promptText="10" stylesheets="@../../utils/Estilos.css">
+                           <font>
+                              <Font name="Century Gothic" size="24.0" />
+                           </font>
+                        </TextField>
                      </children>
                   </AnchorPane>
-                  <AnchorPane layoutX="760.0" layoutY="10.0" prefHeight="800.0" prefWidth="700.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 30;">
+                  <AnchorPane id="tarjeta" layoutX="680.0" prefHeight="700.0" prefWidth="650.0" stylesheets="@../../utils/Estilos.css">
                      <children>
-                        <Label layoutX="50.0" layoutY="284.0" text="Restricciones">
+                        <Label id="subtitulo" layoutX="30.0" layoutY="35.0" stylesheets="@../../utils/Estilos.css" text="Descripción">
                            <font>
                               <Font name="Century Gothic Bold" size="30.0" />
                            </font>
                         </Label>
-                        <Label layoutX="50.0" layoutY="74.0" text="Descripción">
+                        <TextArea id="entrada" layoutX="50.0" layoutY="85.0" prefHeight="120.0" prefWidth="550.0" promptText="Obten un dos por uno" stylesheets="@../../utils/Estilos.css" />
+                        <Label id="subtitulo" layoutX="30.0" layoutY="230.0" stylesheets="@../../utils/Estilos.css" text="Restricciones">
                            <font>
                               <Font name="Century Gothic Bold" size="30.0" />
                            </font>
                         </Label>
-                        <ComboBox layoutX="55.0" layoutY="554.0" prefHeight="40.0" prefWidth="250.0" />
-                        <Label layoutX="50.0" layoutY="494.0" text="Categoría">
+                        <TextArea id="entrada" layoutX="50.0" layoutY="280.0" prefHeight="120.0" prefWidth="550.0" promptText="Aplica solo los lunes" stylesheets="@../../utils/Estilos.css" />
+                        <Label id="subtitulo" layoutX="30.0" layoutY="440.0" stylesheets="@../../utils/Estilos.css" text="Categoría">
                            <font>
                               <Font name="Century Gothic Bold" size="30.0" />
                            </font>
                         </Label>
-                        <Label layoutX="385.0" layoutY="494.0" text="Empresa">
+                        <ComboBox id="entrada" layoutX="50.0" layoutY="490.0" prefHeight="50.0" prefWidth="250.0" promptText="Seleccione categoría" stylesheets="@../../utils/Estilos.css" />
+                        <Label id="subtitulo" layoutX="330.0" layoutY="440.0" stylesheets="@../../utils/Estilos.css" text="Empresa">
                            <font>
                               <Font name="Century Gothic Bold" size="30.0" />
                            </font>
                         </Label>
-                        <ComboBox layoutX="390.0" layoutY="554.0" prefHeight="40.0" prefWidth="250.0" />
-                        <TextArea layoutX="55.0" layoutY="134.0" prefHeight="120.0" prefWidth="590.0" />
-                        <TextArea layoutX="55.0" layoutY="344.0" prefHeight="120.0" prefWidth="590.0" />
-                        <Label layoutX="50.0" layoutY="634.0" text="Estatus">
+                        <ComboBox id="entrada" layoutX="350.0" layoutY="490.0" prefHeight="50.0" prefWidth="250.0" promptText="Seleccione empresa" stylesheets="@../../utils/Estilos.css" />
+                        <Label id="subtitulo" layoutX="30.0" layoutY="570.0" stylesheets="@../../utils/Estilos.css" text="Estatus">
                            <font>
                               <Font name="Century Gothic Bold" size="30.0" />
                            </font>
                         </Label>
-                        <ComboBox layoutX="55.0" layoutY="694.0" prefHeight="40.0" prefWidth="585.0" />
+                        <ComboBox id="entrada" layoutX="50.0" layoutY="620.0" prefHeight="50.0" prefWidth="250.0" promptText="Seleccione estatus" stylesheets="@../../utils/Estilos.css" />
                      </children>
                   </AnchorPane>
+                  <Button id="boton" layoutX="900.0" layoutY="750.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" stylesheets="@../../utils/Estilos.css" text="Cancelar">
+                     <font>
+                        <Font name="Century Gothic Bold" size="24.0" />
+                     </font>
+                  </Button>
+                  <Button id="boton" layoutX="1130.0" layoutY="750.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" stylesheets="@../../utils/Estilos.css" text="Registrar">
+                     <font>
+                        <Font name="Century Gothic Bold" size="24.0" />
+                     </font>
+                  </Button>
                </children>
             </AnchorPane>
         </content>
       </ScrollPane>
-      <Button layoutX="704.0" layoutY="815.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" style="-fx-border-radius: 30;" text="Registrar">
-         <font>
-            <Font name="Century Gothic Bold" size="24.0" />
-         </font>
-      </Button>
    </children>
 </AnchorPane>
