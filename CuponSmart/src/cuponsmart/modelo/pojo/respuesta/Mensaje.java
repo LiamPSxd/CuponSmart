@@ -1,7 +1,5 @@
 package cuponsmart.modelo.pojo.respuesta;
 
-import utils.Constantes;
-
 public class Mensaje{
     private Boolean error;
     private String mensaje;
@@ -29,21 +27,5 @@ public class Mensaje{
 
     public void setMensaje(String mensaje){
         this.mensaje = mensaje;
-    }
-    
-    public void mensajeSuccess(){
-        this.mensaje = Constantes.Retornos.SUCCESS;
-    }
-    
-    public void mensajeSinDatos(){
-        this.mensaje = Constantes.Retornos.SIN_DATOS;
-    }
-    
-    public void mensajeNoId(){
-        this.mensaje = Constantes.Retornos.NO_ID;
-    }
-    
-    public void mensajeSinConexionBD(){
-        this.mensaje = Constantes.Errores.SIN_CONEXION_BD;
     }
 }
