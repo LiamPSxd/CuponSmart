@@ -13,15 +13,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
-import modelo.ClienteDAO;
+import modelo.dao.ClienteDAO;
 import modelo.pojo.entidad.Cliente;
 import modelo.pojo.respuesta.RespuestaCliente;
 import utils.Constantes;
 import utils.Verificaciones;
 
-
 @Path("clientes")
-public class ClienteWS {
+public class ClienteWS{
     @Context
     private UriInfo context;
     
@@ -36,7 +35,7 @@ public class ClienteWS {
     @Path("obtenerClientePorId/{idCliente}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaCliente obtenerClientePorId(@PathParam("idCliente") Integer idCliente){
-        return Verificaciones.Datos.numerico(idCliente) ? ClienteDAO.obtenerClientePorId(idCliente): (RespuestaCliente) Verificaciones.Excepciones.badRequest();
+        return Verificaciones.Datos.numerico(idCliente) ? ClienteDAO.obtenerClientePorId(idCliente) : (RespuestaCliente) Verificaciones.Excepciones.badRequest();
     }
     
     @POST
@@ -45,17 +44,20 @@ public class ClienteWS {
     @Consumes(MediaType.APPLICATION_JSON)
     public RespuestaCliente registrarCliente(String jsonParam){
         RespuestaCliente respuesta = new RespuestaCliente();
+        
         try{
             Gson gson = new Gson();
             Cliente cliente = gson.fromJson(jsonParam, Cliente.class);
+            
             if(Verificaciones.Datos.claseNoNula(cliente) && Verificaciones.Datos.numerico(cliente.getIdDireccion())){
                 respuesta = ClienteDAO.registrarCliente(cliente);
             }else{
                 return (RespuestaCliente) Verificaciones.Excepciones.badRequest();
-            }            
+            }
         }catch(JsonSyntaxException e){
             respuesta.setMensaje(Constantes.Excepciones.JSON_SYNTAX);
         }
+        
         return respuesta;
     }
     
@@ -69,14 +71,16 @@ public class ClienteWS {
         try{
             Gson gson = new Gson();
             Cliente cliente = gson.fromJson(jsonParam, Cliente.class);
+            
             if(Verificaciones.Datos.claseNoNula(cliente) && Verificaciones.Datos.numerico(cliente.getId())){
                 respuesta = ClienteDAO.modificarCliente(cliente);
             }else{
                 return (RespuestaCliente) Verificaciones.Excepciones.badRequest();
-            }            
+            }
         }catch(JsonSyntaxException e){
             respuesta.setMensaje(Constantes.Excepciones.JSON_SYNTAX);
         }
+        
         return respuesta;
     }
     

@@ -13,7 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
-import modelo.CiudadDAO;
+import modelo.dao.CiudadDAO;
 import modelo.pojo.entidad.Ciudad;
 import modelo.pojo.respuesta.RespuestaCiudad;
 import utils.Constantes;
@@ -29,6 +29,13 @@ public class CiudadWS{
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaCiudad obtenerCiudades(){
         return CiudadDAO.obtenerCiudades();
+    }
+    
+    @GET
+    @Path("obtenerCiudadesPorIdMunicipio/{idMunicipio}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RespuestaCiudad obtenerCiudades(@PathParam("idMunicipio") Integer idMunicipio){
+        return Verificaciones.Datos.numerico(idMunicipio) ? CiudadDAO.obtenerCiudadesPorIdMunicipio(idMunicipio) : (RespuestaCiudad) Verificaciones.Excepciones.badRequest();
     }
     
     @GET

@@ -9,6 +9,7 @@ public class ApplicationConfig extends Application{
     public Set<Class<?>> getClasses(){
         Set<Class<?>> resources = new java.util.HashSet<>();
         addRestResourceClasses(resources);
+        
         return resources;
     }
 
@@ -20,6 +21,7 @@ public class ApplicationConfig extends Application{
         resources.add(ws.ClienteWS.class);
         resources.add(ws.DireccionWS.class);
         resources.add(ws.EmpresaWS.class);
+        resources.add(ws.MediaWS.class);
         resources.add(ws.PromocionSucursalWS.class);
         resources.add(ws.PromocionWS.class);
         resources.add(ws.SucursalWS.class);

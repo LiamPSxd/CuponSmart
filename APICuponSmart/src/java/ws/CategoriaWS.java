@@ -13,7 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
-import modelo.CategoriaDAO;
+import modelo.dao.CategoriaDAO;
 import modelo.pojo.entidad.Categoria;
 import modelo.pojo.respuesta.RespuestaCategoria;
 import utils.Constantes;

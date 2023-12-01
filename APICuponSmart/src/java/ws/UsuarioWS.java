@@ -13,14 +13,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
-import modelo.UsuarioDAO;
+import modelo.dao.UsuarioDAO;
 import modelo.pojo.entidad.Usuario;
 import modelo.pojo.respuesta.RespuestaUsuario;
 import utils.Constantes;
 import utils.Verificaciones;
 
 @Path("usuarios")
-public class UsuarioWS {
+public class UsuarioWS{
     @Context
     private UriInfo context;
     
@@ -32,49 +32,53 @@ public class UsuarioWS {
     }
     
     @GET
-    @Path("obtenerUsuarioPorId/{idUsuario}")
+    @Path("obtenerUsuariosPorIdRol/{idRol}")
     @Produces(MediaType.APPLICATION_JSON)
-    public RespuestaUsuario obtenerUsuarioPorId(@PathParam("idUsuario") Integer idUsuario){
-        return Verificaciones.Datos.numerico(idUsuario) ? UsuarioDAO.obtenerUsuarioPorId("Id",idUsuario): (RespuestaUsuario) Verificaciones.Excepciones.badRequest();
+    public RespuestaUsuario obtenerUsuariosPorIdRol(@PathParam("idRol") Integer idRol){
+        return Verificaciones.Datos.numerico(idRol) ? UsuarioDAO.obtenerUsuariosPorIdRol(idRol) : (RespuestaUsuario) Verificaciones.Excepciones.badRequest();
     }
     
     @GET
-    @Path("obtenerUsuarioPorIdRol/{idRol}")
+    @Path("obtenerUsuarioPorId/{idUsuario}")
     @Produces(MediaType.APPLICATION_JSON)
-    public RespuestaUsuario obtenerUsuarioPorRol(@PathParam("idRol") Integer idRol){
-        return Verificaciones.Datos.numerico(idRol) ? UsuarioDAO.obtenerUsuarioPorId("Rol",idRol): (RespuestaUsuario) Verificaciones.Excepciones.badRequest();
+    public RespuestaUsuario obtenerUsuarioPorId(@PathParam("idUsuario") Integer idUsuario){
+        return Verificaciones.Datos.numerico(idUsuario) ? UsuarioDAO.obtenerUsuarioPorId(idUsuario) : (RespuestaUsuario) Verificaciones.Excepciones.badRequest();
     }
     
     @GET
     @Path("obtenerUsuarioPorNombre/{nombre}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaUsuario obtenerUsuarioPorNombre(@PathParam("nombre") String nombre){
-        return Verificaciones.Datos.cadena(nombre) ? UsuarioDAO.obtenerUsuarioPorCadena("Nombre", nombre): (RespuestaUsuario) Verificaciones.Excepciones.badRequest();
+        return Verificaciones.Datos.cadena(nombre) ? UsuarioDAO.obtenerUsuarioPorCadena("Nombre", nombre) : (RespuestaUsuario) Verificaciones.Excepciones.badRequest();
     }
     
     @GET
     @Path("obtenerUsuarioPorUsername/{username}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaUsuario obtenerUsuarioPorUsername(@PathParam("username") String username){
-        return Verificaciones.Datos.cadena(username) ? UsuarioDAO.obtenerUsuarioPorCadena("Username", username): (RespuestaUsuario) Verificaciones.Excepciones.badRequest();
-    }    
+        return Verificaciones.Datos.cadena(username) ? UsuarioDAO.obtenerUsuarioPorCadena("Username", username) : (RespuestaUsuario) Verificaciones.Excepciones.badRequest();
+    }
+    
     @POST
     @Path("registrar")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public RespuestaUsuario registrarUsuario(String jsonParam){
         RespuestaUsuario respuesta = new RespuestaUsuario();
+        
         try{
             Gson gson = new Gson();
             Usuario usuario = gson.fromJson(jsonParam, Usuario.class);
+            
             if(Verificaciones.Datos.claseNoNula(usuario) && Verificaciones.Datos.numerico(usuario.getIdRol()) && Verificaciones.Datos.numerico(usuario.getIdEmpresa())){
                 respuesta = UsuarioDAO.registrarUsuario(usuario);
             }else{
                 return (RespuestaUsuario) Verificaciones.Excepciones.badRequest();
-            }            
+            }
         }catch(JsonSyntaxException e){
             respuesta.setMensaje(Constantes.Excepciones.JSON_SYNTAX);
         }
+        
         return respuesta;
     }
     
@@ -88,14 +92,16 @@ public class UsuarioWS {
         try{
             Gson gson = new Gson();
             Usuario usuario = gson.fromJson(jsonParam, Usuario.class);
+            
             if(Verificaciones.Datos.claseNoNula(usuario) && Verificaciones.Datos.numerico(usuario.getId())){
                 respuesta = UsuarioDAO.modificarUsuario(usuario);
             }else{
                 return (RespuestaUsuario) Verificaciones.Excepciones.badRequest();
-            }            
+            }
         }catch(JsonSyntaxException e){
             respuesta.setMensaje(Constantes.Excepciones.JSON_SYNTAX);
         }
+        
         return respuesta;
     }
     

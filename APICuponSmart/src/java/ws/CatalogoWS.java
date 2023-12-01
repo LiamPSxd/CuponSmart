@@ -7,11 +7,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
-import modelo.EstadoDAO;
-import modelo.EstatusDAO;
-import modelo.MunicipioDAO;
-import modelo.RolDAO;
-import modelo.TipoPromocionDAO;
+import modelo.dao.EstadoDAO;
+import modelo.dao.EstatusDAO;
+import modelo.dao.MunicipioDAO;
+import modelo.dao.RolDAO;
+import modelo.dao.TipoPromocionDAO;
 import modelo.pojo.respuesta.RespuestaEstado;
 import modelo.pojo.respuesta.RespuestaEstatus;
 import modelo.pojo.respuesta.RespuestaMunicipio;
@@ -88,9 +88,9 @@ public class CatalogoWS{
     }
     
     @GET
-    @Path("obtenerMunicipio/{idMunicipio}")
+    @Path("obtenerMunicipioPorId/{idMunicipio}")
     @Produces(MediaType.APPLICATION_JSON)
-    public RespuestaMunicipio obtenerMunicipio(@PathParam("idMunicipio") Integer idMunicipio){
+    public RespuestaMunicipio obtenerMunicipioPorId(@PathParam("idMunicipio") Integer idMunicipio){
         return Verificaciones.Datos.numerico(idMunicipio) ? MunicipioDAO.obtenerMunicipioPorId(idMunicipio) : (RespuestaMunicipio) Verificaciones.Excepciones.badRequest();
     }
     

@@ -13,7 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
-import modelo.PromocionDAO;
+import modelo.dao.PromocionDAO;
 import modelo.pojo.entidad.Promocion;
 import modelo.pojo.respuesta.RespuestaPromocion;
 import utils.Constantes;
@@ -53,10 +53,24 @@ public class PromocionWS{
     }
     
     @GET
+    @Path("obtenerPromocionesPorIdEmpresa/{idEmpresa}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RespuestaPromocion obtenerPromocionesPorIdEmpresa(@PathParam("idEmpresa") Integer idEmpresa){
+        return Verificaciones.Datos.numerico(idEmpresa) ? PromocionDAO.obtenerPromocionesPorIdEmpresa(idEmpresa) : (RespuestaPromocion) Verificaciones.Excepciones.badRequest();
+    }
+    
+    @GET
     @Path("obtenerPromocionPorId/{idPromocion}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaPromocion obtenerPromocionPorId(@PathParam("idPromocion") Integer idPromocion){
         return Verificaciones.Datos.numerico(idPromocion) ? PromocionDAO.obtenerPromocionPorId(idPromocion) : (RespuestaPromocion) Verificaciones.Excepciones.badRequest();
+    }
+    
+    @GET
+    @Path("obtenerPromocionPorCodigo/{codigoPromocion}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RespuestaPromocion obtenerPromocionPorCodigo(@PathParam("codigoPromocion") String codigoPromocion){
+        return Verificaciones.Datos.cadena(codigoPromocion) ? PromocionDAO.obtenerPromocionPorCodigo(codigoPromocion) : (RespuestaPromocion) Verificaciones.Excepciones.badRequest();
     }
     
     @POST

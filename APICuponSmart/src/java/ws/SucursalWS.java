@@ -13,7 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
-import modelo.SucursalDAO;
+import modelo.dao.SucursalDAO;
 import modelo.pojo.entidad.Sucursal;
 import modelo.pojo.respuesta.RespuestaSucursal;
 import utils.Constantes;
@@ -36,6 +36,13 @@ public class SucursalWS{
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaSucursal obtenerSucursalesPorNombre(@PathParam("nombre") String nombre){
         return Verificaciones.Datos.cadena(nombre) ? SucursalDAO.obtenerSucursalesPorNombre(nombre) : (RespuestaSucursal) Verificaciones.Excepciones.badRequest();
+    }
+    
+    @GET
+    @Path("obtenerSucursalesPorIdEmpresa/{idEmpresa}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RespuestaSucursal obtenerSucursalesPorIdEmpresa(@PathParam("idEmpresa") Integer idEmpresa){
+        return Verificaciones.Datos.numerico(idEmpresa) ? SucursalDAO.obtenerSucursalesPorIdEmpresa(idEmpresa) : (RespuestaSucursal) Verificaciones.Excepciones.badRequest();
     }
     
     @GET

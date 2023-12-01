@@ -13,14 +13,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
-import modelo.DireccionDAO;
+import modelo.dao.DireccionDAO;
 import modelo.pojo.entidad.Direccion;
 import modelo.pojo.respuesta.RespuestaDireccion;
 import utils.Constantes;
 import utils.Verificaciones;
 
 @Path("direcciones")
-public class DireccionWS {
+public class DireccionWS{
     @Context
     private UriInfo context;
     
@@ -32,10 +32,17 @@ public class DireccionWS {
     }
     
     @GET
-    @Path("obtenerDireccionPorIdCliente/{idCliente}")
+    @Path("obtenerDireccionesPorCalleColoniaNumero/{busqueda}")
     @Produces(MediaType.APPLICATION_JSON)
-    public RespuestaDireccion obtenerDireccionPorIdCliente(@PathParam("idCliente") Integer idCliente){
-        return Verificaciones.Datos.numerico(idCliente) ? DireccionDAO.obtenerDireccionPorIdCliente(idCliente) : (RespuestaDireccion) Verificaciones.Excepciones.badRequest();
+    public RespuestaDireccion obtenerDireccionesPorCalleColoniaNumero(@PathParam("busqueda") String busqueda){
+        return Verificaciones.Datos.cadena(busqueda) ? DireccionDAO.obtenerDireccionesPorCalleColoniaNumero(busqueda) : (RespuestaDireccion) Verificaciones.Excepciones.badRequest();
+    }
+    
+    @GET
+    @Path("obtenerDireccionPorId/{idDireccion}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RespuestaDireccion obtenerDireccionPorIdDireccion(@PathParam("idDireccion") Integer idDireccion){
+        return Verificaciones.Datos.numerico(idDireccion) ? DireccionDAO.obtenerDireccionPorId(idDireccion) : (RespuestaDireccion) Verificaciones.Excepciones.badRequest();
     }
     
     @POST
@@ -44,17 +51,20 @@ public class DireccionWS {
     @Consumes(MediaType.APPLICATION_JSON)
     public RespuestaDireccion registrarDireccion(String jsonParam){
         RespuestaDireccion respuesta = new RespuestaDireccion();
+        
         try{
             Gson gson = new Gson();
             Direccion direccion = gson.fromJson(jsonParam, Direccion.class);
+            
             if(Verificaciones.Datos.claseNoNula(direccion) && Verificaciones.Datos.numerico(direccion.getIdCiudad())){
                 respuesta = DireccionDAO.registrarDireccion(direccion);
             }else{
                 return (RespuestaDireccion) Verificaciones.Excepciones.badRequest();
-            }            
+            }
         }catch(JsonSyntaxException e){
             respuesta.setMensaje(Constantes.Excepciones.JSON_SYNTAX);
         }
+        
         return respuesta;
     }
     
@@ -68,14 +78,16 @@ public class DireccionWS {
         try{
             Gson gson = new Gson();
             Direccion direccion = gson.fromJson(jsonParam, Direccion.class);
+            
             if(Verificaciones.Datos.claseNoNula(direccion) && Verificaciones.Datos.numerico(direccion.getId())){
                 respuesta = DireccionDAO.modificarDireccion(direccion);
             }else{
                 return (RespuestaDireccion) Verificaciones.Excepciones.badRequest();
-            }            
+            }
         }catch(JsonSyntaxException e){
             respuesta.setMensaje(Constantes.Excepciones.JSON_SYNTAX);
         }
+        
         return respuesta;
     }
     
