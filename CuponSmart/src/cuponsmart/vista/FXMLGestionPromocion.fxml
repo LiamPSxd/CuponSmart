@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="fondo" prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: #ebe4d8;" stylesheets="@../../utils/Estilos.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cuponsmart.controlador.FXMLFormEmpresaController">
+<AnchorPane id="fondo" prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: #ebe4d8;" stylesheets="@../../utils/Estilos.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cuponsmart.controlador.FXMLGestionPromocionController">
    <children>
       <Label id="titulo" layoutX="472.0" layoutY="25.0" stylesheets="@../../utils/Estilos.css" text="Gestión de Promociones" textAlignment="CENTER">
          <font>
@@ -18,7 +18,7 @@
       </Label>
       <AnchorPane id="tarjeta" layoutX="22.0" layoutY="110.0" prefHeight="630.0" prefWidth="1315.0" stylesheets="@../../utils/Estilos.css">
          <children>
-            <TextField id="entrada" layoutX="50.0" layoutY="50.0" prefHeight="50.0" prefWidth="350.0" promptText="Buscar promoción" stylesheets="@../../utils/Estilos.css">
+            <TextField id="entrada" fx:id="txtBusqueda" layoutX="50.0" layoutY="50.0" prefHeight="50.0" prefWidth="350.0" promptText="Buscar promoción" stylesheets="@../../utils/Estilos.css">
                <font>
                   <Font name="Century Gothic" size="24.0" />
                </font>
@@ -28,23 +28,23 @@
                   <Font name="Century Gothic Bold" size="30.0" />
                </font>
             </Label>
-            <ComboBox id="entrada" layoutX="510.0" layoutY="50.0" prefHeight="50.0" prefWidth="200.0" promptText="Seleccione filtro" stylesheets="@../../utils/Estilos.css" />
-            <Button id="botonSeleccion" layoutX="730.0" layoutY="45.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" stylesheets="@../../utils/Estilos.css" text="Buscar">
+            <ComboBox id="entrada" fx:id="comboFiltro" layoutX="510.0" layoutY="50.0" prefHeight="50.0" prefWidth="200.0" promptText="Seleccione filtro" stylesheets="@../../utils/Estilos.css" />
+            <Button id="botonSeleccion" layoutX="730.0" layoutY="45.0" mnemonicParsing="false" onAction="#buscarPromocion" prefHeight="60.0" prefWidth="200.0" stylesheets="@../../utils/Estilos.css" text="Buscar">
                <font>
                   <Font name="Century Gothic Bold" size="24.0" />
                </font>
             </Button>
-            <Button id="botonSeleccion" fx:id="btnFoto" layoutX="1045.0" layoutY="45.0" mnemonicParsing="false" onAction="#subirFoto" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
+            <Button id="botonSeleccion" layoutX="1045.0" layoutY="45.0" mnemonicParsing="false" onAction="#registrarPromocion" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <Button id="botonSeleccion" fx:id="btnFoto1" layoutX="1125.0" layoutY="45.0" mnemonicParsing="false" onAction="#subirFoto" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
+            <Button id="botonSeleccion" layoutX="1125.0" layoutY="45.0" mnemonicParsing="false" onAction="#modificarPromocion" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <Button id="botonSeleccion" fx:id="btnFoto2" layoutX="1205.0" layoutY="45.0" mnemonicParsing="false" onAction="#subirFoto" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
+            <Button id="botonSeleccion" layoutX="1205.0" layoutY="45.0" mnemonicParsing="false" onAction="#eliminarPromocion" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -53,20 +53,20 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1000.0" prefWidth="1300.0" style="-fx-background-color: #f2eee9;">
                      <children>
-                        <TableView id="entrada" layoutX="25.0" prefHeight="995.0" prefWidth="1260.0" style="-fx-font-size: 20;" stylesheets="@../../utils/Estilos.css">
+                        <TableView id="entrada" fx:id="tbPromociones" layoutX="25.0" prefHeight="995.0" prefWidth="1260.0" style="-fx-font-size: 20;" stylesheets="@../../utils/Estilos.css">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="Nombre" />
-                            <TableColumn prefWidth="75.0" text="Descripción" />
+                            <TableColumn fx:id="clmNombre" prefWidth="75.0" text="Nombre" />
+                            <TableColumn fx:id="clmDescripcion" prefWidth="75.0" text="Descripción" />
                               <TableColumn prefWidth="75.0" text="Fecha">
                                  <columns>
-                                    <TableColumn prefWidth="75.0" text="Inicio" />
-                                    <TableColumn prefWidth="75.0" text="Término" />
+                                    <TableColumn fx:id="clmFechaInicio" prefWidth="75.0" text="Inicio" />
+                                    <TableColumn fx:id="clmFechaTermino" prefWidth="75.0" text="Término" />
                                  </columns></TableColumn>
-                              <TableColumn prefWidth="75.0" text="Código" />
-                              <TableColumn prefWidth="75.0" text="Número" />
-                              <TableColumn prefWidth="75.0" text="Estatus" />
-                              <TableColumn prefWidth="75.0" text="Categoría" />
-                              <TableColumn prefWidth="75.0" text="Empresa" />
+                              <TableColumn fx:id="clmCodigo" prefWidth="75.0" text="Código" />
+                              <TableColumn fx:id="clmNumero" prefWidth="75.0" text="Número" />
+                              <TableColumn fx:id="clmEstatus" prefWidth="75.0" text="Estatus" />
+                              <TableColumn fx:id="clmCategoria" prefWidth="75.0" text="Categoría" />
+                              <TableColumn fx:id="clmEmpresa" prefWidth="75.0" text="Empresa" />
                           </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

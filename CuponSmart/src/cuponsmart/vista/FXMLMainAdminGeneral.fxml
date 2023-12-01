@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.image.*?>
 <?import java.net.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
@@ -9,19 +11,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="fondo" prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: #ebe4d8;" stylesheets="@../../utils/Estilos.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cuponsmart.controlador.FXMLFormEmpresaController">
+<AnchorPane id="fondo" prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: #ebe4d8;" stylesheets="@../../utils/Estilos.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cuponsmart.controlador.FXMLMainAdminGeneralController">
    <children>
       <Label id="titulo" layoutX="25.0" layoutY="25.0" style="-fx-font-size: 64;" stylesheets="@../../utils/Estilos.css" text="CuponSmart" textAlignment="CENTER">
          <font>
             <Font name="Century Gothic Bold" size="48.0" />
          </font>
       </Label>
-      <Label id="titulo" layoutX="945.0" layoutY="25.0" style="-fx-text-alignment: right;" stylesheets="@../../utils/Estilos.css" text="Nombre Administrador" textAlignment="CENTER">
+      <Label id="titulo" fx:id="etqNombreAdmin" layoutX="945.0" layoutY="25.0" prefWidth="396.0" style="-fx-text-alignment: center-right;" stylesheets="@../../utils/Estilos.css" text="Nombre Administrador" textAlignment="CENTER">
          <font>
             <Font name="Century Gothic Bold" size="48.0" />
          </font>
       </Label>
-      <Label id="titulo" alignment="CENTER_RIGHT" layoutX="1011.0" layoutY="75.0" style="-fx-text-alignment: right; -fx-font-size: 30;" stylesheets="@../../utils/Estilos.css" text="Administrador General" textAlignment="CENTER">
+      <Label id="titulo" alignment="CENTER_RIGHT" layoutX="1011.0" layoutY="75.0" style="-fx-text-alignment: center-right; -fx-font-size: 30;" stylesheets="@../../utils/Estilos.css" text="Administrador General" textAlignment="CENTER">
          <font>
             <Font name="Century Gothic Bold" size="48.0" />
          </font>
@@ -30,9 +32,9 @@
         <content>
           <AnchorPane id="fondo" minHeight="0.0" minWidth="0.0" prefHeight="1430.0" prefWidth="1345.0" stylesheets="@../../utils/Estilos.css">
                <children>
-                  <AnchorPane id="tarjeta" layoutX="115.0" layoutY="50.0" prefHeight="400.0" prefWidth="500.0" stylesheets="@../../utils/Estilos.css">
+                  <AnchorPane id="tarjeta" layoutX="115.0" layoutY="50.0" onMouseClicked="#irPantallaGestionEmpresa" prefHeight="400.0" prefWidth="500.0" stylesheets="@../../utils/Estilos.css">
                      <children>
-                        <AnchorPane id="tarjeta" prefHeight="300.0" prefWidth="500.0" stylesheets="@../../utils/Estilos.css" />
+                        <ImageView fx:id="imagenEmpresa" fitHeight="300.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" />
                         <Label id="subtitulo" layoutX="30.0" layoutY="327.0" style="-fx-font-size: 36;" stylesheets="@../../utils/Estilos.css" text="Empresas">
                            <font>
                               <Font name="Century Gothic Bold" size="30.0" />
@@ -40,9 +42,9 @@
                         </Label>
                      </children>
                   </AnchorPane>
-                  <AnchorPane id="tarjeta" layoutX="730.0" layoutY="50.0" prefHeight="400.0" prefWidth="500.0" stylesheets="@../../utils/Estilos.css">
+                  <AnchorPane id="tarjeta" layoutX="730.0" layoutY="50.0" onMouseClicked="#irPantallaGestionSucursal" prefHeight="400.0" prefWidth="500.0" stylesheets="@../../utils/Estilos.css">
                      <children>
-                        <AnchorPane id="tarjeta" prefHeight="300.0" prefWidth="500.0" stylesheets="@../../utils/Estilos.css" />
+                        <ImageView fx:id="imagenSucursal" fitHeight="300.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" />
                         <Label id="subtitulo" layoutX="30.0" layoutY="327.0" style="-fx-font-size: 36;" stylesheets="@../../utils/Estilos.css" text="Sucursales">
                            <font>
                               <Font name="Century Gothic Bold" size="30.0" />
@@ -50,9 +52,9 @@
                         </Label>
                      </children>
                   </AnchorPane>
-                  <AnchorPane id="tarjeta" layoutX="115.0" layoutY="565.0" prefHeight="400.0" prefWidth="500.0" stylesheets="@../../utils/Estilos.css">
+                  <AnchorPane id="tarjeta" layoutX="115.0" layoutY="565.0" onMouseClicked="#irPantallaGestionPromocion" prefHeight="400.0" prefWidth="500.0" stylesheets="@../../utils/Estilos.css">
                      <children>
-                        <AnchorPane id="tarjeta" prefHeight="300.0" prefWidth="500.0" stylesheets="@../../utils/Estilos.css" />
+                        <ImageView fx:id="imagenPromocion" fitHeight="300.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" />
                         <Label id="subtitulo" layoutX="30.0" layoutY="327.0" style="-fx-font-size: 36;" stylesheets="@../../utils/Estilos.css" text="Promociones">
                            <font>
                               <Font name="Century Gothic Bold" size="30.0" />
@@ -60,9 +62,9 @@
                         </Label>
                      </children>
                   </AnchorPane>
-                  <AnchorPane id="tarjeta" layoutX="730.0" layoutY="565.0" prefHeight="400.0" prefWidth="500.0" stylesheets="@../../utils/Estilos.css">
+                  <AnchorPane id="tarjeta" layoutX="730.0" layoutY="565.0" onMouseClicked="#irPantallaGestionUsuario" prefHeight="400.0" prefWidth="500.0" stylesheets="@../../utils/Estilos.css">
                      <children>
-                        <AnchorPane id="tarjeta" prefHeight="300.0" prefWidth="500.0" stylesheets="@../../utils/Estilos.css" />
+                        <ImageView fx:id="imagenUsuario" fitHeight="300.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" />
                         <Label id="subtitulo" layoutX="30.0" layoutY="327.0" style="-fx-font-size: 36;" stylesheets="@../../utils/Estilos.css" text="Usuarios">
                            <font>
                               <Font name="Century Gothic Bold" size="30.0" />
@@ -82,12 +84,12 @@
                               <Font name="Century Gothic Bold" size="30.0" />
                            </font>
                         </Label>
-                        <TextField id="entrada" layoutX="70.0" layoutY="150.0" prefHeight="50.0" prefWidth="550.0" promptText="l4mbd450ft" stylesheets="@../../utils/Estilos.css">
+                        <TextField id="entrada" fx:id="txtCodigo" layoutX="70.0" layoutY="150.0" prefHeight="50.0" prefWidth="550.0" promptText="l4mbd450ft" stylesheets="@../../utils/Estilos.css">
                            <font>
                               <Font name="Century Gothic" size="24.0" />
                            </font>
                         </TextField>
-                        <Button id="botonSeleccion" layoutX="865.0" layoutY="190.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" stylesheets="@../../utils/Estilos.css" text="Canjear">
+                        <Button id="botonSeleccion" layoutX="865.0" layoutY="190.0" mnemonicParsing="false" onAction="#canjearCupon" prefHeight="60.0" prefWidth="200.0" stylesheets="@../../utils/Estilos.css" text="Canjear">
                            <font>
                               <Font name="Century Gothic Bold" size="24.0" />
                            </font>
