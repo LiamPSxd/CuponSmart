@@ -12,6 +12,7 @@ public class Empresa{
     private String paginaWeb;
     private String rfc;
     private Integer idEstatus;
+    private String estatus;
     private Integer idDireccion;
     
     public Empresa(){}
@@ -116,6 +117,14 @@ public class Empresa{
 
     public void setIdEstatus(Integer idEstatus){
         this.idEstatus = idEstatus;
+    }
+    
+    public String getEstatus(){
+        return estatus;
+    }
+    
+    public void setEstatus(String estatus){
+        this.estatus = estatus;
     }
 
     public Integer getIdDireccion(){

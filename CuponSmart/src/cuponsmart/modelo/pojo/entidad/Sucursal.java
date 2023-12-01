@@ -6,7 +6,9 @@ public class Sucursal{
     private String telefono;
     private String nombreEncargado;
     private Integer idDireccion;
+    private String direccion;
     private Integer idEmpresa;
+    private String empresa;
     
     public Sucursal(){}
 
@@ -58,6 +60,14 @@ public class Sucursal{
     public void setIdDireccion(Integer idDireccion){
         this.idDireccion = idDireccion;
     }
+    
+    public String getDireccion(){
+        return direccion;
+    }
+
+    public void setDireccion(String direccion){
+        this.direccion = direccion;
+    }
 
     public Integer getIdEmpresa(){
         return idEmpresa;
@@ -65,5 +75,13 @@ public class Sucursal{
 
     public void setIdEmpresa(Integer idEmpresa){
         this.idEmpresa = idEmpresa;
+    }
+    
+    public String getEmpresa(){
+        return empresa;
+    }
+
+    public void setEmpresa(String empresa){
+        this.empresa = empresa;
     }
 }

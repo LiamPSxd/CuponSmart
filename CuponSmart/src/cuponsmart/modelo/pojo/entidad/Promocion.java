@@ -2,7 +2,7 @@ package cuponsmart.modelo.pojo.entidad;
 
 public class Promocion{
     private Integer id;
-    private String nombre; 
+    private String nombre;
     private String descripcion;
     private String imagen;
     private String imagenBase64;
@@ -13,8 +13,11 @@ public class Promocion{
     private String codigo;
     private Float valor;
     private Integer idEstatus;
+    private String estatus;
     private Integer idCategoria;
+    private String categoria;
     private Integer idEmpresa;
+    private String empresa;
     private Integer idTipoPromocion;
     
     public Promocion(){}
@@ -131,6 +134,14 @@ public class Promocion{
     public void setIdEstatus(Integer idEstatus){
         this.idEstatus = idEstatus;
     }
+    
+    public String getEstatus(){
+        return estatus;
+    }
+
+    public void setEstatus(String estatus){
+        this.estatus = estatus;
+    }
 
     public Integer getIdCategoria(){
         return idCategoria;
@@ -139,6 +150,14 @@ public class Promocion{
     public void setIdCategoria(Integer idCategoria){
         this.idCategoria = idCategoria;
     }
+    
+    public String getCategoria(){
+        return categoria;
+    }
+
+    public void setCategoria(String categoria){
+        this.categoria = categoria;
+    }
 
     public Integer getIdEmpresa(){
         return idEmpresa;
@@ -146,6 +165,14 @@ public class Promocion{
 
     public void setIdEmpresa(Integer idEmpresa){
         this.idEmpresa = idEmpresa;
+    }
+    
+    public String getEmpresa(){
+        return empresa;
+    }
+
+    public void setEmpresa(String empresa){
+        this.empresa = empresa;
     }
 
     public Integer getIdTipoPromocion(){

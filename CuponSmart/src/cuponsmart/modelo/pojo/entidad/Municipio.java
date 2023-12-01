@@ -3,12 +3,14 @@ package cuponsmart.modelo.pojo.entidad;
 public class Municipio{
     private Integer id;
     private String nombre;
+    private Integer idEstado;
     
     public Municipio(){}
 
-    public Municipio(Integer id, String nombre){
+    public Municipio(Integer id, String nombre, Integer idEstado){
         this.id = id;
         this.nombre = nombre;
+        this.idEstado = idEstado;
     }
 
     public Integer getId(){
@@ -25,5 +27,13 @@ public class Municipio{
 
     public void setNombre(String nombre){
         this.nombre = nombre;
+    }
+    
+    public Integer getIdEstado() {
+        return idEstado;
+    }
+
+    public void setIdEstado(Integer idEstado) {
+        this.idEstado = idEstado;
     }
 }

@@ -10,7 +10,9 @@ public class Usuario{
     private String username;
     private String contrasenia;
     private Integer idRol;
+    private String rol;
     private Integer idEmpresa;
+    private String empresa;
     
     public Usuario(){}
 
@@ -98,6 +100,14 @@ public class Usuario{
     public void setIdRol(Integer idRol){
         this.idRol = idRol;
     }
+    
+    public String getRol(){
+        return rol;
+    }
+
+    public void setRol(String rol){
+        this.rol = rol;
+    }
 
     public Integer getIdEmpresa(){
         return idEmpresa;
@@ -105,5 +115,13 @@ public class Usuario{
 
     public void setIdEmpresa(Integer idEmpresa){
         this.idEmpresa = idEmpresa;
+    }
+    
+    public String getEmpresa(){
+        return empresa;
+    }
+
+    public void setEmpresa(String empresa){
+        this.empresa = empresa;
     }
 }
