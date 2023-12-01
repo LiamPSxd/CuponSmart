@@ -31,6 +31,10 @@ public class Verificaciones{
             
             return lista.size() > 0 && respuesta;
         }
+        
+        public static Boolean listaByteNoVacio(Byte[] lista){
+            return lista != null;
+        }
     }
     
     public static class Excepciones{

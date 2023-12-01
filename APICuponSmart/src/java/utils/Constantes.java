@@ -4,13 +4,17 @@ public class Constantes{
     public static final String MAS_TARDE = "por favor inténtelo más tarde.";
     public static final String VERIFICAR = "favor de verificarlo.";
     
-    public class Retornos{
+    public static class Retornos{
         public static final String SUCCESS = "Success";
         public static final String SIN_DATOS = "No se encontró ninguna información con lo solicitado.";
         public static final String NO_ID = "No hay ningún dato asignado con ese identificador, " + VERIFICAR;
         public static final String REGISTRO = "Información registrada correctamente.";
         public static final String MODIFICACION = "Información modificada correctamente.";
         public static final String ELIMINACION = "Información eliminada correctamente.";
+        
+        public static String bienvenido(String nombre, Boolean admin){
+            return admin ? "Bienvenido(a) administrador(ra) " + nombre + " a CuponSmart." : "Bienvenido(a) " + nombre + " a CuponSmart.";
+        }
     }
     
     public class Errores{
@@ -18,6 +22,8 @@ public class Constantes{
         public static final String REGISTRO = "Hubo un error al registrar la información, " + MAS_TARDE;
         public static final String MODIFICACION = "Hubo un error al modificar la información, " + MAS_TARDE;
         public static final String ELIMINACION = "Hubo un error al eliminar la información, " + MAS_TARDE;
+        public static final String CREDENCIALES_ADMIN = "Username y/o contraseña incorrectos, " + VERIFICAR;
+        public static final String CREDENCIALES_CLIENTE = "Correo y/o contraseña incorrectos, " + VERIFICAR;
     }
     
     public class Excepciones{
