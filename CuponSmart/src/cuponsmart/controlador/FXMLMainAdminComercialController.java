@@ -1,27 +1,125 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cuponsmart.controlador;
 
+import cuponsmart.modelo.dao.CatalogoDAO;
+import cuponsmart.modelo.dao.PromocionDAO;
+import cuponsmart.modelo.dao.SucursalDAO;
+import cuponsmart.modelo.pojo.entidad.Promocion;
+import cuponsmart.modelo.pojo.entidad.Usuario;
+import cuponsmart.modelo.pojo.respuesta.Mensaje;
+import cuponsmart.vista.CuponSmart;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import utils.Constantes;
+import utils.Utilidades;
+import utils.Verificaciones;
 
-/**
- * FXML Controller class
- *
- * @author ameya
- */
-public class FXMLMainAdminComercialController implements Initializable {
-
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+public class FXMLMainAdminComercialController implements Initializable{
+    private Usuario administrador;
     
+    @FXML
+    private Label etqNombreAdmin;
+    @FXML
+    private ImageView imagenSucursal;
+    @FXML
+    private ImageView imagenPromocion;
+    @FXML
+    private TextField txtCodigo;
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb){
+    }
+    
+    public void inicializarInformacion(Usuario administrador){
+        this.administrador = administrador;
+        
+        etqNombreAdmin.setText(this.administrador.getNombre() + " " + this.administrador.getApellidoPaterno() + " " + this.administrador.getApellidoMaterno());
+    }
+    
+    @FXML
+    private void irPantallaGestionSucursal(MouseEvent event){
+        try{
+            FXMLLoader carga = new FXMLLoader(CuponSmart.class.getResource(Constantes.Pantallas.URL_VISTA + "FXMLGestionSucursal.fxml"));
+            Parent vista = carga.load();
+            
+            FXMLGestionSucursalController controlador = carga.getController();
+            controlador.inicializarInformacion(
+                SucursalDAO.obtenerSucursalesPorIdEmpresa(this.administrador.getIdEmpresa()),
+                this.administrador
+            );
+            
+            Stage stage = new Stage();
+            stage.setScene(new Scene(vista));
+            stage.setTitle(Constantes.Pantallas.GESTION_SUCURSAL);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        }catch(IOException e){
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Excepciones.IO, Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    private void irPantallaGestionPromocion(MouseEvent event){
+        try{
+            FXMLLoader carga = new FXMLLoader(CuponSmart.class.getResource(Constantes.Pantallas.URL_VISTA + "FXMLGestionPromocion.fxml"));
+            Parent vista = carga.load();
+            
+            FXMLGestionPromocionController controlador = carga.getController();
+            controlador.inicializarInformacion(
+                PromocionDAO.obtenerPromocionesPorIdEmpresa(this.administrador.getIdEmpresa()),
+                this.administrador
+            );
+            
+            Stage stage = new Stage();
+            stage.setScene(new Scene(vista));
+            stage.setTitle(Constantes.Pantallas.GESTION_PROMOCION);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        }catch(IOException e){
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Excepciones.IO, Alert.AlertType.ERROR);
+        }
+    }
+    
+    @FXML
+    private void canjearCupon(ActionEvent event){
+        String codigo = txtCodigo.getText();
+        
+        if(Verificaciones.Datos.cadena(codigo)){
+            Promocion cupon = PromocionDAO.obtenerPromocionPorCodigo(codigo);
+            
+            if(Verificaciones.Datos.claseNoNula(cupon) && Verificaciones.Datos.numerico(cupon.getNumeroCupones())){
+                cupon.setNumeroCupones(cupon.getNumeroCupones() - 1);
+
+                if(cupon.getNumeroCupones() == 0){
+                    CatalogoDAO.obtenerEstatus().forEach((estatus) -> {
+                        if(estatus.getEstado().equals("Inactivo")){
+                            cupon.setIdEstatus(estatus.getId());
+                        }
+                    });
+                }
+
+                Mensaje mensaje = PromocionDAO.modificarPromocion(cupon);
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, mensaje.getMensaje(), Alert.AlertType.INFORMATION);
+            }else if(Verificaciones.Datos.claseNula(cupon)){
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "Código no válido", Alert.AlertType.WARNING);
+            }else if(Verificaciones.Datos.numerico(cupon.getNumeroCupones())){
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "El cupón ya no está activo", Alert.AlertType.WARNING);
+            }
+        }else{
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.CAMPO_VACIO, "Para canjear un cupón primero debe ingresar el código", Alert.AlertType.WARNING);
+        }
+    }
 }
