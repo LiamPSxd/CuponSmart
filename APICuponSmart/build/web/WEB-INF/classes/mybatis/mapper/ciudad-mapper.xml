@@ -9,14 +9,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT * FROM ciudad
     </select>
     
+    <select id="obtenerCiudadesPorIdMunicipio" resultType="modelo.pojo.entidad.Ciudad" parameterType="Integer">
+        SELECT * FROM ciudad 
+        WHERE idMunicipio = #{idMunicipio}
+    </select>
+    
     <select id="obtenerCiudadPorId" resultType="modelo.pojo.entidad.Ciudad" parameterType="Integer">
         SELECT * FROM ciudad 
         WHERE id = #{id}
-    </select>
-    
-    <select id="obtenerCiudadPorNombreYIdMunicipio" resultType="modelo.pojo.entidad.Ciudad" parameterType="modelo.pojo.entidad.Ciudad">
-        SELECT * FROM ciudad 
-        WHERE nombre = #{nombre} AND idMunicipio = #{idMunicipio}
     </select>
     
     <insert id="registrarCiudad" parameterType="modelo.pojo.entidad.Ciudad">

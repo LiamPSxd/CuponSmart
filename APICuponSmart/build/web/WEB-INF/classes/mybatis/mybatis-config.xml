@@ -20,19 +20,21 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     </environments>
 
     <mappers>
+        <mapper resource="mybatis/mapper/autenticacion-mapper.xml"/>
         <mapper resource="mybatis/mapper/categoria-mapper.xml"/>
+        <mapper resource="mybatis/mapper/ciudad-mapper.xml"/>
         <mapper resource="mybatis/mapper/cliente-mapper.xml"/>
         <mapper resource="mybatis/mapper/direccion-mapper.xml"/>
         <mapper resource="mybatis/mapper/empresa-mapper.xml"/>
         <mapper resource="mybatis/mapper/estado-mapper.xml"/>
         <mapper resource="mybatis/mapper/estatus-mapper.xml"/>
-        <mapper resource="mybatis/mapper/rol-mapper.xml"/>
-        <mapper resource="mybatis/mapper/tipopromocion-mapper.xml"/>
+        <mapper resource="mybatis/mapper/media-mapper.xml"/>
         <mapper resource="mybatis/mapper/municipio-mapper.xml"/>
-        <mapper resource="mybatis/mapper/ciudad-mapper.xml"/>
         <mapper resource="mybatis/mapper/promocion-mapper.xml"/>
-        <mapper resource="mybatis/mapper/usuario-mapper.xml"/>
         <mapper resource="mybatis/mapper/promocion-sucursal-mapper.xml"/>
+        <mapper resource="mybatis/mapper/rol-mapper.xml"/>
         <mapper resource="mybatis/mapper/sucursal-mapper.xml"/>
+        <mapper resource="mybatis/mapper/tipopromocion-mapper.xml"/>
+        <mapper resource="mybatis/mapper/usuario-mapper.xml"/>
     </mappers>
 </configuration>

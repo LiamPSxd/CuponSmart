@@ -11,22 +11,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="obtenerPromocionesPorFechaInicio" resultType="modelo.pojo.entidad.Promocion" parameterType="String">
         SELECT * FROM promocion 
-        WHERE fechaInicion = #{fechaInicion}
+        WHERE fechaInicion LIKE %#{fechaInicion}%
     </select>
     
     <select id="obtenerPromocionesPorFechaTermino" resultType="modelo.pojo.entidad.Promocion" parameterType="String">
         SELECT * FROM promocion 
-        WHERE fechaTermino = #{fechaTermino}
+        WHERE fechaTermino LIKE %#{fechaTermino}%
     </select>
     
     <select id="obtenerPromocionesPorNombre" resultType="modelo.pojo.entidad.Promocion" parameterType="String">
         SELECT * FROM promocion 
-        WHERE nombre = #{nombre}
+        WHERE nombre LIKE %#{nombre}%
+    </select>
+    
+    <select id="obtenerPromocionesPorIdEmpresa" resultType="modelo.pojo.entidad.Promocion" parameterType="Integer">
+        SELECT * FROM promocion 
+        WHERE idEmpresa = #{idEmpresa}
     </select>
     
     <select id="obtenerPromocionPorId" resultType="modelo.pojo.entidad.Promocion" parameterType="Integer">
         SELECT * FROM promocion 
         WHERE id = #{id}
+    </select>
+    
+    <select id="obtenerPromocionPorCodigo" resultType="modelo.pojo.entidad.Promocion" parameterType="String">
+        SELECT * FROM promocion 
+        WHERE codigo = #{codigo}
     </select>
     
     <insert id="registrarPromocion" parameterType="modelo.pojo.entidad.Promocion">

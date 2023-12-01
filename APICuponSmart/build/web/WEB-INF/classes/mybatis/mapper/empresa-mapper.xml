@@ -16,22 +16,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="obtenerEmpresaPorNombre" resultType="modelo.pojo.entidad.Empresa" parameterType="String">
         SELECT * FROM empresa 
-        WHERE nombre = #{nombre}
+        WHERE nombre LIKE %#{nombre}%
     </select>
     
     <select id="obtenerEmpresaPorRFC" resultType="modelo.pojo.entidad.Empresa" parameterType="String">
         SELECT * FROM empresa 
-        WHERE RFC = #{RFC}
+        WHERE RFC LIKE %#{RFC}%
     </select>
     
     <select id="obtenerEmpresaPorRepresentante" resultType="modelo.pojo.entidad.Empresa" parameterType="String">
         SELECT * FROM empresa 
-        WHERE nombreRepresentanteLegal = #{nombreRepresentanteLegal}
+        WHERE nombreRepresentanteLegal LIKE %#{nombreRepresentanteLegal}%
     </select>
     
     <select id="obtenerSucursalesPorIdEmpresa" resultType="modelo.pojo.entidad.Sucursal" parameterType="Integer">
         SELECT * FROM empresa 
-        WHERE nombreRepresentanteLegal = #{nombreRepresentanteLegal}
+        WHERE idEmpresa = #{idEmpresa}
     </select>        
                             
     <insert id="registrarEmpresa" parameterType="modelo.pojo.entidad.Empresa">
