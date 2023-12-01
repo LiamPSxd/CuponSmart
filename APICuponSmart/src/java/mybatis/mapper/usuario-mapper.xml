@@ -9,24 +9,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT * FROM usuario
     </select>
     
+    <select id="obtenerUsuariosPorIdRol" resultType="modelo.pojo.entidad.Usuario" parameterType="Integer">
+        SELECT * FROM usuario 
+        WHERE idRol = #{idRol}
+    </select>
+    
     <select id="obtenerUsuarioPorId" resultType="modelo.pojo.entidad.Usuario" parameterType="Integer">
         SELECT * FROM usuario 
         WHERE id = #{id}
     </select>
     
-    <select id="obtenerUsuarioPorRol" resultType="modelo.pojo.entidad.Usuario" parameterType="Integer">
-        SELECT * FROM usuario 
-        WHERE idRol = #{idRol}
-    </select>
-    
     <select id="obtenerUsuarioPorNombre" resultType="modelo.pojo.entidad.Usuario" parameterType="String">
         SELECT * FROM usuario 
-        WHERE nombre = #{nombre}
+        WHERE nombre LIKE %#{nombre}%
     </select>
     
     <select id="obtenerUsuarioPorUsername" resultType="modelo.pojo.entidad.Usuario" parameterType="String">
         SELECT * FROM usuario 
-        WHERE username = #{username}
+        WHERE username LIKE %#{username}%
     </select>        
             
     <insert id="registrarUsuario" parameterType="modelo.pojo.entidad.Usuario">
@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <update id="modificarUsuario" parameterType="modelo.pojo.entidad.Usuario">
         UPDATE usuario 
-        SET nombre=#{nombre}, apellidoPaterno=#{apellidoPaterno}, apellidoMaterno=#{apellidoMaterno}, curp=#{curp}, correo=#{correo}, username=#{username}, contrasenia=#{contrasenia}, idEmpresa=#{idEmpresa} 
+        SET nombre = #{nombre}, apellidoPaterno = #{apellidoPaterno}, apellidoMaterno = #{apellidoMaterno}, curp = #{curp}, correo = #{correo}, username = #{username}, contrasenia = #{contrasenia}, idEmpresa = #{idEmpresa} 
         WHERE id = #{id}
     </update>
     

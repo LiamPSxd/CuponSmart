@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="media">
+    <select id="obtenerLogoEmpresa" parameterType="Integer" resultType="modelo.pojo.entidad.Empresa">
+        SELECT TO_BASE64(logo) AS 'logoBase64' 
+        FROM empresa 
+        WHERE id = #{idEmpresa}
+    </select>
+
+    <update id="registrarLogoEmpresa" parameterType="map">
+        UPDATE empresa 
+        SET logo = #{logo} 
+        WHERE id = #{idEmpresa}
+    </update>
+    
+    <select id="obtenerImagenPromocion" parameterType="Integer" resultType="modelo.pojo.entidad.Promocion">
+        SELECT TO_BASE64(imagen) AS 'imagenBase64' 
+        FROM promocion 
+        WHERE id = #{idPromocion}
+    </select>
+
+    <update id="registrarImagenPromocion" parameterType="map">
+        UPDATE promocion 
+        SET imagen = #{imagen} 
+        WHERE id = #{idPromocion}
+    </update>
+</mapper>

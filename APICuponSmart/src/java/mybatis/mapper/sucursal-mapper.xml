@@ -11,7 +11,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="obtenerSucursalesPorNombre" resultType="modelo.pojo.entidad.Sucursal" parameterType="String">
         SELECT * FROM sucursal 
-        WHERE nombre = #{nombre}
+        WHERE nombre LIKE %#{nombre}%
+    </select>
+    
+    <select id="obtenerSucursalesPorIdEmpresa" resultType="modelo.pojo.entidad.Sucursal" parameterType="Integer">
+        SELECT * FROM sucursal 
+        WHERE idEmpresa = #{idEmpresa}
     </select>
     
     <select id="obtenerSucursalPorIdDireccion" resultType="modelo.pojo.entidad.Sucursal" parameterType="Integer">

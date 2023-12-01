@@ -9,10 +9,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT * FROM direccion
     </select>
     
-    <select id="obtenerDireccionPorIdCliente" resultType="modelo.pojo.entidad.Direccion" parameterType="Integer">
-        SELECT d.id, d.calle, d.codigoPostal, d.colonia, d.latitud, d.longitud, d.idCiudad 
-        FROM cliente c, direccion d 
-        WHERE c.id = #{idCliente} AND c.idDireccion = d.id;
+    <select id="obtenerDireccionesPorCalleColoniaNumero" resultType="modelo.pojo.entidad.Direccion" parameterType="String">
+        SELECT * FROM direccion 
+        WHERE calle LIKE %#{busqueda}% OR colonia LIKE %#{busqueda}% OR numero LIKE %#{busqueda}%
+    </select>
+    
+    <select id="obtenerDireccionPorId" resultType="modelo.pojo.entidad.Direccion" parameterType="Integer">
+        SELECT * FROM direccion 
+        WHERE id = #{id}
     </select>
     
     <insert id="registrarDireccion" parameterType="modelo.pojo.entidad.Direccion">
