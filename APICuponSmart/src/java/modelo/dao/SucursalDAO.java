@@ -158,7 +158,7 @@ public class SucursalDAO{
         
         if(conexionBD != null){
             try{
-                if(Verificaciones.Datos.claseNula(conexionBD.selectOne("sucursales.obtenerSucursalPorId", sucursal.getId()))){
+                if(Verificaciones.Datos.claseNoNula(conexionBD.selectOne("sucursales.obtenerSucursalPorId", sucursal.getId()))){
                     int numFilasAfectadas = conexionBD.update("sucursales.modificarSucursal", sucursal);
                     conexionBD.commit();
                     
@@ -197,7 +197,7 @@ public class SucursalDAO{
                     respuesta.setError(false);
                     respuesta.setMensaje(Constantes.Retornos.ELIMINACION);
                 }else{
-                    respuesta.setMensaje(Constantes.Errores.ELIMINACION);
+                    respuesta.setMensaje(Constantes.Errores.ELIMINAR_SUCURSAL);
                 }
             }catch(Exception e){
                 respuesta.setMensaje(Constantes.Excepciones.EXCEPTION);
