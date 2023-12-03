@@ -16,11 +16,10 @@ public class AutenticacionDAO{
         
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionPOST(url, parametros);
         
-        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
+        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK)
             respuesta = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaUsuario.class);
-        }else{
+        else
             respuesta.setMensaje(Constantes.Errores.SOLICITUD);
-        }
         
         return respuesta;
     }
