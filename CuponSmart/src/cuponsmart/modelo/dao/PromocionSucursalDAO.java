@@ -22,9 +22,8 @@ public class PromocionSucursalDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaPromocionSucursal peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaPromocionSucursal.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
-            }
         }
         
         return respuesta;
@@ -39,9 +38,8 @@ public class PromocionSucursalDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaPromocionSucursal peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaPromocionSucursal.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
-            }
         }
         
         return respuesta;
@@ -56,9 +54,8 @@ public class PromocionSucursalDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaPromocionSucursal peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaPromocionSucursal.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
-            }
         }
         
         return respuesta;
@@ -73,11 +70,10 @@ public class PromocionSucursalDAO{
         
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionPOSTPUTJSON(Constantes.MetodosHTTP.POST, url, parametros);
         
-        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
+        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK)
             respuesta = gson.fromJson(respuestaPeticion.getContenido(), Mensaje.class);
-        }else{
+        else
             respuesta.setMensaje(Constantes.Errores.REGISTRO);
-        }
         
         return respuesta;
     }
@@ -91,11 +87,10 @@ public class PromocionSucursalDAO{
         
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionPOSTPUTJSON(Constantes.MetodosHTTP.DELETE, url, parametros);
         
-        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
+        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK)
             respuesta = gson.fromJson(respuestaPeticion.getContenido(), Mensaje.class);
-        }else{
+        else
             respuesta.setMensaje(Constantes.Errores.ELIMINACION);
-        }
         
         return respuesta;
     }
