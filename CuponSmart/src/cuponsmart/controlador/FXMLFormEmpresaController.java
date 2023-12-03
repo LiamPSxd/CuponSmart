@@ -3,11 +3,13 @@ package cuponsmart.controlador;
 import cuponsmart.modelo.dao.CatalogoDAO;
 import cuponsmart.modelo.dao.CiudadDAO;
 import cuponsmart.modelo.dao.DireccionDAO;
+import cuponsmart.modelo.dao.EmpresaDAO;
 import cuponsmart.modelo.dao.MediaDAO;
 import cuponsmart.modelo.pojo.entidad.Ciudad;
 import cuponsmart.modelo.pojo.entidad.Direccion;
 import cuponsmart.modelo.pojo.entidad.Empresa;
 import cuponsmart.modelo.pojo.entidad.Estado;
+import cuponsmart.modelo.pojo.entidad.Estatus;
 import cuponsmart.modelo.pojo.entidad.Municipio;
 import cuponsmart.modelo.pojo.respuesta.Mensaje;
 import cuponsmart.modelo.pojo.respuesta.interfaz.IRespuesta;
@@ -24,11 +26,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.image.Image;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -41,6 +43,7 @@ import utils.Verificaciones;
 
 public class FXMLFormEmpresaController implements Initializable{
     private Empresa empresa;
+    private Direccion direccion;
     private IRespuesta observador;
     private Integer idEstatus;
     private Integer idEstado;
@@ -53,11 +56,11 @@ public class FXMLFormEmpresaController implements Initializable{
     @FXML
     private Circle imagenLogo;
     @FXML
-    private Button btnLogo;
+    private Button btnSeleccionarLogo;
     @FXML
     private TextField txtNombreComercial;
     @FXML
-    private ComboBox<String> comboEstatus;
+    private ComboBox<Estatus> comboEstatus;
     @FXML
     private TextField txtNombre;
     @FXML
@@ -73,70 +76,44 @@ public class FXMLFormEmpresaController implements Initializable{
     @FXML
     private TextField txtCalle;
     @FXML
-    private TextField txtColonia;
-    @FXML
     private TextField txtNumero;
     @FXML
     private TextField txtCodigoPostal;
     @FXML
-    private TextField txtLatitud;
+    private ComboBox<Estado> comboEstado;
     @FXML
-    private TextField txtLongitud;
+    private ComboBox<Municipio> comboMunicipio;
     @FXML
-    private ComboBox<String> comboEstado;
-    @FXML
-    private ComboBox<String> comboMunicipio;
-    @FXML
-    private ComboBox<String> comboCiudad;
+    private ComboBox<Ciudad> comboCiudad;
     @FXML
     private Button btnFinalizar;
     
     @Override
     public void initialize(URL url, ResourceBundle rb){
         colocarImagenCircle("/img/logo.png", imagenLogo);
-        colocarImagenBoton("/img/foto.png", btnLogo);
+        colocarImagenBoton("/img/foto.png", btnSeleccionarLogo);
         
-        CatalogoDAO.obtenerEstatus().forEach((estatus) -> {
-            comboEstatus.getItems().add(estatus.getEstado());
+        descargarEstatus();
+        descargarEstados();
+        
+        comboEstatus.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            this.idEstatus = observable.getValue().getId();
         });
         
-        comboEstatus.selectionModelProperty().addListener((observable, oldValue, newValue) -> {
-            CatalogoDAO.obtenerEstatus().forEach((estatus) -> {
-                if(newValue.getSelectedItem().equals(estatus.getEstado())) this.idEstatus = estatus.getId();
-            });
+        comboEstado.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            this.idEstado = observable.getValue().getId();
+            
+            descargarMunicipios(this.idEstado);
         });
         
-        List<Estado> estados = CatalogoDAO.obtenerEstados();
-        estados.forEach((estado) -> {
-            comboEstado.getItems().add(estado.getNombre());
+        comboMunicipio.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            this.idMunicipio = observable.getValue().getId();
+            
+            descargarCiudades(this.idMunicipio);
         });
         
-        comboEstado.selectionModelProperty().addListener((observable, oldValue, newValue) -> {
-            estados.forEach((e) -> {
-                if(newValue.getSelectedItem().equals(e.getNombre())) this.idEstado = e.getId();
-            });
-        });
-        
-        List<Municipio> municipios = CatalogoDAO.obtenerMunicipiosPorEstado(this.idEstado);
-        municipios.forEach((municipio) -> {
-            comboMunicipio.getItems().add(municipio.getNombre());
-        });
-        
-        comboMunicipio.selectionModelProperty().addListener((observable, oldValue, newValue) -> {
-            municipios.forEach((m) -> {
-                if(newValue.getSelectedItem().equals(m.getNombre())) this.idMunicipio = m.getId();
-            });
-        });
-        
-        List<Ciudad> ciudades = CiudadDAO.obtenerCiudadesPorIdMunicipio(this.idMunicipio);
-        ciudades.forEach((ciudad) -> {
-            comboCiudad.getItems().add(ciudad.getNombre());
-        });
-        
-        comboCiudad.selectionModelProperty().addListener((observable, oldValue, newValue) -> {
-            ciudades.forEach((c) -> {
-                if(newValue.getSelectedItem().equals(c.getNombre())) this.idCiudad = c.getId();
-            });
+        comboCiudad.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            this.idCiudad = observable.getValue().getId();
         });
     }
     
@@ -152,6 +129,46 @@ public class FXMLFormEmpresaController implements Initializable{
         boton.setGraphic(new ImageView(imagen));
     }
     
+    private void descargarEstatus(){
+        List<Estatus> estatus = CatalogoDAO.obtenerEstatus();
+        
+        if(Verificaciones.Datos.listaNoVacia(estatus)){
+            comboEstatus.getItems().clear();
+            comboEstatus.getItems().addAll(estatus);
+        }else
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.COMBO_ESTATUS, Alert.AlertType.ERROR);
+    }
+    
+    private void descargarEstados(){
+        List<Estado> estados = CatalogoDAO.obtenerEstados();
+        
+        if(Verificaciones.Datos.listaNoVacia(estados)){
+            comboEstado.getItems().clear();
+            comboEstado.getItems().addAll(estados);
+        }else
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.COMBO_ESTADO, Alert.AlertType.ERROR);
+    }
+    
+    private void descargarMunicipios(Integer idEstado){
+        List<Municipio> municipios = CatalogoDAO.obtenerMunicipiosPorEstado(idEstado);
+        
+        if(Verificaciones.Datos.listaNoVacia(municipios)){
+            comboMunicipio.getItems().clear();
+            comboMunicipio.getItems().addAll(municipios);
+        }else
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.COMBO_MUNICIPIO, Alert.AlertType.ERROR);
+    }
+    
+    private void descargarCiudades(Integer idMunicipio){
+        List<Ciudad> ciudades = CiudadDAO.obtenerCiudadesPorIdMunicipio(idMunicipio);
+        
+        if(Verificaciones.Datos.listaNoVacia(ciudades)){
+            comboCiudad.getItems().clear();
+            comboCiudad.getItems().addAll(ciudades);
+        }else
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.COMBO_CIUDAD, Alert.AlertType.ERROR);
+    }
+    
     private void mostrarLogo(String logoBase64){
         imagenLogo.setFill(new ImagePattern(
             new Image(new ByteArrayInputStream(
@@ -161,7 +178,7 @@ public class FXMLFormEmpresaController implements Initializable{
     }
     
     private void obtenerLogo(){
-        Empresa mensaje = MediaDAO.obtenerLogoEmpresa(this.empresa.getId()).getContenido().get(0);
+        Empresa mensaje = MediaDAO.obtenerLogoEmpresa(this.empresa.getId());
         
         if(Verificaciones.Datos.claseNoNula(mensaje) && Verificaciones.Datos.cadena(mensaje.getLogoBase64()))
             mostrarLogo(mensaje.getLogoBase64());
@@ -169,7 +186,7 @@ public class FXMLFormEmpresaController implements Initializable{
     
     private void rellenarForm(){
         txtNombreComercial.setText(this.empresa.getNombreComercial());
-        comboEstatus.getSelectionModel().select(this.empresa.getEstatus());
+        comboEstatus.getSelectionModel().select(CatalogoDAO.obtenerEstatusPorId(this.empresa.getIdEstatus()));
         txtNombre.setText(this.empresa.getNombre());
         txtRFC.setText(this.empresa.getRfc());
         
@@ -178,38 +195,35 @@ public class FXMLFormEmpresaController implements Initializable{
         txtTelefono.setText(this.empresa.getTelefono());
         txtPaginaWeb.setText(this.empresa.getPaginaWeb());
         
-        Direccion direccion = DireccionDAO.obtenerDireccionPorId(this.empresa.getIdDireccion());
-        
-        if(Verificaciones.Datos.claseNoNula(direccion)){
-            txtCalle.setText(direccion.getCalle());
-            txtColonia.setText(direccion.getColonia());
-            txtNumero.setText(direccion.getNumero());
-            txtCodigoPostal.setText(direccion.getCodigoPostal());
-            txtLatitud.setText(direccion.getLatitud());
-            txtLongitud.setText(direccion.getLongitud());
-            
-            Ciudad ciudad = CiudadDAO.obtenerCiudadPorId(direccion.getIdCiudad());
-            comboCiudad.getSelectionModel().select(ciudad.getNombre());
-            
-            Municipio municipio = CatalogoDAO.obtenerMunicipioPorId(ciudad.getIdMunicipio());
-            comboMunicipio.getSelectionModel().select(municipio.getNombre());
-            
-            comboEstado.getSelectionModel().select(
-                CatalogoDAO.obtenerEstadoPorId(municipio.getIdEstado()).getNombre()
-            );
-        }
+        txtCalle.setText(this.direccion.getCalle());
+        txtNumero.setText(this.direccion.getNumero());
+        txtCodigoPostal.setText(this.direccion.getCodigoPostal());
+
+        Ciudad ciudad = CiudadDAO.obtenerCiudadPorId(this.direccion.getIdCiudad());
+        comboCiudad.getSelectionModel().select(ciudad);
+
+        Municipio municipio = CatalogoDAO.obtenerMunicipioPorId(ciudad.getIdMunicipio());
+        comboMunicipio.getSelectionModel().select(municipio);
+
+        comboEstado.getSelectionModel().select(CatalogoDAO.obtenerEstadoPorId(municipio.getIdEstado()));
         
         obtenerLogo();
     }
     
     public void inicializarInformacion(Empresa empresa, IRespuesta observador){
         this.empresa = empresa;
+        this.direccion = DireccionDAO.obtenerDireccionPorId(this.empresa.getIdDireccion());
         this.observador = observador;
         
-        comboEstatus.setDisable(true);
-        btnLogo.setDisable(true);
+        CatalogoDAO.obtenerEstatus().forEach((estatus) -> {
+            if(estatus.getEstado().equals("Activo")) comboEstatus.getSelectionModel().select(estatus);
+        });
         
-        if(Verificaciones.Datos.claseNoNula(this.empresa)){
+        comboEstatus.setDisable(true);
+        btnSeleccionarLogo.setDisable(true);
+        
+        if(Verificaciones.Datos.claseNoNula(this.empresa) && Verificaciones.Datos.numerico(this.empresa.getId()) &&
+            Verificaciones.Datos.claseNoNula(this.direccion) && Verificaciones.Datos.numerico(this.direccion.getId())){
             txtTitulo.setText("Modificar Empresa");
             btnFinalizar.setText("Modificar");
             
@@ -217,7 +231,7 @@ public class FXMLFormEmpresaController implements Initializable{
             
             txtRFC.setDisable(true);
             comboEstatus.setDisable(false);
-            btnLogo.setDisable(false);
+            btnSeleccionarLogo.setDisable(false);
         }
     }
     
@@ -261,16 +275,62 @@ public class FXMLFormEmpresaController implements Initializable{
             
             return !mensaje.getError();
         }catch(IOException e){
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, "No se pudo cargar el logo", Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, "No se pudo cargar el logo, por favor inténtelo más tarde", Alert.AlertType.ERROR);
         }
         
         return false;
+    }
+    
+    private void registrarEmpresa(Empresa empresa, Direccion direccion){
+        Mensaje mensaje = DireccionDAO.registrarDireccion(direccion);
+            
+        if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
+            List<Direccion> direcciones = DireccionDAO.obtenerDirecciones();
+            direcciones = (List<Direccion>) direcciones.stream().filter((d) -> (
+                direccion.getCalle().equals(d.getCalle()) &&
+                direccion.getNumero().equals(d.getNumero()) &&
+                direccion.getCodigoPostal().equals(d.getCodigoPostal()) &&
+                direccion.getIdCiudad().equals(d.getIdCiudad())
+            ));
+
+            empresa.setIdDireccion(direcciones.get(0).getId());
+
+            mensaje = EmpresaDAO.registrarEmpresa(empresa);
+            
+            if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, mensaje.getMensaje(), Alert.AlertType.INFORMATION);
+                observador.notificarGuardado();
+                cerrarVentana();
+            }else
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
+        }else
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
+    }
+    
+    private void modificarEmpresa(){
+        Mensaje mensaje = DireccionDAO.modificarDireccion(this.direccion);
+            
+        if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
+            mensaje = EmpresaDAO.modificarEmpresa(this.empresa);
+            
+            if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
+                if(imagenSeleccionada != null)
+                    if(!cargarLogo(imagenSeleccionada))
+                        Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.REGISTRO, Alert.AlertType.ERROR);
+                
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, mensaje.getMensaje(), Alert.AlertType.INFORMATION);
+                observador.notificarGuardado();
+                cerrarVentana();
+            }else
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
+        }else
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
     }
 
     @FXML
     private void finalizar(ActionEvent event){
         String nombreComercial = txtNombreComercial.getText();
-        String estatus = comboEstatus.getSelectionModel().getSelectedItem();
+        Estatus estatus = comboEstatus.getSelectionModel().getSelectedItem();
         String nombre = txtNombre.getText();
         String rfc = txtRFC.getText();
         String nombreRepresentanteLegal = txtNombreRepresentanteLegal.getText();
@@ -279,39 +339,44 @@ public class FXMLFormEmpresaController implements Initializable{
         String paginaWeb = txtPaginaWeb.getText();
         
         String calle = txtCalle.getText();
-        String colonia = txtColonia.getText();
         String numero = txtNumero.getText();
         String codigoPostal = txtCodigoPostal.getText();
-        String latitud = txtLatitud.getText();
-        String longitud = txtLongitud.getText();
-        String estado = comboEstado.getSelectionModel().getSelectedItem();
-        String municipio = comboMunicipio.getSelectionModel().getSelectedItem();
-        String ciudad = comboCiudad.getSelectionModel().getSelectedItem();
+        Estado estado = comboEstado.getSelectionModel().getSelectedItem();
+        Municipio municipio = comboMunicipio.getSelectionModel().getSelectedItem();
+        Ciudad ciudad = comboCiudad.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.cadena(nombreComercial) && Verificaciones.Datos.cadena(estatus) && Verificaciones.Datos.cadena(nombre) && Verificaciones.Datos.cadena(rfc) &&
+        if(Verificaciones.Datos.cadena(nombreComercial) && Verificaciones.Datos.claseNoNula(estatus) && Verificaciones.Datos.cadena(nombre) && Verificaciones.Datos.cadena(rfc) &&
             Verificaciones.Datos.cadena(nombreRepresentanteLegal) && Verificaciones.Datos.cadena(correo) && Verificaciones.Datos.cadena(telefono) && Verificaciones.Datos.cadena(paginaWeb) &&
-            Verificaciones.Datos.cadena(calle) && Verificaciones.Datos.cadena(colonia) && Verificaciones.Datos.cadena(numero) && Verificaciones.Datos.cadena(codigoPostal) && Verificaciones.Datos.cadena(latitud) &&
-            Verificaciones.Datos.cadena(longitud) && Verificaciones.Datos.cadena(estado) && Verificaciones.Datos.cadena(municipio) && Verificaciones.Datos.cadena(ciudad)){
-            Direccion direccion = new Direccion(0, calle, numero, codigoPostal, colonia, latitud, longitud, this.idCiudad);
-            Empresa empresa = new Empresa(0, nombre, nombreComercial, null, nombreRepresentanteLegal, correo, telefono, paginaWeb, rfc, this.idEstatus, 0);
-                
+            Verificaciones.Datos.cadena(calle) && Verificaciones.Datos.cadena(numero) && Verificaciones.Datos.cadena(codigoPostal) &&Verificaciones.Datos.claseNoNula(estado) &&
+            Verificaciones.Datos.claseNula(municipio) && Verificaciones.Datos.claseNoNula(ciudad)){
             switch(btnFinalizar.getText()){
                 case "Registrar":
-                    Mensaje mensaje = DireccionDAO.registrarDireccion(direccion);
-            
-                    if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
-                    }
+                    registrarEmpresa(
+                        new Empresa(0, nombre, nombreComercial, "0", nombreRepresentanteLegal, correo, telefono, paginaWeb, rfc, this.idEstatus, 0),
+                        new Direccion(0, calle, numero, codigoPostal, null, null, null, this.idCiudad)
+                    );
                     break;
                 case "Modificar":
-                    if(imagenSeleccionada != null){
-                        if(cargarLogo(imagenSeleccionada)){
-                        }else
-                            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.REGISTRO, Alert.AlertType.ERROR);
-                    }else
-                        Utilidades.mostrarAlertaSimple("Selecciona un logo", "Para subir un logo de la empresa, debes seleccionarla previamente", Alert.AlertType.WARNING);
+                    this.empresa.setNombre(nombre);
+                    this.empresa.setNombreComercial(nombreComercial);
+                    this.empresa.setNombreRepresentanteLegal(nombreRepresentanteLegal);
+                    this.empresa.setCorreo(correo);
+                    this.empresa.setTelefono(telefono);
+                    this.empresa.setPaginaWeb(paginaWeb);
+                    this.empresa.setRfc(rfc);
+                    this.empresa.setIdEstatus(this.idEstatus);
+                    
+                    this.direccion.setCalle(calle);
+                    this.direccion.setNumero(numero);
+                    this.direccion.setCodigoPostal(codigoPostal);
+                    this.direccion.setIdCiudad(this.idCiudad);
+                    
+                    modificarEmpresa();
                     break;
                 default:
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Retornos.SELECCION, Alert.AlertType.ERROR);
             }
-        }
+        }else
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.CAMPOS_VACIOS, Constantes.Errores.CAMPOS_VACIOS, Alert.AlertType.WARNING);
     }
 }
