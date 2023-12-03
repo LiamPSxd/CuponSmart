@@ -136,28 +136,29 @@ public class FXMLMainAdminGeneralController implements Initializable{
         String codigo = txtCodigo.getText();
         
         if(Verificaciones.Datos.cadena(codigo)){
-            Promocion cupon = PromocionDAO.obtenerPromocionPorCodigo(codigo);
-            
-            if(Verificaciones.Datos.claseNoNula(cupon) && Verificaciones.Datos.numerico(cupon.getNumeroCupones())){
-                cupon.setNumeroCupones(cupon.getNumeroCupones() - 1);
+            if(codigo.length() == 8){
+                Promocion cupon = PromocionDAO.obtenerPromocionPorCodigo(codigo);
 
-                if(cupon.getNumeroCupones() == 0){
-                    CatalogoDAO.obtenerEstatus().forEach((estatus) -> {
-                        if(estatus.getEstado().equals("Inactivo")){
-                            cupon.setIdEstatus(estatus.getId());
-                        }
-                    });
-                }
+                if(Verificaciones.Datos.claseNoNula(cupon) && Verificaciones.Datos.numerico(cupon.getNumeroCupones())){
+                    cupon.setNumeroCupones(cupon.getNumeroCupones() - 1);
 
-                Mensaje mensaje = PromocionDAO.modificarPromocion(cupon);
-                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, mensaje.getMensaje(), Alert.AlertType.INFORMATION);
-            }else if(Verificaciones.Datos.claseNula(cupon)){
-                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "Código no válido", Alert.AlertType.WARNING);
-            }else if(Verificaciones.Datos.numerico(cupon.getNumeroCupones())){
-                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "El cupón ya no está activo", Alert.AlertType.WARNING);
-            }
-        }else{
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.CAMPO_VACIO, "Para canjear un cupón primero debe ingresar el código", Alert.AlertType.WARNING);
-        }
+                    if(cupon.getNumeroCupones() == 0){
+                        CatalogoDAO.obtenerEstatus().forEach((estatus) -> {
+                            if(estatus.getEstado().equals(Constantes.Retornos.ESTATUS_INACTIVO)){
+                                cupon.setIdEstatus(estatus.getId());
+                            }
+                        });
+                    }
+
+                    Mensaje mensaje = PromocionDAO.modificarPromocion(cupon);
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, Constantes.Retornos.CUPON_EXITO, Alert.AlertType.INFORMATION);
+                }else if(Verificaciones.Datos.numerico(cupon.getNumeroCupones()))
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.CUPON_INACTIVO, Alert.AlertType.WARNING);
+                else
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.CUPON_FALLO, Alert.AlertType.WARNING);
+            }else
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.CUPON_LONG, Alert.AlertType.WARNING);
+        }else
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.CAMPO_VACIO, Constantes.Retornos.CUPON_FALTANTE, Alert.AlertType.WARNING);
     }
 }
