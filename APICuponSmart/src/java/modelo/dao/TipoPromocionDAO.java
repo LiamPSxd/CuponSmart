@@ -102,7 +102,7 @@ public class TipoPromocionDAO{
         
         if(conexionBD != null){
             try{
-                if(Verificaciones.Datos.claseNula(conexionBD.selectOne("tipospromocion.obtenerTipoPromocionPorTipo", tipopromocion.getTipo()))){
+                if(Verificaciones.Datos.claseNoNula(conexionBD.selectOne("tipospromocion.obtenerTipoPromocionPorTipo", tipopromocion.getTipo()))){
                     int numFilasAfectadas = conexionBD.update("tipospromocion.modificarTipoPromocion", tipopromocion);
                     conexionBD.commit();
                     
