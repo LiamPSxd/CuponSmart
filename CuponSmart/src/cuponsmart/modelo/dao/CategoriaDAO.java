@@ -22,9 +22,8 @@ public class CategoriaDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaCategoria peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaCategoria.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
-            }
         }
         
         return respuesta;
@@ -39,9 +38,8 @@ public class CategoriaDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaCategoria peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaCategoria.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
-            }
         }
         
         return respuesta;
@@ -56,11 +54,10 @@ public class CategoriaDAO{
         
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionPOSTPUTJSON(Constantes.MetodosHTTP.POST, url, parametros);
         
-        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
+        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK)
             respuesta = gson.fromJson(respuestaPeticion.getContenido(), Mensaje.class);
-        }else{
+        else
             respuesta.setMensaje(Constantes.Errores.REGISTRO);
-        }
         
         return respuesta;
     }
@@ -74,11 +71,10 @@ public class CategoriaDAO{
         
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionPOSTPUTJSON(Constantes.MetodosHTTP.PUT, url, parametros);
         
-        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
+        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK)
             respuesta = gson.fromJson(respuestaPeticion.getContenido(), Mensaje.class);
-        }else{
+        else
             respuesta.setMensaje(Constantes.Errores.MODIFICACION);
-        }
         
         return respuesta;
     }
@@ -89,11 +85,10 @@ public class CategoriaDAO{
         String url = Constantes.Servicios.CATEGORIA + "eliminar/" + idCategoria;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionDELETE(url);
         
-        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
+        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK)
             respuesta = new Gson().fromJson(respuestaPeticion.getContenido(), Mensaje.class);
-        }else{
+        else
             respuesta.setMensaje(Constantes.Errores.ELIMINACION);
-        }
         
         return respuesta;
     }
