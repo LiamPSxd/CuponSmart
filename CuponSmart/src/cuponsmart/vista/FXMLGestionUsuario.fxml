@@ -49,7 +49,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <ScrollPane layoutY="130.0" prefHeight="480.0" prefWidth="1315.0" style="-fx-background-color: #f2eee9;">
+            <ScrollPane layoutY="130.0" prefHeight="480.0" prefWidth="1320.0" style="-fx-background-color: #f2eee9;">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1000.0" prefWidth="1300.0" style="-fx-background-color: #f2eee9;">
                      <children>
