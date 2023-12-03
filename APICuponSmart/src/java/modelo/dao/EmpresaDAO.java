@@ -166,7 +166,7 @@ public class EmpresaDAO{
                     respuesta.setError(false);
                     respuesta.setMensaje(Constantes.Retornos.ELIMINACION);
                 }else{
-                    respuesta.setMensaje(Constantes.Errores.ELIMINACION);
+                    respuesta.setMensaje(Constantes.Errores.ELIMINAR_EMPRESA);
                 }
             }catch(Exception e){
                 respuesta.setMensaje(Constantes.Excepciones.EXCEPTION);
