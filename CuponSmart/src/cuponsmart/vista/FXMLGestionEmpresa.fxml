@@ -49,11 +49,11 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <ScrollPane layoutY="130.0" prefHeight="480.0" prefWidth="1315.0" style="-fx-background-color: #f2eee9;">
+            <ScrollPane layoutY="130.0" prefHeight="480.0" prefWidth="1320.0" style="-fx-background-color: #f2eee9;">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1000.0" prefWidth="1300.0" style="-fx-background-color: #f2eee9;">
                      <children>
-                        <TableView id="entrada" fx:id="tbEmpresas" layoutX="25.0" prefHeight="995.0" prefWidth="1260.0" style="-fx-font-size: 20;" stylesheets="@../../utils/Estilos.css">
+                        <TableView id="entrada" fx:id="tbEmpresas" layoutX="20.0" prefHeight="995.0" prefWidth="1260.0" style="-fx-font-size: 20;" stylesheets="@../../utils/Estilos.css">
                           <columns>
                             <TableColumn fx:id="clmNombre" prefWidth="75.0" text="Nombre" />
                             <TableColumn fx:id="clmRepresentante" prefWidth="75.0" text="Representante" />
