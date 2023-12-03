@@ -64,11 +64,11 @@ public class FXMLGestionSucursalController implements Initializable, IRespuesta{
     }
     
     private void configurarTabla(){
-        clmNombre.setCellFactory(new PropertyValueFactory("nombre"));
-        clmTelefono.setCellFactory(new PropertyValueFactory("telefono"));
-        clmEncargado.setCellFactory(new PropertyValueFactory("nombreEncargado"));
-        clmDireccion.setCellFactory(new PropertyValueFactory("direccion"));
-        clmEmpresa.setCellFactory(new PropertyValueFactory("empresa"));
+        clmNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
+        clmTelefono.setCellValueFactory(new PropertyValueFactory("telefono"));
+        clmEncargado.setCellValueFactory(new PropertyValueFactory("nombreEncargado"));
+        clmDireccion.setCellValueFactory(new PropertyValueFactory("direccion"));
+        clmEmpresa.setCellValueFactory(new PropertyValueFactory("empresa"));
     }
     
     public void inicializarInformacion(List<Sucursal> sucursales, Usuario administradorComercial){
@@ -146,13 +146,13 @@ public class FXMLGestionSucursalController implements Initializable, IRespuesta{
         }
     }
     
-    private void irPantallaFormSucursal(Sucursal sucursal, Usuario administradorComercial){
+    private void irPantallaFormSucursal(Sucursal sucursal, Integer idEmpresa){
         try{
             FXMLLoader carga = new FXMLLoader(CuponSmart.class.getResource(Constantes.Pantallas.URL_VISTA + "FXMLFormSucursal.fxml"));
             Parent vista = carga.load();
             
             FXMLFormSucursalController controlador = carga.getController();
-            controlador.inicializarInformacion(sucursal, administradorComercial);
+            controlador.inicializarInformacion(sucursal, idEmpresa, this);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(vista));
@@ -168,7 +168,7 @@ public class FXMLGestionSucursalController implements Initializable, IRespuesta{
     private void registrarSucursal(ActionEvent event){
         irPantallaFormSucursal(
             null,
-            Verificaciones.Datos.claseNula(this.administradorComercial) ? null : this.administradorComercial
+            Verificaciones.Datos.claseNula(this.administradorComercial) ? 0 : this.administradorComercial.getIdEmpresa()
         );
     }
 
@@ -179,7 +179,7 @@ public class FXMLGestionSucursalController implements Initializable, IRespuesta{
         if(Verificaciones.Datos.claseNoNula(sucursal)){
             irPantallaFormSucursal(
                 sucursal,
-                Verificaciones.Datos.claseNula(this.administradorComercial) ? null : this.administradorComercial
+                Verificaciones.Datos.claseNula(this.administradorComercial) ? 0 : this.administradorComercial.getIdEmpresa()
             );
         }else{
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.SIN_SELECCION, "Debe seleccionar una sucursal para su modificación", Alert.AlertType.WARNING);
