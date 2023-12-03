@@ -63,12 +63,12 @@ public class FXMLGestionUsuarioController implements Initializable, IRespuesta{
     }
     
     private void configurarTabla(){
-        clmNombre.setCellFactory(new PropertyValueFactory("nombre"));
-        clmApellidoPaterno.setCellFactory(new PropertyValueFactory("apellidoPaterno"));
-        clmApellidoMaterno.setCellFactory(new PropertyValueFactory("apellidoMaterno"));
-        clmCorreo.setCellFactory(new PropertyValueFactory("correo"));
-        clmRol.setCellFactory(new PropertyValueFactory("rol"));
-        clmEmpresa.setCellFactory(new PropertyValueFactory("empresa"));
+        clmNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
+        clmApellidoPaterno.setCellValueFactory(new PropertyValueFactory("apellidoPaterno"));
+        clmApellidoMaterno.setCellValueFactory(new PropertyValueFactory("apellidoMaterno"));
+        clmCorreo.setCellValueFactory(new PropertyValueFactory("correo"));
+        clmRol.setCellValueFactory(new PropertyValueFactory("rol"));
+        clmEmpresa.setCellValueFactory(new PropertyValueFactory("empresa"));
     }
     
     public void inicializarInformacion(List<Usuario> usuarios){
@@ -135,7 +135,7 @@ public class FXMLGestionUsuarioController implements Initializable, IRespuesta{
             Parent vista = carga.load();
             
             FXMLFormUsuarioController controlador = carga.getController();
-            controlador.inicializarInformacion(usuario);
+            controlador.inicializarInformacion(usuario, this);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(vista));
