@@ -32,10 +32,20 @@ public class Constantes{
     }
     
     public static class Retornos{
+        public static final String ADMIN_GENERAL = "Administrador General";
+        public static final String ADMIN_COMERCIAL = "Administrador Comercial";
+        public static final String ESTATUS_ACTIVO = "Activo";
+        public static final String ESTATUS_INACTIVO = "Inactivo";
+        public static final String CUPON_EXITO = "Cupón cajeado exitosamente";
+        public static final String CUPON_FALLO = "Cupón no válido";
+        public static final String CUPON_INACTIVO = "El cupón ya no está activo";
+        public static final String CUPON_LONG = "El código debe de ser de 8 caracteres, favor de verificarlo";
+        public static final String CUPON_FALTANTE = "Para canjear un cupón primero debe ingresar el código";
         public static final String SUCCESS = "Success";
         public static final String BUSQUEDA = "Debe ingresar algún dato para realizar la búsqueda";
         public static final String FILTRO = "Debe seleccionar un filtro para realizar la búsqueda";
         public static final String BUSQUEDA_FILTRO = "Debe ingresar algún dato y seleccionar un filtro para realizar la búsqueda";
+        public static final String SELECCION = "No coincide ninguna opción, " + MAS_TARDE;
         
         public static String codigoRespuestaHTTP(Integer codigo){
             return "Código de respuesta HTTP: " + codigo;
@@ -50,6 +60,15 @@ public class Constantes{
         public static final String REGISTRO = "Lo sentimos, por el momento no se puede registrar la información, " + MAS_TARDE;
         public static final String MODIFICACION = "Lo sentimos, por el momento no se puede modificar la información, " + MAS_TARDE;
         public static final String ELIMINACION = "Lo sentimos, por el momento no se puede eliminar la información, " + MAS_TARDE;
+        public static final String CAMPOS_VACIOS = "Hay uno o más campos vacios, " + VERIFICAR;
+        public static final String COMBO_ESTATUS = "Lo sentimos, no se pudieron cargar los estatus, " + MAS_TARDE;
+        public static final String COMBO_EMPRESA = "Lo sentimos, no se pudieron cargar las empresas, " + MAS_TARDE;
+        public static final String COMBO_ESTADO = "Lo sentimos, no se pudieron cargar los estados, " + MAS_TARDE;
+        public static final String COMBO_MUNICIPIO = "Lo sentimos, no se pudieron cargar los municipios, " + MAS_TARDE;
+        public static final String COMBO_CIUDAD = "Lo sentimos, no se pudieron cargar las ciudades, " + MAS_TARDE;
+        public static final String COMBO_TIPO = "Lo sentimos, no se pudieron cargar los tipos de promoción, " + MAS_TARDE;
+        public static final String COMBO_CATEGORIA = "Lo sentimos, no se pudieron cargar las categorías, " + MAS_TARDE;
+        public static final String COMBO_ROL = "Lo sentimos, no se pudieron cargar los roles, " + MAS_TARDE;
     }
     
     public class Excepciones{
@@ -68,6 +87,7 @@ public class Constantes{
         public static final String ALERTA = "Alerta";
         public static final String ERROR = "Error";
         public static final String CAMPO_VACIO = "Campo vacío";
+        public static final String CAMPOS_VACIOS = "Campos vacíos";
         public static final String SIN_SELECCION = "Selección requerida";
         public static final String CONFIRMAR_ELIMINACION = "Confirmar eliminación";
         public static final String SELECCION_IMAGEN = "Selecciona una imagen";
