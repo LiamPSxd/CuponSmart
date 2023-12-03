@@ -22,9 +22,8 @@ public class DireccionDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaDireccion peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaDireccion.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
-            }
         }
         
         return respuesta;
@@ -39,9 +38,8 @@ public class DireccionDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaDireccion peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaDireccion.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
-            }
         }
         
         return respuesta;
@@ -56,9 +54,8 @@ public class DireccionDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaDireccion peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaDireccion.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
-            }
         }
         
         return respuesta;
@@ -73,11 +70,10 @@ public class DireccionDAO{
         
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionPOSTPUTJSON(Constantes.MetodosHTTP.POST, url, parametros);
         
-        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
+        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK)
             respuesta = gson.fromJson(respuestaPeticion.getContenido(), Mensaje.class);
-        }else{
+        else
             respuesta.setMensaje(Constantes.Errores.REGISTRO);
-        }
         
         return respuesta;
     }
@@ -91,11 +87,10 @@ public class DireccionDAO{
         
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionPOSTPUTJSON(Constantes.MetodosHTTP.PUT, url, parametros);
         
-        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
+        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK)
             respuesta = gson.fromJson(respuestaPeticion.getContenido(), Mensaje.class);
-        }else{
+        else
             respuesta.setMensaje(Constantes.Errores.MODIFICACION);
-        }
         
         return respuesta;
     }
@@ -106,11 +101,10 @@ public class DireccionDAO{
         String url = Constantes.Servicios.DIRECCION + "eliminar/" + idDireccion;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionDELETE(url);
         
-        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
+        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK)
             respuesta = new Gson().fromJson(respuestaPeticion.getContenido(), Mensaje.class);
-        }else{
+        else
             respuesta.setMensaje(Constantes.Errores.ELIMINACION);
-        }
         
         return respuesta;
     }
