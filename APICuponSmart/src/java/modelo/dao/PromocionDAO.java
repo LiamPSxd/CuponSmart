@@ -187,7 +187,7 @@ public class PromocionDAO{
         
         if(conexionBD != null){
             try{
-                if(Verificaciones.Datos.claseNula(conexionBD.selectOne("promociones.obtenerPromocionPorId", promocion.getId()))){
+                if(Verificaciones.Datos.claseNoNula(conexionBD.selectOne("promociones.obtenerPromocionPorId", promocion.getId()))){
                     int numFilasAfectadas = conexionBD.update("promociones.modificarPromocion", promocion);
                     conexionBD.commit();
                     
