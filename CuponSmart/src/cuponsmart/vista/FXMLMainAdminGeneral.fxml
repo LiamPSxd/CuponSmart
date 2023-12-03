@@ -18,9 +18,9 @@
             <Font name="Century Gothic Bold" size="48.0" />
          </font>
       </Label>
-      <Label id="titulo" fx:id="etqNombreAdmin" layoutX="945.0" layoutY="25.0" prefWidth="396.0" style="-fx-text-alignment: center-right;" stylesheets="@../../utils/Estilos.css" text="Nombre Administrador" textAlignment="CENTER">
+      <Label id="titulo" fx:id="etqNombreAdmin" alignment="CENTER_RIGHT" layoutX="791.0" layoutY="25.0" prefHeight="46.0" prefWidth="550.0" style="-fx-text-alignment: right;" stylesheets="@../../utils/Estilos.css" text="Nombre Administrador" textAlignment="RIGHT">
          <font>
-            <Font name="Century Gothic Bold" size="48.0" />
+            <Font name="Century Gothic Bold" size="36.0" />
          </font>
       </Label>
       <Label id="titulo" alignment="CENTER_RIGHT" layoutX="1011.0" layoutY="75.0" style="-fx-text-alignment: center-right; -fx-font-size: 30;" stylesheets="@../../utils/Estilos.css" text="Administrador General" textAlignment="CENTER">
