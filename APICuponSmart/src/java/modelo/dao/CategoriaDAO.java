@@ -102,7 +102,7 @@ public class CategoriaDAO{
         
         if(conexionBD != null){
             try{
-                if(Verificaciones.Datos.claseNula(conexionBD.selectOne("categorias.obtenerCategoriaPorNombre", categoria.getNombre()))){
+                if(Verificaciones.Datos.claseNoNula(conexionBD.selectOne("categorias.obtenerCategoriaPorNombre", categoria.getNombre()))){
                     int numFilasAfectadas = conexionBD.update("categorias.modificarCategoria", categoria);
                     conexionBD.commit();
                     
