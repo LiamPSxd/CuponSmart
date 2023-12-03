@@ -29,9 +29,8 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaEstado peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaEstado.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
-            }
         }
         
         return respuesta;
@@ -46,9 +45,8 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaEstado peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaEstado.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
-            }
         }
         
         return respuesta;
@@ -63,9 +61,8 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaEstatus peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaEstatus.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
-            }
         }
         
         return respuesta;
@@ -80,9 +77,8 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaEstatus peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaEstatus.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
-            }
         }
         
         return respuesta;
@@ -97,9 +93,8 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaRol peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaRol.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
-            }
         }
         
         return respuesta;
@@ -114,9 +109,8 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaRol peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaRol.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
-            }
         }
         
         return respuesta;
@@ -131,9 +125,8 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaTipoPromocion peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaTipoPromocion.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
-            }
         }
         
         return respuesta;
@@ -148,9 +141,8 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaTipoPromocion peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaTipoPromocion.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
-            }
         }
         
         return respuesta;
@@ -165,9 +157,8 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaMunicipio peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaMunicipio.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
-            }
         }
         
         return respuesta;
@@ -182,9 +173,8 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaMunicipio peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaMunicipio.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
-            }
         }
         
         return respuesta;
@@ -199,9 +189,8 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaMunicipio peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaMunicipio.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
-            }
         }
         
         return respuesta;
