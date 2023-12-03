@@ -42,7 +42,7 @@ public class FXMLInicioSesionController implements Initializable{
             Rol rol = CatalogoDAO.obtenerRolPorId(usuario.getIdRol());
             
             switch(rol.getNombre()){
-                case "General":
+                case Constantes.Retornos.ADMIN_GENERAL:
                     FXMLLoader cargaGeneral = new FXMLLoader(CuponSmart.class.getResource(Constantes.Pantallas.URL_VISTA + "FXMLMainAdminGeneral.fxml"));
                     Parent vistaGeneral = cargaGeneral.load();
                     
@@ -53,7 +53,7 @@ public class FXMLInicioSesionController implements Initializable{
                     stage.setTitle(Constantes.Pantallas.ADMIN_GENERAL);
                     stage.show();
                     break;
-                case "Comercial":
+                case Constantes.Retornos.ADMIN_COMERCIAL:
                     FXMLLoader cargaComercial = new FXMLLoader(CuponSmart.class.getResource(Constantes.Pantallas.URL_VISTA + "FXMLMainAdminComercial.fxml"));
                     Parent vistaComercial = cargaComercial.load();
                     
@@ -80,7 +80,7 @@ public class FXMLInicioSesionController implements Initializable{
             
             irPantallaMainAdmin(respuesta.getContenido().get(0));
         }else{
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, respuesta.getMensaje(), Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Credenciales incorrectas", respuesta.getMensaje(), Alert.AlertType.ERROR);
         }
     }
 
