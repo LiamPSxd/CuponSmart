@@ -62,12 +62,12 @@ public class FXMLGestionEmpresaController implements Initializable, IRespuesta{
     }
     
     private void configurarTabla(){
-        clmNombre.setCellFactory(new PropertyValueFactory("nombre"));
-        clmRepresentante.setCellFactory(new PropertyValueFactory("nombreRepresentanteLegal"));
-        clmCorreo.setCellFactory(new PropertyValueFactory("correo"));
-        clmTelefono.setCellFactory(new PropertyValueFactory("telefono"));
-        clmRFC.setCellFactory(new PropertyValueFactory("rfc"));
-        clmEstatus.setCellFactory(new PropertyValueFactory("estatus"));
+        clmNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
+        clmRepresentante.setCellValueFactory(new PropertyValueFactory("nombreRepresentanteLegal"));
+        clmCorreo.setCellValueFactory(new PropertyValueFactory("correo"));
+        clmTelefono.setCellValueFactory(new PropertyValueFactory("telefono"));
+        clmRFC.setCellValueFactory(new PropertyValueFactory("rfc"));
+        clmEstatus.setCellValueFactory(new PropertyValueFactory("estatus"));
     }
     
     public void inicializarInformacion(List<Empresa> empresas){
