@@ -72,15 +72,15 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
     }
     
     private void configurarTabla(){
-        clmNombre.setCellFactory(new PropertyValueFactory("nombre"));
-        clmDescripcion.setCellFactory(new PropertyValueFactory("descripcion"));
-        clmFechaInicio.setCellFactory(new PropertyValueFactory("fechaInicio"));
-        clmFechaTermino.setCellFactory(new PropertyValueFactory("fechaTermino"));
-        clmCodigo.setCellFactory(new PropertyValueFactory("codigo"));
-        clmNumero.setCellFactory(new PropertyValueFactory("numeroCupones"));
-        clmEstatus.setCellFactory(new PropertyValueFactory("estatus"));
-        clmCategoria.setCellFactory(new PropertyValueFactory("categoria"));
-        clmEmpresa.setCellFactory(new PropertyValueFactory("empresa"));
+        clmNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
+        clmDescripcion.setCellValueFactory(new PropertyValueFactory("descripcion"));
+        clmFechaInicio.setCellValueFactory(new PropertyValueFactory("fechaInicio"));
+        clmFechaTermino.setCellValueFactory(new PropertyValueFactory("fechaTermino"));
+        clmCodigo.setCellValueFactory(new PropertyValueFactory("codigo"));
+        clmNumero.setCellValueFactory(new PropertyValueFactory("numeroCupones"));
+        clmEstatus.setCellValueFactory(new PropertyValueFactory("estatus"));
+        clmCategoria.setCellValueFactory(new PropertyValueFactory("categoria"));
+        clmEmpresa.setCellValueFactory(new PropertyValueFactory("empresa"));
     }
     
     public void inicializarInformacion(List<Promocion> promociones, Usuario administradorComercial){
@@ -157,13 +157,13 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
         }
     }
     
-    private void irPantallaFormPromocion(Promocion promocion, Usuario administradorComercial){
+    private void irPantallaFormPromocion(Promocion promocion, Integer idEmpresa){
         try{
             FXMLLoader carga = new FXMLLoader(CuponSmart.class.getResource(Constantes.Pantallas.URL_VISTA + "FXMLFormPromocion.fxml"));
             Parent vista = carga.load();
             
             FXMLFormPromocionController controlador = carga.getController();
-            controlador.inicializarInformacion(promocion, administradorComercial);
+            controlador.inicializarInformacion(promocion, idEmpresa, this);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(vista));
@@ -179,7 +179,7 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
     private void registrarPromocion(ActionEvent event){
         irPantallaFormPromocion(
             null,
-            Verificaciones.Datos.claseNula(this.administradorComercial) ? null : this.administradorComercial
+            Verificaciones.Datos.claseNula(this.administradorComercial) ? 0 : this.administradorComercial.getId()
         );
     }
 
@@ -190,7 +190,7 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
         if(Verificaciones.Datos.claseNoNula(promocion)){
             irPantallaFormPromocion(
                 promocion,
-                Verificaciones.Datos.claseNula(this.administradorComercial) ? null : this.administradorComercial
+                Verificaciones.Datos.claseNula(this.administradorComercial) ? 0 : this.administradorComercial.getId()
             );
         }else{
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.SIN_SELECCION, "Debe seleccionar una promoción para su modificación", Alert.AlertType.WARNING);
