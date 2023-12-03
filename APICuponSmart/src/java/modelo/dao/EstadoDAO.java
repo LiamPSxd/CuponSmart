@@ -102,7 +102,7 @@ public class EstadoDAO{
         
         if(conexionBD != null){
             try{
-                if(Verificaciones.Datos.claseNula(conexionBD.selectOne("estados.obtenerEstadoPorNombre", estado.getNombre()))){
+                if(Verificaciones.Datos.claseNoNula(conexionBD.selectOne("estados.obtenerEstadoPorNombre", estado.getNombre()))){
                     int numFilasAfectadas = conexionBD.update("estados.modificarEstado", estado);
                     conexionBD.commit();
                     
