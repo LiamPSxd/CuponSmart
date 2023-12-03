@@ -22,7 +22,9 @@ public class Constantes{
         public static final String REGISTRO = "Hubo un error al registrar la información, " + MAS_TARDE;
         public static final String MODIFICACION = "Hubo un error al modificar la información, " + MAS_TARDE;
         public static final String ELIMINACION = "Hubo un error al eliminar la información, " + MAS_TARDE;
-        public static final String CREDENCIALES_ADMIN = "Username y/o contraseña incorrectos, " + VERIFICAR;
+        public static final String ELIMINAR_EMPRESA = "Tienes sucursales dependiendo de esta empresa, eliminalas primero.";
+        public static final String ELIMINAR_SUCURSAL = "Tienes promociones dependiendo de esta sucursal, eliminalas primero.";
+        public static final String CREDENCIALES_ADMIN = "Usuario y/o contraseña incorrectos, " + VERIFICAR;
         public static final String CREDENCIALES_CLIENTE = "Correo y/o contraseña incorrectos, " + VERIFICAR;
     }
     
