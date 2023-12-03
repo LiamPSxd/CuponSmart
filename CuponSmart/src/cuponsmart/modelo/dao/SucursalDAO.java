@@ -22,9 +22,8 @@ public class SucursalDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaSucursal peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaSucursal.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
-            }
         }
         
         return respuesta;
@@ -39,9 +38,8 @@ public class SucursalDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaSucursal peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaSucursal.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
-            }
         }
         
         return respuesta;
@@ -56,9 +54,8 @@ public class SucursalDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaSucursal peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaSucursal.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
-            }
         }
         
         return respuesta;
@@ -73,9 +70,8 @@ public class SucursalDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaSucursal peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaSucursal.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
-            }
         }
         
         return respuesta;
@@ -90,9 +86,8 @@ public class SucursalDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaSucursal peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaSucursal.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje())){
+            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
-            }
         }
         
         return respuesta;
@@ -107,11 +102,10 @@ public class SucursalDAO{
         
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionPOSTPUTJSON(Constantes.MetodosHTTP.POST, url, parametros);
         
-        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
+        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK)
             respuesta = gson.fromJson(respuestaPeticion.getContenido(), Mensaje.class);
-        }else{
+        else
             respuesta.setMensaje(Constantes.Errores.REGISTRO);
-        }
         
         return respuesta;
     }
@@ -125,11 +119,10 @@ public class SucursalDAO{
         
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionPOSTPUTJSON(Constantes.MetodosHTTP.PUT, url, parametros);
         
-        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
+        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK)
             respuesta = gson.fromJson(respuestaPeticion.getContenido(), Mensaje.class);
-        }else{
+        else
             respuesta.setMensaje(Constantes.Errores.MODIFICACION);
-        }
         
         return respuesta;
     }
@@ -140,11 +133,10 @@ public class SucursalDAO{
         String url = Constantes.Servicios.SUCURSAL + "eliminar/" + idSucursal;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionDELETE(url);
         
-        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
+        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK)
             respuesta = new Gson().fromJson(respuestaPeticion.getContenido(), Mensaje.class);
-        }else{
+        else
             respuesta.setMensaje(Constantes.Errores.ELIMINACION);
-        }
         
         return respuesta;
     }
