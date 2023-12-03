@@ -102,7 +102,7 @@ public class RolDAO{
         
         if(conexionBD != null){
             try{
-                if(Verificaciones.Datos.claseNula(conexionBD.selectOne("roles.obtenerRolPorNombre", rol.getNombre()))){
+                if(Verificaciones.Datos.claseNoNula(conexionBD.selectOne("roles.obtenerRolPorNombre", rol.getNombre()))){
                     int numFilasAfectadas = conexionBD.update("roles.modificarRol", rol);
                     conexionBD.commit();
                     
