@@ -26,4 +26,9 @@ public class TipoPromocion{
     public void setTipo(String tipo){
         this.tipo = tipo;
     }
+    
+    @Override
+    public String toString(){
+        return this.getTipo();
+    }
 }

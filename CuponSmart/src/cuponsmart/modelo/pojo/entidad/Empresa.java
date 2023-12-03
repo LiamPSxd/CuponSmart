@@ -122,7 +122,7 @@ public class Empresa{
     public String getEstatus(){
         return estatus;
     }
-    
+
     public void setEstatus(String estatus){
         this.estatus = estatus;
     }
@@ -133,5 +133,10 @@ public class Empresa{
 
     public void setIdDireccion(Integer idDireccion){
         this.idDireccion = idDireccion;
+    }
+    
+    @Override
+    public String toString(){
+        return this.getNombreComercial();
     }
 }

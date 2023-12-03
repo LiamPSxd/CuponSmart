@@ -36,4 +36,9 @@ public class Municipio{
     public void setIdEstado(Integer idEstado) {
         this.idEstado = idEstado;
     }
+    
+    @Override
+    public String toString(){
+        return this.getNombre();
+    }
 }

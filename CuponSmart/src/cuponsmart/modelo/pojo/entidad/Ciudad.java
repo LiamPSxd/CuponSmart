@@ -36,4 +36,9 @@ public class Ciudad{
     public void setIdMunicipio(Integer idMunicipio){
         this.idMunicipio = idMunicipio;
     }
+    
+    @Override
+    public String toString(){
+        return this.getNombre();
+    }
 }
