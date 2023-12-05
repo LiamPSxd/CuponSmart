@@ -90,7 +90,7 @@ public class FXMLFormEmpresaController implements Initializable{
     
     @Override
     public void initialize(URL url, ResourceBundle rb){
-        colocarImagenCircle("/img/logo.png", imagenLogo);
+        colocarImagenCircle("/img/noMedia.png", imagenLogo);
         colocarImagenBoton("/img/foto.png", btnSeleccionarLogo);
         
         descargarEstatus();
@@ -124,7 +124,7 @@ public class FXMLFormEmpresaController implements Initializable{
     
     private void colocarImagenBoton(String resource, Button boton){
         URL url = getClass().getResource(resource);
-        Image imagen = new Image(url.toString(), 24, 24, false, true);
+        Image imagen = new Image(url.toString(), 32, 32, false, true);
         
         boton.setGraphic(new ImageView(imagen));
     }
@@ -207,12 +207,12 @@ public class FXMLFormEmpresaController implements Initializable{
 
         comboEstado.getSelectionModel().select(CatalogoDAO.obtenerEstadoPorId(municipio.getIdEstado()));
         
-        obtenerLogo();
+        if(Verificaciones.Datos.numerico(this.empresa.getId())) obtenerLogo();
     }
     
     public void inicializarInformacion(Empresa empresa, IRespuesta observador){
         this.empresa = empresa;
-        this.direccion = DireccionDAO.obtenerDireccionPorId(this.empresa.getIdDireccion());
+        this.direccion = Verificaciones.Datos.claseNoNula(this.empresa) ? DireccionDAO.obtenerDireccionPorId(this.empresa.getIdDireccion()) : null;
         this.observador = observador;
         
         CatalogoDAO.obtenerEstatus().forEach((estatus) -> {
@@ -282,29 +282,31 @@ public class FXMLFormEmpresaController implements Initializable{
     }
     
     private void registrarEmpresa(Empresa empresa, Direccion direccion){
-        Mensaje mensaje = DireccionDAO.registrarDireccion(direccion);
-            
-        if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
-            List<Direccion> direcciones = DireccionDAO.obtenerDirecciones();
-            direcciones = (List<Direccion>) direcciones.stream().filter((d) -> (
-                direccion.getCalle().equals(d.getCalle()) &&
-                direccion.getNumero().equals(d.getNumero()) &&
-                direccion.getCodigoPostal().equals(d.getCodigoPostal()) &&
-                direccion.getIdCiudad().equals(d.getIdCiudad())
-            ));
-
-            empresa.setIdDireccion(direcciones.get(0).getId());
-
-            mensaje = EmpresaDAO.registrarEmpresa(empresa);
+        if(!Verificaciones.Datos.listaNoVacia(EmpresaDAO.obtenerEmpresasPorRFC(empresa.getRfc()))){
+            Mensaje mensaje = DireccionDAO.registrarDireccion(direccion);
             
             if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
-                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, mensaje.getMensaje(), Alert.AlertType.INFORMATION);
-                observador.notificarGuardado();
-                cerrarVentana();
+                Direccion dir = DireccionDAO.obtenerDirecciones().stream().filter((d) -> (
+                    direccion.getCalle().equals(d.getCalle()) &&
+                    direccion.getNumero().equals(d.getNumero()) &&
+                    direccion.getCodigoPostal().equals(d.getCodigoPostal()) &&
+                    direccion.getIdCiudad().equals(d.getIdCiudad())
+                )).findFirst().get();
+
+                empresa.setIdDireccion(dir.getId());
+
+                mensaje = EmpresaDAO.registrarEmpresa(empresa);
+
+                if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Empresa registrada exitosamente", Alert.AlertType.INFORMATION);
+                    observador.notificarGuardado();
+                    cerrarVentana();
+                }else
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
             }else
                 Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
         }else
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, "El RFC ya se encuentra registrado", Alert.AlertType.ERROR);
     }
     
     private void modificarEmpresa(){
@@ -318,7 +320,7 @@ public class FXMLFormEmpresaController implements Initializable{
                     if(!cargarLogo(imagenSeleccionada))
                         Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.REGISTRO, Alert.AlertType.ERROR);
                 
-                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, mensaje.getMensaje(), Alert.AlertType.INFORMATION);
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Empresa modificada exitosamente", Alert.AlertType.INFORMATION);
                 observador.notificarGuardado();
                 cerrarVentana();
             }else
@@ -347,35 +349,42 @@ public class FXMLFormEmpresaController implements Initializable{
         
         if(Verificaciones.Datos.cadena(nombreComercial) && Verificaciones.Datos.claseNoNula(estatus) && Verificaciones.Datos.cadena(nombre) && Verificaciones.Datos.cadena(rfc) &&
             Verificaciones.Datos.cadena(nombreRepresentanteLegal) && Verificaciones.Datos.cadena(correo) && Verificaciones.Datos.cadena(telefono) && Verificaciones.Datos.cadena(paginaWeb) &&
-            Verificaciones.Datos.cadena(calle) && Verificaciones.Datos.cadena(numero) && Verificaciones.Datos.cadena(codigoPostal) &&Verificaciones.Datos.claseNoNula(estado) &&
-            Verificaciones.Datos.claseNula(municipio) && Verificaciones.Datos.claseNoNula(ciudad)){
-            switch(btnFinalizar.getText()){
-                case "Registrar":
-                    registrarEmpresa(
-                        new Empresa(0, nombre, nombreComercial, "0", nombreRepresentanteLegal, correo, telefono, paginaWeb, rfc, this.idEstatus, 0),
-                        new Direccion(0, calle, numero, codigoPostal, null, null, null, this.idCiudad)
-                    );
-                    break;
-                case "Modificar":
-                    this.empresa.setNombre(nombre);
-                    this.empresa.setNombreComercial(nombreComercial);
-                    this.empresa.setNombreRepresentanteLegal(nombreRepresentanteLegal);
-                    this.empresa.setCorreo(correo);
-                    this.empresa.setTelefono(telefono);
-                    this.empresa.setPaginaWeb(paginaWeb);
-                    this.empresa.setRfc(rfc);
-                    this.empresa.setIdEstatus(this.idEstatus);
-                    
-                    this.direccion.setCalle(calle);
-                    this.direccion.setNumero(numero);
-                    this.direccion.setCodigoPostal(codigoPostal);
-                    this.direccion.setIdCiudad(this.idCiudad);
-                    
-                    modificarEmpresa();
-                    break;
-                default:
-                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Retornos.SELECCION, Alert.AlertType.ERROR);
-            }
+            Verificaciones.Datos.cadena(calle) && Verificaciones.Datos.cadena(numero) && Verificaciones.Datos.cadena(codigoPostal) && Verificaciones.Datos.claseNoNula(estado) &&
+            Verificaciones.Datos.claseNoNula(municipio) && Verificaciones.Datos.claseNoNula(ciudad)){
+            if(rfc.length() == 12 && telefono.length() == 10 && codigoPostal.length() == 5){
+                switch(btnFinalizar.getText()){
+                    case "Registrar":
+                        registrarEmpresa(
+                            new Empresa(0, nombre, nombreComercial, "0", nombreRepresentanteLegal, correo, telefono, paginaWeb, rfc, this.idEstatus, 0),
+                            new Direccion(0, calle, numero, codigoPostal, "", "", "", this.idCiudad)
+                        );
+                        break;
+                    case "Modificar":
+                        this.empresa.setNombre(nombre);
+                        this.empresa.setNombreComercial(nombreComercial);
+                        this.empresa.setNombreRepresentanteLegal(nombreRepresentanteLegal);
+                        this.empresa.setCorreo(correo);
+                        this.empresa.setTelefono(telefono);
+                        this.empresa.setPaginaWeb(paginaWeb);
+                        this.empresa.setRfc(rfc);
+                        this.empresa.setIdEstatus(this.idEstatus);
+
+                        this.direccion.setCalle(calle);
+                        this.direccion.setNumero(numero);
+                        this.direccion.setCodigoPostal(codigoPostal);
+                        this.direccion.setIdCiudad(this.idCiudad);
+
+                        modificarEmpresa();
+                        break;
+                    default:
+                        Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Retornos.SELECCION, Alert.AlertType.ERROR);
+                }
+            }else if(rfc.length() != 12)
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "El RFC debe tener 12 caracteres, favor de verificarlo", Alert.AlertType.WARNING);
+            else if(telefono.length() != 10)
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "El teléfono debe tener 10 dígitos, favor de verificarlo", Alert.AlertType.WARNING);
+            else if(codigoPostal.length() != 5)
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "El código postal debe tener 5 dígitos, favor de verificarlo", Alert.AlertType.WARNING);
         }else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.CAMPOS_VACIOS, Constantes.Errores.CAMPOS_VACIOS, Alert.AlertType.WARNING);
     }

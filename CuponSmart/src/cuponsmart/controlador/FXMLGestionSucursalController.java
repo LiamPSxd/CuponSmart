@@ -23,11 +23,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import utils.Constantes;
@@ -42,6 +45,12 @@ public class FXMLGestionSucursalController implements Initializable, IRespuesta{
     private TextField txtBusqueda;
     @FXML
     private ComboBox<String> comboFiltro;
+    @FXML
+    private Button btnRegistrar;
+    @FXML
+    private Button btnModificar;
+    @FXML
+    private Button btnEliminar;
     @FXML
     private TableView<Sucursal> tbSucursales;
     @FXML
@@ -58,9 +67,20 @@ public class FXMLGestionSucursalController implements Initializable, IRespuesta{
     @Override
     public void initialize(URL url, ResourceBundle rb){
         this.sucursales = FXCollections.observableArrayList();
+        
+        colocarImagenBoton("/img/registrar.png", btnRegistrar);
+        colocarImagenBoton("/img/modificar.png", btnModificar);
+        colocarImagenBoton("/img/eliminar.png", btnEliminar);
         configurarTabla();
         
         comboFiltro.getItems().addAll("Nombre", "Dirección");
+    }
+    
+    private void colocarImagenBoton(String resource, Button boton){
+        URL url = getClass().getResource(resource);
+        Image imagen = new Image(url.toString(), 32, 32, false, true);
+        
+        boton.setGraphic(new ImageView(imagen));
     }
     
     private void configurarTabla(){

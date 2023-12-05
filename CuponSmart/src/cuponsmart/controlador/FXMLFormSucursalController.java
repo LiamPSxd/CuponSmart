@@ -165,7 +165,7 @@ public class FXMLFormSucursalController implements Initializable{
     
     public void inicializarInformacion(Sucursal sucursal, Integer idEmpresa, IRespuesta observador){
         this.sucursal = sucursal;
-        this.direccion = DireccionDAO.obtenerDireccionPorId(this.sucursal.getIdDireccion());
+        this.direccion = Verificaciones.Datos.claseNoNula(this.sucursal) ? DireccionDAO.obtenerDireccionPorId(this.sucursal.getIdDireccion()) : null;
         this.idEmpresa = idEmpresa;
         this.observador = observador;
         
@@ -192,8 +192,7 @@ public class FXMLFormSucursalController implements Initializable{
         Mensaje mensaje = DireccionDAO.registrarDireccion(direccion);
         
         if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
-            List<Direccion> direcciones = DireccionDAO.obtenerDirecciones();
-            direcciones = (List<Direccion>) direcciones.stream().filter((d) -> (
+            Direccion dir = DireccionDAO.obtenerDirecciones().stream().filter((d) -> (
                 direccion.getCalle().equals(d.getCalle()) &&
                 direccion.getColonia().equals(d.getColonia()) &&
                 direccion.getNumero().equals(d.getNumero()) &&
@@ -201,9 +200,9 @@ public class FXMLFormSucursalController implements Initializable{
                 direccion.getLatitud().equals(d.getLatitud()) &&
                 direccion.getLongitud().equals(d.getLongitud()) &&
                 direccion.getIdCiudad().equals(d.getIdCiudad())
-            ));
+            )).findFirst().get();
             
-            sucursal.setIdDireccion(direcciones.get(0).getId());
+            sucursal.setIdDireccion(dir.getId());
             
             mensaje = SucursalDAO.registrarSucursal(sucursal);
             

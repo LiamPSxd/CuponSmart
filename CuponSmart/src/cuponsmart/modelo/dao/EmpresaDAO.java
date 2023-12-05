@@ -45,49 +45,49 @@ public class EmpresaDAO{
         return respuesta;
     }
     
-    public static Empresa obtenerEmpresaPorNombre(String nombreEmpresa){
-        Empresa respuesta = new Empresa();
+    public static List<Empresa> obtenerEmpresasPorNombre(String nombreEmpresa){
+        List<Empresa> respuesta = new ArrayList();
         
-        String url = Constantes.Servicios.EMPRESA + "obtenerEmpresaPorNombre/" + nombreEmpresa;
+        String url = Constantes.Servicios.EMPRESA + "obtenerEmpresasPorNombre/" + nombreEmpresa;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
         
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaEmpresa peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaEmpresa.class);
             
             if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
-                respuesta = peticion.getContenido().get(0);
+                respuesta = peticion.getContenido();
         }
         
         return respuesta;
     }
     
-    public static Empresa obtenerEmpresaPorRFC(String rfcEmpresa){
-        Empresa respuesta = new Empresa();
+    public static List<Empresa> obtenerEmpresasPorRFC(String rfcEmpresa){
+        List<Empresa> respuesta = new ArrayList();
         
-        String url = Constantes.Servicios.EMPRESA + "obtenerEmpresaPorRFC/" + rfcEmpresa;
+        String url = Constantes.Servicios.EMPRESA + "obtenerEmpresasPorRFC/" + rfcEmpresa;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
         
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaEmpresa peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaEmpresa.class);
             
             if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
-                respuesta = peticion.getContenido().get(0);
+                respuesta = peticion.getContenido();
         }
         
         return respuesta;
     }
     
-    public static Empresa obtenerEmpresaPorRepresentanteLegal(String representanteLegal){
-        Empresa respuesta = new Empresa();
+    public static List<Empresa> obtenerEmpresasPorRepresentanteLegal(String representanteLegal){
+        List<Empresa> respuesta = new ArrayList();
         
-        String url = Constantes.Servicios.EMPRESA + "obtenerEmpresaPorRepresentanteLegal/" + representanteLegal;
+        String url = Constantes.Servicios.EMPRESA + "obtenerEmpresasPorRepresentanteLegal/" + representanteLegal;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
         
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaEmpresa peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaEmpresa.class);
             
             if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
-                respuesta = peticion.getContenido().get(0);
+                respuesta = peticion.getContenido();
         }
         
         return respuesta;

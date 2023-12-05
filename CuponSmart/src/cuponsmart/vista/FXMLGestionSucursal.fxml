@@ -34,17 +34,17 @@
                   <Font name="Century Gothic Bold" size="24.0" />
                </font>
             </Button>
-            <Button id="botonSeleccion" layoutX="1045.0" layoutY="45.0" mnemonicParsing="false" onAction="#registrarSucursal" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
+            <Button id="botonSeleccion" fx:id="btnRegistrar" layoutX="1045.0" layoutY="45.0" mnemonicParsing="false" onAction="#registrarSucursal" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <Button id="botonSeleccion" layoutX="1125.0" layoutY="45.0" mnemonicParsing="false" onAction="#modificarSucursal" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
+            <Button id="botonSeleccion" fx:id="btnModificar" layoutX="1125.0" layoutY="45.0" mnemonicParsing="false" onAction="#modificarSucursal" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <Button id="botonSeleccion" layoutX="1205.0" layoutY="45.0" mnemonicParsing="false" onAction="#eliminarSucursal" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
+            <Button id="botonSeleccion" fx:id="btnEliminar" layoutX="1205.0" layoutY="45.0" mnemonicParsing="false" onAction="#eliminarSucursal" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>

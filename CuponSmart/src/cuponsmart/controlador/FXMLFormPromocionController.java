@@ -114,7 +114,7 @@ public class FXMLFormPromocionController implements Initializable{
         this.sucursales = FXCollections.observableArrayList();
         configurarTabla();
         
-        colocarImagenCircle("/img/logo.png", imagenFoto);
+        colocarImagenCircle("/img/noMedia.png", imagenFoto);
         colocarImagenBoton("/img/foto.png", btnSeleccionarFoto);
         
         descargarTiposPromocion();
@@ -156,7 +156,7 @@ public class FXMLFormPromocionController implements Initializable{
     
     private void colocarImagenBoton(String resource, Button boton){
         URL url = getClass().getResource(resource);
-        Image imagen = new Image(url.toString(), 24, 24, false, true);
+        Image imagen = new Image(url.toString(), 32, 32, false, true);
         
         boton.setGraphic(new ImageView(imagen));
     }
@@ -323,34 +323,37 @@ public class FXMLFormPromocionController implements Initializable{
     }
     
     private void registrarPromocion(Promocion promocion){
-        Mensaje mensaje = PromocionDAO.registrarPromocion(promocion);
+        if(!Verificaciones.Datos.numerico(PromocionDAO.obtenerPromocionPorCodigo(promocion.getCodigo()).getId())){
+            Mensaje mensaje = PromocionDAO.registrarPromocion(promocion);
         
-        if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, mensaje.getMensaje(), Alert.AlertType.INFORMATION);
-            
-            List<Promocion> promociones = PromocionDAO.obtenerPromocionesPorIdEmpresa(promocion.getIdEmpresa());
-            promociones = (List<Promocion>) promociones.stream().filter((p) -> (
-                promocion.getCodigo().equals(p.getCodigo())
-            ));
-            
-            for(int i=0; i<tbSucursales.getItems().size(); i++){
-                for(TableColumn column : tbSucursales.getVisibleLeafColumn(0).getColumns()){
-                    if(column.getCellData(i).equals(true)){
-                        mensaje = PromocionSucursalDAO.registrarPromocionSucursal(new PromocionSucursal(
-                            promociones.get(0).getId(),
-                            tbSucursales.getItems().get(i).getId()
-                        ));
-                        
-                        if(Verificaciones.Datos.claseNula(mensaje) && mensaje.getError())
-                            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
+            if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, mensaje.getMensaje(), Alert.AlertType.INFORMATION);
+
+                List<Promocion> promociones = PromocionDAO.obtenerPromocionesPorIdEmpresa(promocion.getIdEmpresa());
+                promociones = (List<Promocion>) promociones.stream().filter((p) -> (
+                    promocion.getCodigo().equals(p.getCodigo())
+                ));
+
+                for(int i=0; i<tbSucursales.getItems().size(); i++){
+                    for(TableColumn column : tbSucursales.getVisibleLeafColumn(0).getColumns()){
+                        if(column.getCellData(i).equals(true)){
+                            mensaje = PromocionSucursalDAO.registrarPromocionSucursal(new PromocionSucursal(
+                                promociones.get(0).getId(),
+                                tbSucursales.getItems().get(i).getId()
+                            ));
+
+                            if(Verificaciones.Datos.claseNula(mensaje) && mensaje.getError())
+                                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
+                        }
                     }
                 }
-            }
-            
-            observador.notificarGuardado();
-            cerrarVentana();
+
+                observador.notificarGuardado();
+                cerrarVentana();
+            }else
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
         }else
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, "El código ya se encuentra registrado", Alert.AlertType.ERROR);
     }
     
     private void modificarPromocion(){

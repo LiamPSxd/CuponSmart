@@ -20,11 +20,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import utils.Constantes;
@@ -38,6 +41,12 @@ public class FXMLGestionEmpresaController implements Initializable, IRespuesta{
     private TextField txtBusqueda;
     @FXML
     private ComboBox<String> comboFiltro;
+    @FXML
+    private Button btnRegistrar;
+    @FXML
+    private Button btnModificar;
+    @FXML
+    private Button btnEliminar;
     @FXML
     private TableView<Empresa> tbEmpresas;
     @FXML
@@ -56,9 +65,20 @@ public class FXMLGestionEmpresaController implements Initializable, IRespuesta{
     @Override
     public void initialize(URL url, ResourceBundle rb){
         this.empresas = FXCollections.observableArrayList();
+        
+        colocarImagenBoton("/img/registrar.png", btnRegistrar);
+        colocarImagenBoton("/img/modificar.png", btnModificar);
+        colocarImagenBoton("/img/eliminar.png", btnEliminar);
         configurarTabla();
         
         comboFiltro.getItems().addAll("Nombre", "RFC", "Representante Legal");
+    }
+    
+    private void colocarImagenBoton(String resource, Button boton){
+        URL url = getClass().getResource(resource);
+        Image imagen = new Image(url.toString(), 32, 32, false, true);
+        
+        boton.setGraphic(new ImageView(imagen));
     }
     
     private void configurarTabla(){
@@ -98,16 +118,13 @@ public class FXMLGestionEmpresaController implements Initializable, IRespuesta{
             
             switch(filtro){
                 case "Nombre":
-                    resultado.add(EmpresaDAO.obtenerEmpresaPorNombre(busqueda));
-                    inicializarInformacion(resultado);
+                    inicializarInformacion(EmpresaDAO.obtenerEmpresasPorNombre(busqueda));
                     break;
                 case "RFC":
-                    resultado.add(EmpresaDAO.obtenerEmpresaPorRFC(busqueda));
-                    inicializarInformacion(resultado);
+                    inicializarInformacion(EmpresaDAO.obtenerEmpresasPorRFC(busqueda));
                     break;
                 case "Representante Legal":
-                    resultado.add(EmpresaDAO.obtenerEmpresaPorRepresentanteLegal(busqueda));
-                    inicializarInformacion(resultado);
+                    inicializarInformacion(EmpresaDAO.obtenerEmpresasPorRepresentanteLegal(busqueda));
                     break;
                 default:
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, "Filtro no encontrado", Alert.AlertType.ERROR);
@@ -164,7 +181,7 @@ public class FXMLGestionEmpresaController implements Initializable, IRespuesta{
                 Mensaje mensaje = EmpresaDAO.eliminarEmpresa(empresa.getId());
                 
                 if(!mensaje.getError()){
-                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, mensaje.getMensaje(), Alert.AlertType.INFORMATION);
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Empresa eliminada exitosamente", Alert.AlertType.INFORMATION);
                     notificarGuardado();
                 }else{
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
