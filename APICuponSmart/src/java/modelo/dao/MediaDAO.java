@@ -46,7 +46,7 @@ public class MediaDAO{
         return respuesta;
     }
     
-    public static RespuestaEmpresa registrarLogoEmpresa(Integer idEmpresa, Byte[] logo){
+    public static RespuestaEmpresa registrarLogoEmpresa(Integer idEmpresa, byte[] logo){
         RespuestaEmpresa respuesta = new RespuestaEmpresa();
         
         LinkedHashMap<String, Object> parametros = new LinkedHashMap<>();
@@ -115,7 +115,7 @@ public class MediaDAO{
         return respuesta;
     }
     
-    public static RespuestaPromocion registrarImagenPromocion(Integer idPromocion, Byte[] imagen){
+    public static RespuestaPromocion registrarImagenPromocion(Integer idPromocion, byte[] imagen){
         RespuestaPromocion respuesta = new RespuestaPromocion();
         
         LinkedHashMap<String, Object> parametros = new LinkedHashMap<>();

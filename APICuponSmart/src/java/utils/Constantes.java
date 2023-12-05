@@ -26,6 +26,7 @@ public class Constantes{
         public static final String ELIMINAR_SUCURSAL = "Tienes promociones dependiendo de esta sucursal, eliminalas primero.";
         public static final String CREDENCIALES_ADMIN = "Usuario y/o contraseña incorrectos, " + VERIFICAR;
         public static final String CREDENCIALES_CLIENTE = "Correo y/o contraseña incorrectos, " + VERIFICAR;
+        public static final String RFC_DUPLICADO = "El RFC ya se encuentra registrado, " + VERIFICAR;
     }
     
     public class Excepciones{

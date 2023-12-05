@@ -39,24 +39,24 @@ public class EmpresaWS{
     }
     
     @GET
-    @Path("obtenerEmpresaPorNombre/{nombre}")
+    @Path("obtenerEmpresasPorNombre/{nombre}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaEmpresa obtenerEmpresaPorNombre(@PathParam("nombre") String nombre){
-        return Verificaciones.Datos.cadena(nombre) ? EmpresaDAO.obtenerEmpresaPorCadena("Nombre", nombre) : (RespuestaEmpresa) Verificaciones.Excepciones.badRequest();
+        return Verificaciones.Datos.cadena(nombre) ? EmpresaDAO.obtenerEmpresasPorCadena("Nombre", nombre) : (RespuestaEmpresa) Verificaciones.Excepciones.badRequest();
     }
     
     @GET
-    @Path("obtenerEmpresaPorRFC/{RFC}")
+    @Path("obtenerEmpresasPorRFC/{RFC}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaEmpresa obtenerEmpresaPorRFC(@PathParam("RFC") String RFC){
-        return Verificaciones.Datos.cadena(RFC) ? EmpresaDAO.obtenerEmpresaPorCadena("RFC", RFC) : (RespuestaEmpresa) Verificaciones.Excepciones.badRequest();
+        return Verificaciones.Datos.cadena(RFC) ? EmpresaDAO.obtenerEmpresasPorCadena("RFC", RFC) : (RespuestaEmpresa) Verificaciones.Excepciones.badRequest();
     }
     
     @GET
-    @Path("obtenerEmpresaPorRepresentanteLegal/{representanteLegal}")
+    @Path("obtenerEmpresasPorRepresentanteLegal/{representanteLegal}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaEmpresa obtenerEmpresaPorRepresentante(@PathParam("representanteLegal") String representanteLegal){
-        return Verificaciones.Datos.cadena(representanteLegal) ? EmpresaDAO.obtenerEmpresaPorCadena("Representante", representanteLegal) : (RespuestaEmpresa) Verificaciones.Excepciones.badRequest();
+        return Verificaciones.Datos.cadena(representanteLegal) ? EmpresaDAO.obtenerEmpresasPorCadena("Representante", representanteLegal) : (RespuestaEmpresa) Verificaciones.Excepciones.badRequest();
     }
     
     @POST

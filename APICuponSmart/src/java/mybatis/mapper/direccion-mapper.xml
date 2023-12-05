@@ -11,7 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="obtenerDireccionesPorCalleColoniaNumero" resultType="modelo.pojo.entidad.Direccion" parameterType="String">
         SELECT * FROM direccion 
-        WHERE calle LIKE %#{busqueda}% OR colonia LIKE %#{busqueda}% OR numero LIKE %#{busqueda}%
+        WHERE calle LIKE #{%busqueda%} OR colonia LIKE #{%busqueda%} OR numero LIKE #{%busqueda%}
     </select>
     
     <select id="obtenerDireccionPorId" resultType="modelo.pojo.entidad.Direccion" parameterType="Integer">

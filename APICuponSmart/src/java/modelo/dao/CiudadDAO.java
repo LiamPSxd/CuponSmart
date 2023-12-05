@@ -130,7 +130,7 @@ public class CiudadDAO{
         
         if(conexionBD != null){
             try{
-                if(Verificaciones.Datos.claseNoNula(conexionBD.selectOne("ciudades.obtenerCiudadPorNombreYIdMunicipio", ciudad))){
+                if(Verificaciones.Datos.claseNoNula(conexionBD.selectOne("ciudades.obtenerCiudadPorId", ciudad.getId()))){
                     int numFilasAfectadas = conexionBD.update("ciudades.modificarCiudad", ciudad);
                     conexionBD.commit();
                     

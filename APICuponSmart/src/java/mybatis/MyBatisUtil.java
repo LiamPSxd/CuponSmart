@@ -14,8 +14,8 @@ public class MyBatisUtil{
         
         try{
             session = new SqlSessionFactoryBuilder().build(
-                    Resources.getResourceAsReader(RESOURCE),
-                    ENVIRONMENT
+                Resources.getResourceAsReader(RESOURCE),
+                ENVIRONMENT
             ).openSession();
         }catch(IOException e){
             e.printStackTrace();

@@ -32,7 +32,7 @@ public class Verificaciones{
             return lista.size() > 0 && respuesta;
         }
         
-        public static Boolean listaByteNoVacio(Byte[] lista){
+        public static Boolean listaByteNoVacio(byte[] lista){
             return lista != null;
         }
     }

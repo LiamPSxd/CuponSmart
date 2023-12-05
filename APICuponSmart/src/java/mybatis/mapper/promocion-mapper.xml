@@ -11,17 +11,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="obtenerPromocionesPorFechaInicio" resultType="modelo.pojo.entidad.Promocion" parameterType="String">
         SELECT * FROM promocion 
-        WHERE fechaInicion LIKE %#{fechaInicion}%
+        WHERE fechaInicio LIKE #{%fechaInicion%}
     </select>
     
     <select id="obtenerPromocionesPorFechaTermino" resultType="modelo.pojo.entidad.Promocion" parameterType="String">
         SELECT * FROM promocion 
-        WHERE fechaTermino LIKE %#{fechaTermino}%
+        WHERE fechaTermino LIKE #{%fechaTermino%}
     </select>
     
     <select id="obtenerPromocionesPorNombre" resultType="modelo.pojo.entidad.Promocion" parameterType="String">
         SELECT * FROM promocion 
-        WHERE nombre LIKE %#{nombre}%
+        WHERE nombre LIKE #{%nombre%}
     </select>
     
     <select id="obtenerPromocionesPorIdEmpresa" resultType="modelo.pojo.entidad.Promocion" parameterType="Integer">

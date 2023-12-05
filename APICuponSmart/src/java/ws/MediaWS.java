@@ -29,7 +29,7 @@ public class MediaWS{
     @Path("registrarLogoEmpresa/{idEmpresa}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaEmpresa registrarLogoEmpresa(@PathParam("idEmpresa") Integer idEmpresa,
-                                                 Byte[] logo){
+                                                  byte[] logo){
         return Verificaciones.Datos.numerico(idEmpresa) && Verificaciones.Datos.listaByteNoVacio(logo) ? MediaDAO.registrarLogoEmpresa(idEmpresa, logo) : (RespuestaEmpresa) Verificaciones.Excepciones.badRequest();
     }
     
@@ -44,7 +44,7 @@ public class MediaWS{
     @Path("registrarImagenPromocion/{idPromocion}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaPromocion registrarImagenPromocion(@PathParam("idPromocion") Integer idPromocion,
-                                                 Byte[] imagen){
+                                                        byte[] imagen){
         return Verificaciones.Datos.numerico(idPromocion) && Verificaciones.Datos.listaByteNoVacio(imagen) ? MediaDAO.registrarImagenPromocion(idPromocion, imagen) : (RespuestaPromocion) Verificaciones.Excepciones.badRequest();
     }
 }

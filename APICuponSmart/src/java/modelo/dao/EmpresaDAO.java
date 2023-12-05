@@ -38,7 +38,7 @@ public class EmpresaDAO{
         return respuesta;
     }
     
-    public static RespuestaEmpresa obtenerEmpresaPorId(Integer id){
+    public static RespuestaEmpresa obtenerEmpresaPorId(Integer idEmpresa){
         RespuestaEmpresa respuesta = new RespuestaEmpresa();
         
         SqlSession conexionDB = MyBatisUtil.getSession();
@@ -46,7 +46,7 @@ public class EmpresaDAO{
         if(conexionDB != null){
             try{
                 List<Empresa> empresas = new ArrayList<>();
-                empresas.add(conexionDB.selectOne("empresas.obtenerEmpresaPorId", id));
+                empresas.add(conexionDB.selectOne("empresas.obtenerEmpresaPorId", idEmpresa));
                 
                 if(Verificaciones.Datos.listaNoVacia(empresas)){
                     respuesta.setError(false);
@@ -67,15 +67,14 @@ public class EmpresaDAO{
         return respuesta;
     }
     
-    public static RespuestaEmpresa obtenerEmpresaPorCadena(String criterio, String parametro){
+    public static RespuestaEmpresa obtenerEmpresasPorCadena(String criterio, String parametro){
         RespuestaEmpresa respuesta = new RespuestaEmpresa();
         
         SqlSession conexionDB = MyBatisUtil.getSession();
         
         if(conexionDB != null){
             try{
-                List<Empresa> empresas = new ArrayList<>();
-                empresas.add(conexionDB.selectOne("empresas.obtenerEmpresaPor" + criterio, parametro));
+                List<Empresa> empresas = conexionDB.selectList("empresas.obtenerEmpresasPor" + criterio, parametro);
                 
                 if(Verificaciones.Datos.listaNoVacia(empresas)){
                     respuesta.setError(false);
@@ -96,21 +95,25 @@ public class EmpresaDAO{
         return respuesta;
     }
     
-    public static RespuestaEmpresa registrarEmpresa(Empresa cliente){
+    public static RespuestaEmpresa registrarEmpresa(Empresa empresa){
         RespuestaEmpresa respuesta = new RespuestaEmpresa();
         
         SqlSession conexionBD = MyBatisUtil.getSession();
         
         if(conexionBD != null){
             try{
-                int numFilasAfectadas = conexionBD.insert("empresas.registrarEmpresa", cliente);
-                conexionBD.commit();
-                
-                if(Verificaciones.Datos.numerico(numFilasAfectadas)){
-                    respuesta.setError(false);
-                    respuesta.setMensaje(Constantes.Retornos.REGISTRO);
+                if(Verificaciones.Datos.claseNula(conexionBD.selectOne("empresas.obtenerEmpresasPorRFC", empresa.getRfc()))){
+                    int numFilasAfectadas = conexionBD.insert("empresas.registrarEmpresa", empresa);
+                    conexionBD.commit();
+
+                    if(Verificaciones.Datos.numerico(numFilasAfectadas)){
+                        respuesta.setError(false);
+                        respuesta.setMensaje(Constantes.Retornos.REGISTRO);
+                    }else{
+                        respuesta.setMensaje(Constantes.Errores.REGISTRO);
+                    }
                 }else{
-                    respuesta.setMensaje(Constantes.Errores.REGISTRO);
+                    respuesta.setMensaje(Constantes.Errores.RFC_DUPLICADO);
                 }
             }catch(Exception e){
                 respuesta.setMensaje(Constantes.Excepciones.EXCEPTION);
@@ -124,14 +127,14 @@ public class EmpresaDAO{
         return respuesta;
     }
     
-    public static RespuestaEmpresa modificarEmpresa(Empresa cliente){
+    public static RespuestaEmpresa modificarEmpresa(Empresa empresa){
         RespuestaEmpresa respuesta = new RespuestaEmpresa();
         
         SqlSession conexionDB = MyBatisUtil.getSession();
         
         if(conexionDB != null){
             try{
-                int numFilasAfectadas = conexionDB.update("empresas.modificarEmpresa", cliente);
+                int numFilasAfectadas = conexionDB.update("empresas.modificarEmpresa", empresa);
                 conexionDB.commit();
                 
                 if(Verificaciones.Datos.numerico(numFilasAfectadas)){
@@ -141,7 +144,7 @@ public class EmpresaDAO{
                     respuesta.setMensaje(Constantes.Errores.MODIFICACION);
                 }
             }catch(Exception e){
-                respuesta.setMensaje(e.getMessage());
+                respuesta.setMensaje(Constantes.Excepciones.EXCEPTION);
             }finally{
                 conexionDB.close();
             }

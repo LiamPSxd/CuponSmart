@@ -159,14 +159,16 @@ public class PromocionDAO{
         
         if(conexionBD != null){
             try{
-                int numFilasAfectadas = conexionBD.insert("promociones.registrarPromocion", promocion);
-                conexionBD.commit();
-                
-                if(Verificaciones.Datos.numerico(numFilasAfectadas)){
-                    respuesta.setError(false);
-                    respuesta.setMensaje(Constantes.Retornos.REGISTRO);
-                }else{
-                    respuesta.setMensaje(Constantes.Errores.REGISTRO);
+                if(Verificaciones.Datos.claseNula(conexionBD.selectOne("promociones.obtenerPromocionPorCodigo", promocion.getCodigo()))){
+                    int numFilasAfectadas = conexionBD.insert("promociones.registrarPromocion", promocion);
+                    conexionBD.commit();
+
+                    if(Verificaciones.Datos.numerico(numFilasAfectadas)){
+                        respuesta.setError(false);
+                        respuesta.setMensaje(Constantes.Retornos.REGISTRO);
+                    }else{
+                        respuesta.setMensaje(Constantes.Errores.REGISTRO);
+                    }
                 }
             }catch(Exception e){
                 respuesta.setMensaje(Constantes.Excepciones.EXCEPTION);
