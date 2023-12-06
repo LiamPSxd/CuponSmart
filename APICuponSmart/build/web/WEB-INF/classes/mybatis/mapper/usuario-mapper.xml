@@ -21,12 +21,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="obtenerUsuarioPorNombre" resultType="modelo.pojo.entidad.Usuario" parameterType="String">
         SELECT * FROM usuario 
-        WHERE nombre LIKE %#{nombre}%
+        WHERE nombre LIKE #{%nombre%}
     </select>
     
     <select id="obtenerUsuarioPorUsername" resultType="modelo.pojo.entidad.Usuario" parameterType="String">
         SELECT * FROM usuario 
-        WHERE username LIKE %#{username}%
+        WHERE username LIKE #{%username%}
     </select>        
             
     <insert id="registrarUsuario" parameterType="modelo.pojo.entidad.Usuario">

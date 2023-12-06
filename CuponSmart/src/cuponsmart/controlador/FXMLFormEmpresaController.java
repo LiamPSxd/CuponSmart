@@ -207,7 +207,7 @@ public class FXMLFormEmpresaController implements Initializable{
 
         comboEstado.getSelectionModel().select(CatalogoDAO.obtenerEstadoPorId(municipio.getIdEstado()));
         
-        if(Verificaciones.Datos.numerico(this.empresa.getId())) obtenerLogo();
+        obtenerLogo();
     }
     
     public void inicializarInformacion(Empresa empresa, IRespuesta observador){

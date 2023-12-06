@@ -14,34 +14,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE id = #{id}
     </select>
     
-    <select id="obtenerEmpresaPorNombre" resultType="modelo.pojo.entidad.Empresa" parameterType="String">
+    <select id="obtenerEmpresasPorNombre" resultType="modelo.pojo.entidad.Empresa" parameterType="String">
         SELECT * FROM empresa 
-        WHERE nombre LIKE %#{nombre}%
+        WHERE nombre LIKE #{%nombre%}
     </select>
     
-    <select id="obtenerEmpresaPorRFC" resultType="modelo.pojo.entidad.Empresa" parameterType="String">
+    <select id="obtenerEmpresasPorRFC" resultType="modelo.pojo.entidad.Empresa" parameterType="String">
         SELECT * FROM empresa 
-        WHERE RFC LIKE %#{RFC}%
+        WHERE RFC LIKE #{%RFC%}
     </select>
     
-    <select id="obtenerEmpresaPorRepresentante" resultType="modelo.pojo.entidad.Empresa" parameterType="String">
+    <select id="obtenerEmpresasPorRepresentante" resultType="modelo.pojo.entidad.Empresa" parameterType="String">
         SELECT * FROM empresa 
-        WHERE nombreRepresentanteLegal LIKE %#{nombreRepresentanteLegal}%
+        WHERE nombreRepresentanteLegal LIKE #{%nombreRepresentanteLegal%}
     </select>
     
-    <select id="obtenerSucursalesPorIdEmpresa" resultType="modelo.pojo.entidad.Sucursal" parameterType="Integer">
-        SELECT * FROM empresa 
-        WHERE idEmpresa = #{idEmpresa}
-    </select>        
-                            
     <insert id="registrarEmpresa" parameterType="modelo.pojo.entidad.Empresa">
-        INSERT INTO empresa (nombre, nombreComercial, nombreRepresentanteLegal, correo, telefono, paginaWeb, rfc, idEstatus, idDireccion) 
-        VALUES (#{nombre}, #{nombreComercial}, #{nombreRepresentanteLegal}, #{correo}, #{telefono}, #{paginaWeb}, #{rfc}, #{idEstatus}, #{idDireccion})
+        INSERT INTO empresa(nombre, nombreComercial, logo, nombreRepresentanteLegal, correo, telefono, paginaWeb, rfc, idEstatus, idDireccion) 
+        VALUES (#{nombre}, #{nombreComercial}, #{logo}, #{nombreRepresentanteLegal}, #{correo}, #{telefono}, #{paginaWeb}, #{rfc}, #{idEstatus}, #{idDireccion})
     </insert>
     
     <update id="modificarEmpresa" parameterType="modelo.pojo.entidad.Empresa">
         UPDATE empresa 
-        SET nombre=#{nombre}, nombreComercial=#{nombreComercial}, nombreRepresentanteLegal=#{nombreRepresentanteLegal}, correo=#{correo}, telefono=#{telefono}, paginaWeb=#{paginaWeb}, idEstatus=#{idEstatus}, idDireccion=#{idDireccion} 
+        SET nombre=#{nombre}, nombreComercial=#{nombreComercial}, logo=#{logo}, nombreRepresentanteLegal=#{nombreRepresentanteLegal}, correo=#{correo}, telefono=#{telefono}, paginaWeb=#{paginaWeb}, idEstatus=#{idEstatus}, idDireccion=#{idDireccion} 
         WHERE id = #{id}
     </update>
     
