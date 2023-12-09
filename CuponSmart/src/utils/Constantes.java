@@ -56,6 +56,7 @@ public class Constantes{
         public static final Integer ERROR_URL = 101;
         public static final Integer ERROR_PETICION = 102;
         
+        public static final String MEDIA = "Lo sentimos, por el momento no se puede registrar la imagen, " + MAS_TARDE;
         public static final String SOLICITUD = "Hubo un error al procesar la solicitud, " + MAS_TARDE;
         public static final String REGISTRO = "Lo sentimos, por el momento no se puede registrar la información, " + MAS_TARDE;
         public static final String MODIFICACION = "Lo sentimos, por el momento no se puede modificar la información, " + MAS_TARDE;
@@ -69,6 +70,7 @@ public class Constantes{
         public static final String COMBO_TIPO = "Lo sentimos, no se pudieron cargar los tipos de promoción, " + MAS_TARDE;
         public static final String COMBO_CATEGORIA = "Lo sentimos, no se pudieron cargar las categorías, " + MAS_TARDE;
         public static final String COMBO_ROL = "Lo sentimos, no se pudieron cargar los roles, " + MAS_TARDE;
+        public static final String CAMPOS_NUMERICOS = "Los campos deben ser numéricos, " + VERIFICAR;
     }
     
     public class Excepciones{
@@ -78,7 +80,7 @@ public class Constantes{
         public static final String JSON_SYNTAX = "Se ha encontrado un error de sintaxis en el JSON proporcionado, " + VERIFICAR;
         public static final String MALFORMED_URL = "Se ha encontrado un error en la dirección de conexión, " + VERIFICAR;
         public static final String PERSISTENCE = "El correo ya ha sido registrado, " + VERIFICAR;
-        public static final String IO = "No se pudo realizar la solicitud correspondiente, " + MAS_TARDE;
+        public static final String IO = "Error de conexión con la Base de Datos, por favor inténtelo más tarde";
     }
     
     public class Pantallas{
