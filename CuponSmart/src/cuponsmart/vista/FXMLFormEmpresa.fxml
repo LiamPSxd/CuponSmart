@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.net.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
@@ -22,8 +23,8 @@
                <children>
                   <AnchorPane id="tarjeta" layoutX="15.0" prefHeight="650.0" prefWidth="650.0" stylesheets="@../../utils/Estilos.css">
                      <children>
-                        <Circle fx:id="imagenLogo" fill="#f7f4f5" layoutX="150.0" layoutY="150.0" radius="120.0" stroke="#f7f4f5" strokeLineJoin="ROUND" strokeType="INSIDE" />
-                        <Button id="botonSeleccion" fx:id="btnSeleccionarLogo" layoutX="120.0" layoutY="290.0" mnemonicParsing="false" onAction="#seleccionarLogo" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
+                        <Circle fx:id="imagenLogo" fill="#f7f4f5" layoutX="150.0" layoutY="190.0" radius="120.0" stroke="#f7f4f5" strokeLineJoin="ROUND" strokeType="INSIDE" />
+                        <Button id="botonSeleccion" fx:id="btnSeleccionarLogo" layoutX="120.0" layoutY="280.0" mnemonicParsing="false" onAction="#seleccionarLogo" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>

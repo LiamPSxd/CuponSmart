@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import java.net.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
@@ -11,29 +12,21 @@
 
 <AnchorPane id="fondo" prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: #ebe4d8;" stylesheets="@../../utils/Estilos.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cuponsmart.controlador.FXMLGestionUsuarioController">
    <children>
-      <Label id="titulo" layoutX="500.0" layoutY="25.0" stylesheets="@../../utils/Estilos.css" text="Gestión de Usuarios" textAlignment="CENTER">
+      <Label id="titulo" layoutX="508.0" layoutY="25.0" stylesheets="@../../utils/Estilos.css" text="Gestión de Usuarios" textAlignment="CENTER">
          <font>
             <Font name="Century Gothic Bold" size="48.0" />
          </font>
       </Label>
       <AnchorPane id="tarjeta" layoutX="22.0" layoutY="110.0" prefHeight="630.0" prefWidth="1315.0" stylesheets="@../../utils/Estilos.css">
          <children>
-            <TextField id="entrada" fx:id="txtBusqueda" layoutX="50.0" layoutY="50.0" prefHeight="50.0" prefWidth="350.0" promptText="Buscar usuario" stylesheets="@../../utils/Estilos.css">
+            <TextField id="entrada" fx:id="txtBusqueda" layoutX="50.0" layoutY="50.0" prefHeight="50.0" prefWidth="600.0" promptText="Buscar usuario" stylesheets="@../../utils/Estilos.css">
                <font>
                   <Font name="Century Gothic" size="24.0" />
                </font>
+               <padding>
+                  <Insets left="65.0" />
+               </padding>
             </TextField>
-            <Label id="subtitulo" layoutX="430.0" layoutY="55.0" stylesheets="@../../utils/Estilos.css" text="Filtro">
-               <font>
-                  <Font name="Century Gothic Bold" size="30.0" />
-               </font>
-            </Label>
-            <ComboBox id="entrada" fx:id="comboFiltro" layoutX="510.0" layoutY="50.0" prefHeight="50.0" prefWidth="200.0" promptText="Seleccione filtro" stylesheets="@../../utils/Estilos.css" />
-            <Button id="botonSeleccion" layoutX="730.0" layoutY="45.0" mnemonicParsing="false" onAction="#buscarUsuario" prefHeight="60.0" prefWidth="200.0" stylesheets="@../../utils/Estilos.css" text="Buscar">
-               <font>
-                  <Font name="Century Gothic Bold" size="24.0" />
-               </font>
-            </Button>
             <Button id="botonSeleccion" fx:id="btnRegistrar" layoutX="1045.0" layoutY="45.0" mnemonicParsing="false" onAction="#registrarUsuario" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
                <font>
                   <Font name="System Bold" size="18.0" />
@@ -53,7 +46,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1000.0" prefWidth="1300.0" style="-fx-background-color: #f2eee9;">
                      <children>
-                        <TableView id="entrada" fx:id="tbUsuarios" layoutX="25.0" prefHeight="995.0" prefWidth="1260.0" style="-fx-font-size: 20;" stylesheets="@../../utils/Estilos.css">
+                        <TableView id="entrada" fx:id="tbUsuarios" layoutX="20.0" prefHeight="995.0" prefWidth="1260.0" style="-fx-font-size: 20;" stylesheets="@../../utils/Estilos.css">
                           <columns>
                             <TableColumn fx:id="clmNombre" prefWidth="75.0" text="Nombre" />
                             <TableColumn fx:id="clmApellidoPaterno" prefWidth="75.0" text="Apellido Paterno" />
@@ -70,6 +63,11 @@
                   </AnchorPane>
               </content>
             </ScrollPane>
+            <Button id="botonSeleccion" fx:id="imageBusqueda" layoutX="55.0" layoutY="53.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" stylesheets="@../../utils/Estilos.css">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </children>

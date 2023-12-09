@@ -22,38 +22,38 @@
                <children>
                   <AnchorPane id="tarjeta" layoutX="15.0" prefHeight="700.0" prefWidth="650.0" stylesheets="@../../utils/Estilos.css">
                      <children>
-                        <Circle fx:id="imagenFoto" fill="#f7f4f5" layoutX="150.0" layoutY="150.0" radius="120.0" stroke="#f7f4f5" strokeLineJoin="ROUND" strokeType="INSIDE" />
-                        <Button id="botonSeleccion" fx:id="btnSeleccionarFoto" layoutX="120.0" layoutY="290.0" mnemonicParsing="false" onAction="#seleccionarFoto" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
+                        <Circle fx:id="imagenFoto" fill="#f7f4f5" layoutX="150.0" layoutY="220.0" radius="120.0" stroke="#f7f4f5" strokeLineJoin="ROUND" strokeType="INSIDE" />
+                        <Button id="botonSeleccion" fx:id="btnSeleccionarFoto" layoutX="120.0" layoutY="310.0" mnemonicParsing="false" onAction="#seleccionarFoto" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Button>
-                        <Label id="subtitulo" layoutX="300.0" layoutY="50.0" stylesheets="@../../utils/Estilos.css" text="Nombre">
+                        <Label id="subtitulo" layoutX="300.0" layoutY="45.0" stylesheets="@../../utils/Estilos.css" text="Nombre">
                            <font>
                               <Font name="Century Gothic Bold" size="30.0" />
                            </font>
                         </Label>
-                        <TextField id="entrada" fx:id="txtNombre" layoutX="320.0" layoutY="100.0" prefHeight="50.0" prefWidth="300.0" promptText="2x1" stylesheets="@../../utils/Estilos.css">
+                        <TextField id="entrada" fx:id="txtNombre" layoutX="320.0" layoutY="95.0" prefHeight="50.0" prefWidth="300.0" promptText="2x1" stylesheets="@../../utils/Estilos.css">
                            <font>
                               <Font name="Century Gothic" size="24.0" />
                            </font>
                         </TextField>
-                        <Label id="subtitulo" layoutX="300.0" layoutY="180.0" stylesheets="@../../utils/Estilos.css" text="Número de Cupones">
+                        <Label id="subtitulo" layoutX="300.0" layoutY="175.0" stylesheets="@../../utils/Estilos.css" text="Número de Cupones">
                            <font>
                               <Font name="Century Gothic Bold" size="30.0" />
                            </font>
                         </Label>
-                        <TextField id="entrada" fx:id="txtNumeroCupones" layoutX="320.0" layoutY="230.0" prefHeight="50.0" prefWidth="300.0" promptText="10" stylesheets="@../../utils/Estilos.css">
+                        <TextField id="entrada" fx:id="txtNumeroCupones" layoutX="320.0" layoutY="225.0" prefHeight="50.0" prefWidth="300.0" promptText="10" stylesheets="@../../utils/Estilos.css">
                            <font>
                               <Font name="Century Gothic" size="24.0" />
                            </font>
                         </TextField>
-                        <Label id="subtitulo" layoutX="300.0" layoutY="310.0" stylesheets="@../../utils/Estilos.css" text="Código">
+                        <Label id="subtitulo" layoutX="300.0" layoutY="305.0" stylesheets="@../../utils/Estilos.css" text="Código">
                            <font>
                               <Font name="Century Gothic Bold" size="30.0" />
                            </font>
                         </Label>
-                        <TextField id="entrada" fx:id="txtCodigo" layoutX="320.0" layoutY="360.0" prefHeight="50.0" prefWidth="300.0" promptText="l4mbd450ft" stylesheets="@../../utils/Estilos.css">
+                        <TextField id="entrada" fx:id="txtCodigo" layoutX="320.0" layoutY="355.0" prefHeight="50.0" prefWidth="300.0" promptText="l4mbd450ft" stylesheets="@../../utils/Estilos.css">
                            <font>
                               <Font name="Century Gothic" size="24.0" />
                            </font>
