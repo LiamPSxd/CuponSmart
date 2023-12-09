@@ -9,11 +9,12 @@ import cuponsmart.modelo.pojo.respuesta.interfaz.IRespuesta;
 import cuponsmart.vista.CuponSmart;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,13 +23,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import utils.Constantes;
@@ -39,9 +37,9 @@ public class FXMLGestionUsuarioController implements Initializable, IRespuesta{
     private ObservableList<Usuario> usuarios;
     
     @FXML
-    private TextField txtBusqueda;
+    private Button imageBusqueda;
     @FXML
-    private ComboBox<String> comboFiltro;
+    private TextField txtBusqueda;
     @FXML
     private Button btnRegistrar;
     @FXML
@@ -67,19 +65,10 @@ public class FXMLGestionUsuarioController implements Initializable, IRespuesta{
     public void initialize(URL url, ResourceBundle rb){
         this.usuarios = FXCollections.observableArrayList();
         
-        colocarImagenBoton("/img/registrar.png", btnRegistrar);
-        colocarImagenBoton("/img/modificar.png", btnModificar);
-        colocarImagenBoton("/img/eliminar.png", btnEliminar);
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/registrar.png"), btnRegistrar);
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/modificar.png"), btnModificar);
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/eliminar.png"), btnEliminar);
         configurarTabla();
-        
-        comboFiltro.getItems().addAll("Nombre", "Username", "Rol");
-    }
-    
-    private void colocarImagenBoton(String resource, Button boton){
-        URL url = getClass().getResource(resource);
-        Image imagen = new Image(url.toString(), 32, 32, false, true);
-        
-        boton.setGraphic(new ImageView(imagen));
     }
     
     private void configurarTabla(){
@@ -91,62 +80,60 @@ public class FXMLGestionUsuarioController implements Initializable, IRespuesta{
         clmEmpresa.setCellValueFactory(new PropertyValueFactory("empresa"));
     }
     
-    public void inicializarInformacion(List<Usuario> usuarios){
-        usuarios.forEach((usuario) -> {
-            usuario.setRol(
-                CatalogoDAO.obtenerRolPorId(usuario.getIdRol()).getNombre()
-            );
+    private void cargarUsuarios(List<Usuario> usuarios){
+        if(Verificaciones.Datos.listaNoVacia(usuarios)){
+            usuarios.forEach((usuario) -> {
+                usuario.setRol(
+                    CatalogoDAO.obtenerRolPorId(usuario.getIdRol()).getNombre()
+                );
+
+                usuario.setEmpresa(
+                    EmpresaDAO.obtenerEmpresaPorId(usuario.getIdEmpresa()).getNombre()
+                );
+            });
+
+            this.usuarios.clear();
+            this.usuarios.addAll(usuarios);
+
+            tbUsuarios.setItems(this.usuarios);
+        }else
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "No se pudieron cargar los usuarios, por favor inténtelo más tarde", Alert.AlertType.WARNING);
+    }
+    
+    private void inicializarBusqueda(){
+        if(this.usuarios != null){
+            FilteredList<Usuario> filtro = new FilteredList(this.usuarios, p -> true);
             
-            usuario.setEmpresa(
-                EmpresaDAO.obtenerEmpresaPorId(usuario.getIdEmpresa()).getNombre()
-            );
-        });
-        
-        this.usuarios.clear();
-        this.usuarios.addAll(usuarios);
-        
-        tbUsuarios.setItems(this.usuarios);
+            txtBusqueda.textProperty().addListener((observable, oldValue, newValue) -> {
+                filtro.setPredicate((busqueda) -> {
+                    if(newValue == null || newValue.isEmpty()) return true;
+                    
+                    String lower = newValue.toLowerCase();
+                    
+                    if(busqueda.getNombre().toLowerCase().contains(lower)) return true;
+                    
+                    if(busqueda.getUsername().toLowerCase().contains(lower)) return true;
+                    
+                    if(busqueda.getRol().toLowerCase().contains(lower)) return true;
+                    
+                    return false;
+                });
+                
+                SortedList<Usuario> usuariosFiltrados = new SortedList(filtro);
+                usuariosFiltrados.comparatorProperty().bind(tbUsuarios.comparatorProperty());
+                tbUsuarios.setItems(usuariosFiltrados);
+            });
+        }
+    }
+    
+    public void inicializarInformacion(List<Usuario> usuarios){
+        cargarUsuarios(usuarios);
+        inicializarBusqueda();
     }
     
     @Override
     public void notificarGuardado(){
-        inicializarInformacion(UsuarioDAO.obtenerUsuarios());
-    }
-
-    @FXML
-    private void buscarUsuario(ActionEvent event){
-        String busqueda = txtBusqueda.getText();
-        String filtro = comboFiltro.getSelectionModel().getSelectedItem();
-        
-        if(Verificaciones.Datos.cadena(busqueda) && Verificaciones.Datos.cadena(filtro)){
-            List<Usuario> resultado = new ArrayList();
-            
-            switch(filtro){
-                case "Nombre":
-                    resultado.add(UsuarioDAO.obtenerUsuarioPorNombre(busqueda));
-                    inicializarInformacion(resultado);
-                    break;
-                case "Username":
-                    resultado.add(UsuarioDAO.obtenerUsuarioPorUsername(busqueda));
-                    inicializarInformacion(resultado);
-                    break;
-                case "Rol":
-                    CatalogoDAO.obtenerRoles().forEach((rol) -> {
-                        if(rol.getNombre().equals(busqueda)){
-                            inicializarInformacion(UsuarioDAO.obtenerUsuariosPorIdRol(rol.getId()));
-                        }
-                    });
-                    break;
-                default:
-                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, "Filtro no encontrado", Alert.AlertType.ERROR);
-            }
-        }else if(!Verificaciones.Datos.cadena(busqueda)){
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.BUSQUEDA, Alert.AlertType.WARNING);
-        }else if(!Verificaciones.Datos.cadena(filtro)){
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.FILTRO, Alert.AlertType.WARNING);
-        }else{
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.BUSQUEDA_FILTRO, Alert.AlertType.WARNING);
-        }
+        cargarUsuarios(UsuarioDAO.obtenerUsuarios());
     }
     
     private void irPantallaFormUsuario(Usuario usuario){
@@ -176,11 +163,10 @@ public class FXMLGestionUsuarioController implements Initializable, IRespuesta{
     private void modificarUsuario(ActionEvent event){
         Usuario usuario = tbUsuarios.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.claseNoNula(usuario)){
+        if(Verificaciones.Datos.claseNoNula(usuario))
             irPantallaFormUsuario(usuario);
-        }else{
+        else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.SIN_SELECCION, "Debe seleccionar un usuario para su modificación", Alert.AlertType.WARNING);
-        }
     }
 
     @FXML
@@ -192,14 +178,12 @@ public class FXMLGestionUsuarioController implements Initializable, IRespuesta{
                 Mensaje mensaje = UsuarioDAO.eliminarUsuario(usuario.getId());
                 
                 if(!mensaje.getError()){
-                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, mensaje.getMensaje(), Alert.AlertType.INFORMATION);
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Usuario eliminado exitosamente", Alert.AlertType.INFORMATION);
                     notificarGuardado();
-                }else{
+                }else
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
-                }
             }
-        }else{
+        }else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.SIN_SELECCION, "Debe seleccionar un usuario para su eliminación", Alert.AlertType.WARNING);
-        }
     }
 }

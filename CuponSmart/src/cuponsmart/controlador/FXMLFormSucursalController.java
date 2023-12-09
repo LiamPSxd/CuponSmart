@@ -37,6 +37,7 @@ public class FXMLFormSucursalController implements Initializable{
     private Integer idEstado;
     private Integer idMunicipio;
     private Integer idCiudad;
+    private Boolean isRegistrado;
     
     @FXML
     private Label txtTitulo;
@@ -189,31 +190,40 @@ public class FXMLFormSucursalController implements Initializable{
     }
     
     private void registrarSucursal(Sucursal sucursal, Direccion direccion){
-        Mensaje mensaje = DireccionDAO.registrarDireccion(direccion);
+        this.isRegistrado = false;
         
-        if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
-            Direccion dir = DireccionDAO.obtenerDirecciones().stream().filter((d) -> (
-                direccion.getCalle().equals(d.getCalle()) &&
-                direccion.getColonia().equals(d.getColonia()) &&
-                direccion.getNumero().equals(d.getNumero()) &&
-                direccion.getCodigoPostal().equals(d.getCodigoPostal()) &&
-                direccion.getLatitud().equals(d.getLatitud()) &&
-                direccion.getLongitud().equals(d.getLongitud()) &&
-                direccion.getIdCiudad().equals(d.getIdCiudad())
-            )).findFirst().get();
-            
-            sucursal.setIdDireccion(dir.getId());
-            
-            mensaje = SucursalDAO.registrarSucursal(sucursal);
-            
+        SucursalDAO.obtenerSucursalesPorIdEmpresa(this.idEmpresa).forEach((s) -> {
+            this.isRegistrado = sucursal.getNombre().equals(s.getNombre()) && sucursal.getNombreEncargado().equals(s.getNombreEncargado()) && sucursal.getTelefono().equals(s.getTelefono());
+        });
+        
+        if(!this.isRegistrado){
+            Mensaje mensaje = DireccionDAO.registrarDireccion(direccion);
+        
             if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
-                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, mensaje.getMensaje(), Alert.AlertType.INFORMATION);
-                observador.notificarGuardado();
-                cerrarVentana();
+                Integer idDireccion = DireccionDAO.obtenerDirecciones().stream().filter((d) -> (
+                    direccion.getCalle().equals(d.getCalle()) &&
+                    direccion.getColonia().equals(d.getColonia()) &&
+                    direccion.getNumero().equals(d.getNumero()) &&
+                    direccion.getCodigoPostal().equals(d.getCodigoPostal()) &&
+                    direccion.getLatitud().equals(d.getLatitud()) &&
+                    direccion.getLongitud().equals(d.getLongitud()) &&
+                    direccion.getIdCiudad().equals(d.getIdCiudad())
+                )).findFirst().get().getId();
+
+                sucursal.setIdDireccion(idDireccion);
+
+                mensaje = SucursalDAO.registrarSucursal(sucursal);
+
+                if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Sucursal registrada exitosamente", Alert.AlertType.INFORMATION);
+                    observador.notificarGuardado();
+                    cerrarVentana();
+                }else
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
             }else
                 Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
         }else
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, "La sucursal ya se encuentra registrada", Alert.AlertType.ERROR);
     }
     
     private void moficarSucursal(){
@@ -223,7 +233,7 @@ public class FXMLFormSucursalController implements Initializable{
             mensaje = SucursalDAO.modificarSucursal(this.sucursal);
             
             if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
-                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, mensaje.getMensaje(), Alert.AlertType.INFORMATION);
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Sucursal modificada exitosamente", Alert.AlertType.INFORMATION);
                 observador.notificarGuardado();
                 cerrarVentana();
             }else
@@ -251,31 +261,36 @@ public class FXMLFormSucursalController implements Initializable{
         if(Verificaciones.Datos.cadena(nombre) && Verificaciones.Datos.cadena(nombreEncargado) && Verificaciones.Datos.cadena(telefono) && Verificaciones.Datos.cadena(calle) &&
             Verificaciones.Datos.cadena(colonia) && Verificaciones.Datos.cadena(numero) && Verificaciones.Datos.cadena(codigoPostal) && Verificaciones.Datos.cadena(latitud) &&
             Verificaciones.Datos.cadena(longitud) && Verificaciones.Datos.claseNoNula(estado) && Verificaciones.Datos.claseNoNula(municipio) && Verificaciones.Datos.claseNoNula(ciudad)){
-            switch(btnFinalizar.getText()){
-                case "Registrar":
-                    registrarSucursal(
-                        new Sucursal(0, nombre, telefono, nombreEncargado, 0, this.idEmpresa),
-                        new Direccion(0, calle, numero, codigoPostal, colonia, latitud, longitud, this.idCiudad)
-                    );
-                    break;
-                case "Modificar":
-                    this.sucursal.setNombre(nombre);
-                    this.sucursal.setNombreEncargado(nombreEncargado);
-                    this.sucursal.setTelefono(telefono);
-                    
-                    this.direccion.setCalle(calle);
-                    this.direccion.setColonia(colonia);
-                    this.direccion.setNumero(numero);
-                    this.direccion.setCodigoPostal(codigoPostal);
-                    this.direccion.setLatitud(latitud);
-                    this.direccion.setLongitud(longitud);
-                    this.direccion.setIdCiudad(this.idCiudad);
-                    
-                    moficarSucursal();
-                    break;
-                default:
-                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Retornos.SELECCION, Alert.AlertType.ERROR);
-            }
+            if(telefono.length() == 10 && codigoPostal.length() == 5){
+                switch(btnFinalizar.getText()){
+                    case "Registrar":
+                        registrarSucursal(
+                            new Sucursal(0, nombre, telefono, nombreEncargado, 0, this.idEmpresa),
+                            new Direccion(0, calle, numero, codigoPostal, colonia, latitud, longitud, this.idCiudad)
+                        );
+                        break;
+                    case "Modificar":
+                        this.sucursal.setNombre(nombre);
+                        this.sucursal.setNombreEncargado(nombreEncargado);
+                        this.sucursal.setTelefono(telefono);
+
+                        this.direccion.setCalle(calle);
+                        this.direccion.setColonia(colonia);
+                        this.direccion.setNumero(numero);
+                        this.direccion.setCodigoPostal(codigoPostal);
+                        this.direccion.setLatitud(latitud);
+                        this.direccion.setLongitud(longitud);
+                        this.direccion.setIdCiudad(this.idCiudad);
+
+                        moficarSucursal();
+                        break;
+                    default:
+                        Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Retornos.SELECCION, Alert.AlertType.ERROR);
+                }
+            }else if(telefono.length() != 10)
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "El teléfono debe tener 10 dígitos, favor de verificarlo", Alert.AlertType.WARNING);
+            else if(codigoPostal.length() != 5)
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "El código postal debe tener 5 dígitos, favor de verificarlo", Alert.AlertType.WARNING);
         }else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.CAMPOS_VACIOS, Constantes.Errores.CAMPOS_VACIOS, Alert.AlertType.WARNING);
     }

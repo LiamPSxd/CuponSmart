@@ -11,11 +11,12 @@ import cuponsmart.modelo.pojo.respuesta.interfaz.IRespuesta;
 import cuponsmart.vista.CuponSmart;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,13 +25,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import utils.Constantes;
@@ -42,9 +40,9 @@ public class FXMLGestionSucursalController implements Initializable, IRespuesta{
     private Usuario administradorComercial;
     
     @FXML
-    private TextField txtBusqueda;
+    private Button imageBusqueda;
     @FXML
-    private ComboBox<String> comboFiltro;
+    private TextField txtBusqueda;
     @FXML
     private Button btnRegistrar;
     @FXML
@@ -68,19 +66,10 @@ public class FXMLGestionSucursalController implements Initializable, IRespuesta{
     public void initialize(URL url, ResourceBundle rb){
         this.sucursales = FXCollections.observableArrayList();
         
-        colocarImagenBoton("/img/registrar.png", btnRegistrar);
-        colocarImagenBoton("/img/modificar.png", btnModificar);
-        colocarImagenBoton("/img/eliminar.png", btnEliminar);
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/registrar.png"), btnRegistrar);
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/modificar.png"), btnModificar);
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/eliminar.png"), btnEliminar);
         configurarTabla();
-        
-        comboFiltro.getItems().addAll("Nombre", "Dirección");
-    }
-    
-    private void colocarImagenBoton(String resource, Button boton){
-        URL url = getClass().getResource(resource);
-        Image imagen = new Image(url.toString(), 32, 32, false, true);
-        
-        boton.setGraphic(new ImageView(imagen));
     }
     
     private void configurarTabla(){
@@ -91,79 +80,61 @@ public class FXMLGestionSucursalController implements Initializable, IRespuesta{
         clmEmpresa.setCellValueFactory(new PropertyValueFactory("empresa"));
     }
     
+    private void cargarSucursales(List<Sucursal> sucursales){
+        if(Verificaciones.Datos.listaNoVacia(sucursales)){
+            sucursales.forEach((sucursal) -> {
+                Direccion direccion = DireccionDAO.obtenerDireccionPorId(sucursal.getIdDireccion());
+                sucursal.setDireccion(direccion.getCalle() + " " + direccion.getColonia() + " " + direccion.getNumero());
+
+                sucursal.setEmpresa(
+                    EmpresaDAO.obtenerEmpresaPorId(sucursal.getIdEmpresa()).getNombreComercial()
+                );
+            });
+
+            this.sucursales.clear();
+            this.sucursales.addAll(sucursales);
+
+            tbSucursales.setItems(this.sucursales);
+        }else
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "No se pudieron cargar las sucursales, por favor inténtelo más tarde", Alert.AlertType.WARNING);
+    }
+    
+    private void inicializarBusqueda(){
+        if(this.sucursales != null){
+            FilteredList<Sucursal> filtro = new FilteredList(this.sucursales, p -> true);
+            
+            txtBusqueda.textProperty().addListener((observable, oldValue, newValue) -> {
+                filtro.setPredicate((busqueda) -> {
+                    if(newValue == null || newValue.isEmpty()) return true;
+                    
+                    String lower = newValue.toLowerCase();
+                    
+                    if(busqueda.getNombre().toLowerCase().contains(lower)) return true;
+                    
+                    if(busqueda.getDireccion().toLowerCase().contains(lower)) return true;
+                    
+                    return false;
+                });
+                
+                SortedList<Sucursal> sucursalesFiltradas = new SortedList(filtro);
+                sucursalesFiltradas.comparatorProperty().bind(tbSucursales.comparatorProperty());
+                tbSucursales.setItems(sucursalesFiltradas);
+            });
+        }
+    }
+    
     public void inicializarInformacion(List<Sucursal> sucursales, Usuario administradorComercial){
         this.administradorComercial = administradorComercial;
         
-        sucursales.forEach((sucursal) -> {
-            Direccion direccion = DireccionDAO.obtenerDireccionPorId(sucursal.getIdDireccion());
-            sucursal.setDireccion(direccion.getCalle() + " " + direccion.getColonia() + " " + direccion.getNumero());
-            
-            sucursal.setEmpresa(
-                EmpresaDAO.obtenerEmpresaPorId(sucursal.getIdEmpresa()).getNombreComercial()
-            );
-        });
-        
-        this.sucursales.clear();
-        this.sucursales.addAll(sucursales);
-        
-        tbSucursales.setItems(this.sucursales);
+        cargarSucursales(sucursales);
+        inicializarBusqueda();
     }
     
     @Override
     public void notificarGuardado(){
-        if(Verificaciones.Datos.claseNula(this.administradorComercial))
-            inicializarInformacion(SucursalDAO.obtenerSucursales(), null);
-        else
-            inicializarInformacion(
-                SucursalDAO.obtenerSucursalesPorIdEmpresa(this.administradorComercial.getIdEmpresa()),
-                this.administradorComercial
-            );
-    }
-
-    @FXML
-    private void buscarSucursal(ActionEvent event){
-        String busqueda = txtBusqueda.getText();
-        String filtro = comboFiltro.getSelectionModel().getSelectedItem();
-        
-        if(Verificaciones.Datos.cadena(busqueda) && Verificaciones.Datos.cadena(filtro)){
-            switch(filtro){
-                case "Nombre":
-                    List<Sucursal> scs = SucursalDAO.obtenerSucursalesPorNombre(busqueda);
-                    
-                    if(Verificaciones.Datos.claseNula(this.administradorComercial))
-                        inicializarInformacion(scs, null);
-                    else{    
-                        scs.removeIf((sucursal) -> (
-                            !this.administradorComercial.getIdEmpresa().equals(sucursal.getIdEmpresa())
-                        ));
-                    
-                        inicializarInformacion(scs, this.administradorComercial);
-                    }
-                    break;
-                case "Dirección":
-                    List<Sucursal> resultado = new ArrayList();
-
-                    this.sucursales.forEach((sucursal) -> {
-                        DireccionDAO.obtenerDireccionesPorCalleColoniaNumero(busqueda).forEach((direccion) -> {
-                            if(sucursal.getIdDireccion().equals(direccion.getId())) resultado.add(sucursal);
-                        });
-                    });
-                    
-                    inicializarInformacion(
-                        resultado,
-                        Verificaciones.Datos.claseNula(this.administradorComercial) ? null : this.administradorComercial
-                    );
-                    break;
-                default:
-                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, "Filtro no encontrado", Alert.AlertType.ERROR);
-            }
-        }else if(!Verificaciones.Datos.cadena(busqueda)){
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.BUSQUEDA, Alert.AlertType.WARNING);
-        }else if(!Verificaciones.Datos.cadena(filtro)){
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.FILTRO, Alert.AlertType.WARNING);
-        }else{
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.BUSQUEDA_FILTRO, Alert.AlertType.WARNING);
-        }
+        cargarSucursales(
+            Verificaciones.Datos.claseNula(this.administradorComercial) ? SucursalDAO.obtenerSucursales() : SucursalDAO.obtenerSucursalesPorIdEmpresa(this.administradorComercial.getIdEmpresa())
+        );
     }
     
     private void irPantallaFormSucursal(Sucursal sucursal, Integer idEmpresa){
@@ -196,33 +167,30 @@ public class FXMLGestionSucursalController implements Initializable, IRespuesta{
     private void modificarSucursal(ActionEvent event){
         Sucursal sucursal = tbSucursales.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.claseNoNula(sucursal)){
+        if(Verificaciones.Datos.claseNoNula(sucursal))
             irPantallaFormSucursal(
                 sucursal,
                 Verificaciones.Datos.claseNula(this.administradorComercial) ? 0 : this.administradorComercial.getIdEmpresa()
             );
-        }else{
+        else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.SIN_SELECCION, "Debe seleccionar una sucursal para su modificación", Alert.AlertType.WARNING);
-        }
     }
 
     @FXML
     private void eliminarSucursal(ActionEvent event){
         Sucursal sucursal = tbSucursales.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.claseNoNula(sucursal)){
+        if(Verificaciones.Datos.claseNoNula(sucursal))
             if(Utilidades.mostrarAlertaConfirmacion(Constantes.Pantallas.CONFIRMAR_ELIMINACION, "¿Está seguro de eliminar la sucursal " + sucursal.getNombre() + "?")){
                 Mensaje mensaje = SucursalDAO.eliminarSucursal(sucursal.getId());
                 
                 if(!mensaje.getError()){
-                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, mensaje.getMensaje(), Alert.AlertType.INFORMATION);
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Sucursal eliminada exitosamente", Alert.AlertType.INFORMATION);
                     notificarGuardado();
-                }else{
+                }else
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
-                }
             }
-        }else{
+        else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.SIN_SELECCION, "Debe seleccionar una sucursal para su eliminación", Alert.AlertType.WARNING);
-        }
     }
 }

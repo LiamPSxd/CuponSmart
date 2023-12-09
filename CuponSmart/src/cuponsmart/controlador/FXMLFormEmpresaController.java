@@ -31,7 +31,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
@@ -90,8 +89,8 @@ public class FXMLFormEmpresaController implements Initializable{
     
     @Override
     public void initialize(URL url, ResourceBundle rb){
-        colocarImagenCircle("/img/noMedia.png", imagenLogo);
-        colocarImagenBoton("/img/foto.png", btnSeleccionarLogo);
+        Utilidades.colocarImagenCircle(getClass().getResource("/img/noMedia.png"), imagenLogo);
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/foto.png"), btnSeleccionarLogo);
         
         descargarEstatus();
         descargarEstados();
@@ -115,18 +114,6 @@ public class FXMLFormEmpresaController implements Initializable{
         comboCiudad.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             this.idCiudad = observable.getValue().getId();
         });
-    }
-    
-    private void colocarImagenCircle(String resource, Circle circle){
-        URL url = getClass().getResource(resource);
-        circle.setFill(new ImagePattern(new Image(url.toString())));
-    }
-    
-    private void colocarImagenBoton(String resource, Button boton){
-        URL url = getClass().getResource(resource);
-        Image imagen = new Image(url.toString(), 32, 32, false, true);
-        
-        boton.setGraphic(new ImageView(imagen));
     }
     
     private void descargarEstatus(){
@@ -220,7 +207,6 @@ public class FXMLFormEmpresaController implements Initializable{
         });
         
         comboEstatus.setDisable(true);
-        btnSeleccionarLogo.setDisable(true);
         
         if(Verificaciones.Datos.claseNoNula(this.empresa) && Verificaciones.Datos.numerico(this.empresa.getId()) &&
             Verificaciones.Datos.claseNoNula(this.direccion) && Verificaciones.Datos.numerico(this.direccion.getId())){
@@ -231,7 +217,6 @@ public class FXMLFormEmpresaController implements Initializable{
             
             txtRFC.setDisable(true);
             comboEstatus.setDisable(false);
-            btnSeleccionarLogo.setDisable(false);
         }
     }
     
@@ -268,10 +253,10 @@ public class FXMLFormEmpresaController implements Initializable{
         cerrarVentana();
     }
     
-    private Boolean cargarLogo(File logo){
+    private Boolean cargarLogo(File logo, Integer idEmpresa){
         try{
             byte[] logoBytes = Files.readAllBytes(logo.toPath());
-            Mensaje mensaje = MediaDAO.registrarLogoEmpresa(this.empresa.getId(), logoBytes);
+            Mensaje mensaje = MediaDAO.registrarLogoEmpresa(idEmpresa, logoBytes);
             
             return !mensaje.getError();
         }catch(IOException e){
@@ -286,18 +271,25 @@ public class FXMLFormEmpresaController implements Initializable{
             Mensaje mensaje = DireccionDAO.registrarDireccion(direccion);
             
             if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
-                Direccion dir = DireccionDAO.obtenerDirecciones().stream().filter((d) -> (
+                Integer idDireccion = DireccionDAO.obtenerDirecciones().stream().filter((d) -> (
                     direccion.getCalle().equals(d.getCalle()) &&
                     direccion.getNumero().equals(d.getNumero()) &&
                     direccion.getCodigoPostal().equals(d.getCodigoPostal()) &&
                     direccion.getIdCiudad().equals(d.getIdCiudad())
-                )).findFirst().get();
+                )).findFirst().get().getId();
 
-                empresa.setIdDireccion(dir.getId());
+                empresa.setIdDireccion(idDireccion);
 
                 mensaje = EmpresaDAO.registrarEmpresa(empresa);
 
                 if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
+                    Integer idEmpresa = EmpresaDAO.obtenerEmpresas().stream().filter((e) -> (
+                        empresa.getRfc().equals(e.getRfc())
+                    )).findFirst().get().getId();
+                    
+                    if(imagenSeleccionada != null && !cargarLogo(imagenSeleccionada, idEmpresa))
+                        Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.MEDIA, Alert.AlertType.ERROR);
+                    
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Empresa registrada exitosamente", Alert.AlertType.INFORMATION);
                     observador.notificarGuardado();
                     cerrarVentana();
@@ -316,9 +308,8 @@ public class FXMLFormEmpresaController implements Initializable{
             mensaje = EmpresaDAO.modificarEmpresa(this.empresa);
             
             if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
-                if(imagenSeleccionada != null)
-                    if(!cargarLogo(imagenSeleccionada))
-                        Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.REGISTRO, Alert.AlertType.ERROR);
+                if(imagenSeleccionada != null && !cargarLogo(imagenSeleccionada, this.empresa.getId()))
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.MEDIA, Alert.AlertType.ERROR);
                 
                 Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Empresa modificada exitosamente", Alert.AlertType.INFORMATION);
                 observador.notificarGuardado();
@@ -355,7 +346,7 @@ public class FXMLFormEmpresaController implements Initializable{
                 switch(btnFinalizar.getText()){
                     case "Registrar":
                         registrarEmpresa(
-                            new Empresa(0, nombre, nombreComercial, "0", nombreRepresentanteLegal, correo, telefono, paginaWeb, rfc, this.idEstatus, 0),
+                            new Empresa(0, nombre, nombreComercial, "", nombreRepresentanteLegal, correo, telefono, paginaWeb, rfc, this.idEstatus, 0),
                             new Direccion(0, calle, numero, codigoPostal, "", "", "", this.idCiudad)
                         );
                         break;

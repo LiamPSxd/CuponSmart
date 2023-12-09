@@ -8,11 +8,12 @@ import cuponsmart.modelo.pojo.respuesta.interfaz.IRespuesta;
 import cuponsmart.vista.CuponSmart;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,13 +22,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import utils.Constantes;
@@ -38,9 +36,9 @@ public class FXMLGestionEmpresaController implements Initializable, IRespuesta{
     private ObservableList<Empresa> empresas;
     
     @FXML
-    private TextField txtBusqueda;
+    private Button imageBusqueda;
     @FXML
-    private ComboBox<String> comboFiltro;
+    private TextField txtBusqueda;
     @FXML
     private Button btnRegistrar;
     @FXML
@@ -66,19 +64,11 @@ public class FXMLGestionEmpresaController implements Initializable, IRespuesta{
     public void initialize(URL url, ResourceBundle rb){
         this.empresas = FXCollections.observableArrayList();
         
-        colocarImagenBoton("/img/registrar.png", btnRegistrar);
-        colocarImagenBoton("/img/modificar.png", btnModificar);
-        colocarImagenBoton("/img/eliminar.png", btnEliminar);
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/busqueda.png"), imageBusqueda);
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/registrar.png"), btnRegistrar);
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/modificar.png"), btnModificar);
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/eliminar.png"), btnEliminar);
         configurarTabla();
-        
-        comboFiltro.getItems().addAll("Nombre", "RFC", "Representante Legal");
-    }
-    
-    private void colocarImagenBoton(String resource, Button boton){
-        URL url = getClass().getResource(resource);
-        Image imagen = new Image(url.toString(), 32, 32, false, true);
-        
-        boton.setGraphic(new ImageView(imagen));
     }
     
     private void configurarTabla(){
@@ -90,52 +80,56 @@ public class FXMLGestionEmpresaController implements Initializable, IRespuesta{
         clmEstatus.setCellValueFactory(new PropertyValueFactory("estatus"));
     }
     
+    private void cargarEmpresas(List<Empresa> empresas){
+        if(Verificaciones.Datos.listaNoVacia(empresas)){
+            empresas.forEach((empresa) -> {
+                empresa.setEstatus(
+                    CatalogoDAO.obtenerEstatusPorId(empresa.getIdEstatus()).getEstado()
+                );
+            });
+
+            this.empresas.clear();
+            this.empresas.addAll(empresas);
+
+            tbEmpresas.setItems(this.empresas);
+        }else
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "No se pudieron cargar las empresas, por favor inténtelo más tarde", Alert.AlertType.WARNING);
+    }
+    
+    private void inicializarBusqueda(){
+        if(this.empresas != null){
+            FilteredList<Empresa> filtro = new FilteredList(this.empresas, p -> true);
+            
+            txtBusqueda.textProperty().addListener((observable, oldValue, newValue) -> {
+                filtro.setPredicate((busqueda) -> {
+                    if(newValue == null || newValue.isEmpty()) return true;
+                    
+                    String lower = newValue.toLowerCase();
+                    
+                    if(busqueda.getNombre().toLowerCase().contains(lower)) return true;
+                    
+                    if(busqueda.getRfc().toLowerCase().contains(lower)) return true;
+                    
+                    if(busqueda.getNombreRepresentanteLegal().toLowerCase().contains(lower)) return true;
+                    
+                    return false;
+                });
+                
+                SortedList<Empresa> empresasFiltradas = new SortedList(filtro);
+                empresasFiltradas.comparatorProperty().bind(tbEmpresas.comparatorProperty());
+                tbEmpresas.setItems(empresasFiltradas);
+            });
+        }
+    }
+    
     public void inicializarInformacion(List<Empresa> empresas){
-        empresas.forEach((empresa) -> {
-            empresa.setEstatus(
-                CatalogoDAO.obtenerEstatusPorId(empresa.getIdEstatus()).getEstado()
-            );
-        });
-        
-        this.empresas.clear();
-        this.empresas.addAll(empresas);
-        
-        tbEmpresas.setItems(this.empresas);
+        cargarEmpresas(empresas);
+        inicializarBusqueda();
     }
     
     @Override
     public void notificarGuardado(){
-        inicializarInformacion(EmpresaDAO.obtenerEmpresas());
-    }
-
-    @FXML
-    private void buscarEmpresa(ActionEvent event){
-        String busqueda = txtBusqueda.getText();
-        String filtro = comboFiltro.getSelectionModel().getSelectedItem();
-        
-        if(Verificaciones.Datos.cadena(busqueda) && Verificaciones.Datos.cadena(filtro)){
-            List<Empresa> resultado = new ArrayList();
-            
-            switch(filtro){
-                case "Nombre":
-                    inicializarInformacion(EmpresaDAO.obtenerEmpresasPorNombre(busqueda));
-                    break;
-                case "RFC":
-                    inicializarInformacion(EmpresaDAO.obtenerEmpresasPorRFC(busqueda));
-                    break;
-                case "Representante Legal":
-                    inicializarInformacion(EmpresaDAO.obtenerEmpresasPorRepresentanteLegal(busqueda));
-                    break;
-                default:
-                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, "Filtro no encontrado", Alert.AlertType.ERROR);
-            }
-        }else if(!Verificaciones.Datos.cadena(busqueda)){
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.BUSQUEDA, Alert.AlertType.WARNING);
-        }else if(!Verificaciones.Datos.cadena(filtro)){
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.FILTRO, Alert.AlertType.WARNING);
-        }else{
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.BUSQUEDA_FILTRO, Alert.AlertType.WARNING);
-        }
+        cargarEmpresas(EmpresaDAO.obtenerEmpresas());
     }
     
     private void irPantallaFormEmpresa(Empresa empresa){
@@ -165,30 +159,27 @@ public class FXMLGestionEmpresaController implements Initializable, IRespuesta{
     private void modificarEmpresa(ActionEvent event){
         Empresa empresa = tbEmpresas.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.claseNoNula(empresa)){
+        if(Verificaciones.Datos.claseNoNula(empresa))
             irPantallaFormEmpresa(empresa);
-        }else{
+        else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.SIN_SELECCION, "Debe seleccionar una empresa para su modificación", Alert.AlertType.WARNING);
-        }
     }
 
     @FXML
     private void eliminarEmpresa(ActionEvent event){
         Empresa empresa = tbEmpresas.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.claseNoNula(empresa)){
+        if(Verificaciones.Datos.claseNoNula(empresa))
             if(Utilidades.mostrarAlertaConfirmacion(Constantes.Pantallas.CONFIRMAR_ELIMINACION, "¿Está seguro de eliminar la empresa " + empresa.getNombreComercial() + "?")){
                 Mensaje mensaje = EmpresaDAO.eliminarEmpresa(empresa.getId());
                 
                 if(!mensaje.getError()){
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Empresa eliminada exitosamente", Alert.AlertType.INFORMATION);
                     notificarGuardado();
-                }else{
+                }else
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
-                }
             }
-        }else{
+        else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.SIN_SELECCION, "Debe seleccionar una empresa para su eliminación", Alert.AlertType.WARNING);
-        }
     }
 }

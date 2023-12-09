@@ -114,6 +114,7 @@ public class FXMLFormUsuarioController implements Initializable{
             rellenarForm();
             
             comboEmpresa.setDisable(false);
+            comboRol.setDisable(true);
         }
     }
     
@@ -127,21 +128,29 @@ public class FXMLFormUsuarioController implements Initializable{
         cerrarVentana();
     }
     
-    private void verificarMensaje(Mensaje mensaje){
+    private void registrarUsuario(Usuario usuario){
+        if(Verificaciones.Datos.claseNula(UsuarioDAO.obtenerUsuarioPorUsername(usuario.getUsername()))){
+            Mensaje mensaje = UsuarioDAO.registrarUsuario(usuario);
+        
+            if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Usuario registrado exitosamente", Alert.AlertType.INFORMATION);
+                observador.notificarGuardado();
+                cerrarVentana();
+            }else
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
+        }else
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, "El username ya se encuentra registrado", Alert.AlertType.ERROR);
+    }
+    
+    private void modificarUsuario(){
+        Mensaje mensaje = UsuarioDAO.modificarUsuario(this.usuario);
+        
         if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, mensaje.getMensaje(), Alert.AlertType.INFORMATION);
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Usuario modificado exitosamente", Alert.AlertType.INFORMATION);
             observador.notificarGuardado();
             cerrarVentana();
         }else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
-    }
-    
-    private void registrarUsuario(Usuario usuario){
-        verificarMensaje(UsuarioDAO.registrarUsuario(usuario));
-    }
-    
-    private void modificarUsuario(){
-        verificarMensaje(UsuarioDAO.modificarUsuario(this.usuario));
     }
 
     @FXML
@@ -160,7 +169,7 @@ public class FXMLFormUsuarioController implements Initializable{
         if(Verificaciones.Datos.cadena(nombre) && Verificaciones.Datos.cadena(apellidoPaterno) && Verificaciones.Datos.cadena(apellidoMaterno) && Verificaciones.Datos.cadena(curp) &&
             Verificaciones.Datos.cadena(username) && Verificaciones.Datos.cadena(correo) && Verificaciones.Datos.cadena(contrasenia) && Verificaciones.Datos.cadena(confirmarContrasenia) &&
             Verificaciones.Datos.claseNoNula(rol) && Verificaciones.Datos.claseNoNula(empresa)){
-            if(contrasenia.equals(confirmarContrasenia))
+            if(curp.length() == 18 && contrasenia.equals(confirmarContrasenia))
                 switch(btnFinalizar.getText()){
                     case "Registrar":
                         registrarUsuario(new Usuario(0, nombre, apellidoPaterno, apellidoMaterno, curp, correo, username, contrasenia, this.idRol, Verificaciones.Datos.numerico(this.idEmpresa) ? this.idEmpresa : 0));
@@ -181,7 +190,9 @@ public class FXMLFormUsuarioController implements Initializable{
                     default:
                         Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Retornos.SELECCION, Alert.AlertType.ERROR);
                 }
-            else
+            else if(curp.length() != 18)
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "El CURP debe tener 18 caracteres, favor de verificarlo", Alert.AlertType.WARNING);
+            else if(!contrasenia.equals(confirmarContrasenia))
                 Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "Las contraseñas no coinciden, favor de verificarlas", Alert.AlertType.WARNING);
         }else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.CAMPOS_VACIOS, Constantes.Errores.CAMPOS_VACIOS, Alert.AlertType.WARNING);

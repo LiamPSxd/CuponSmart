@@ -11,11 +11,12 @@ import cuponsmart.modelo.pojo.respuesta.interfaz.IRespuesta;
 import cuponsmart.vista.CuponSmart;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,13 +25,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import utils.Constantes;
@@ -42,9 +40,9 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
     private Usuario administradorComercial;
     
     @FXML
-    private TextField txtBusqueda;
+    private Button imageBusqueda;
     @FXML
-    private ComboBox<String> comboFiltro;
+    private TextField txtBusqueda;
     @FXML
     private Button btnRegistrar;
     @FXML
@@ -76,19 +74,11 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
     public void initialize(URL url, ResourceBundle rb){
         this.promociones = FXCollections.observableArrayList();
         
-        colocarImagenBoton("/img/registrar.png", btnRegistrar);
-        colocarImagenBoton("/img/modificar.png", btnModificar);
-        colocarImagenBoton("/img/eliminar.png", btnEliminar);
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/busqueda.png"), imageBusqueda);
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/registrar.png"), btnRegistrar);
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/modificar.png"), btnModificar);
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/eliminar.png"), btnEliminar);
         configurarTabla();
-        
-        comboFiltro.getItems().addAll("Fecha de Inicio", "Fecha de Término", "Nombre");
-    }
-    
-    private void colocarImagenBoton(String resource, Button boton){
-        URL url = getClass().getResource(resource);
-        Image imagen = new Image(url.toString(), 32, 32, false, true);
-        
-        boton.setGraphic(new ImageView(imagen));
     }
     
     private void configurarTabla(){
@@ -103,78 +93,68 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
         clmEmpresa.setCellValueFactory(new PropertyValueFactory("empresa"));
     }
     
+    private void cargarPromociones(List<Promocion> promociones){
+        if(Verificaciones.Datos.listaNoVacia(promociones)){
+            promociones.forEach((promocion) -> {
+                promocion.setEstatus(
+                    CatalogoDAO.obtenerEstatusPorId(promocion.getIdEstatus()).getEstado()
+                );
+
+                promocion.setCategoria(
+                    CategoriaDAO.obtenerCategoriaPorId(promocion.getIdCategoria()).getNombre()
+                );
+
+                promocion.setEmpresa(
+                    EmpresaDAO.obtenerEmpresaPorId(promocion.getIdEmpresa()).getNombreComercial()
+                );
+            });
+
+            this.promociones.clear();
+            this.promociones.addAll(promociones);
+
+            tbPromociones.setItems(this.promociones);
+        }else
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "No se pudieron cargar las promociones, por favor inténtelo más tarde", Alert.AlertType.WARNING);
+    }
+    
+    private void inicializarBusqueda(){
+        if(this.promociones != null){
+            FilteredList<Promocion> filtro = new FilteredList(this.promociones, p -> true);
+            
+            txtBusqueda.textProperty().addListener((observable, oldValue, newValue) -> {
+                filtro.setPredicate((busqueda) -> {
+                    if(newValue == null || newValue.isEmpty()) return true;
+                    
+                    String lower = newValue.toLowerCase();
+                    
+                    if(busqueda.getFechaInicio().toLowerCase().contains(lower)) return true;
+                    
+                    if(busqueda.getFechaTermino().toLowerCase().contains(lower)) return true;
+                    
+                    if(busqueda.getNombre().toLowerCase().contains(lower)) return true;
+                    
+                    return false;
+                });
+                
+                SortedList<Promocion> promocionesFiltradas = new SortedList(filtro);
+                promocionesFiltradas.comparatorProperty().bind(tbPromociones.comparatorProperty());
+                tbPromociones.setItems(promocionesFiltradas);
+            });
+        }
+    }
+    
     public void inicializarInformacion(List<Promocion> promociones, Usuario administradorComercial){
         this.administradorComercial = administradorComercial;
         
-        promociones.forEach((promocion) -> {
-            promocion.setEstatus(
-                CatalogoDAO.obtenerEstatusPorId(promocion.getIdEstatus()).getEstado()
-            );
-            
-            promocion.setCategoria(
-                CategoriaDAO.obtenerCategoriaPorId(promocion.getIdCategoria()).getNombre()
-            );
-            
-            promocion.setEmpresa(
-                EmpresaDAO.obtenerEmpresaPorId(promocion.getIdEmpresa()).getNombreComercial()
-            );
-        });
-        
-        this.promociones.clear();
-        this.promociones.addAll(promociones);
-        
-        tbPromociones.setItems(this.promociones);
+        cargarPromociones(promociones);
+        inicializarBusqueda();
     }
     
     @Override
     public void notificarGuardado(){
-        if(Verificaciones.Datos.claseNula(this.administradorComercial))
-            inicializarInformacion(PromocionDAO.obtenerPromociones(), null);
-        else
-            inicializarInformacion(
-                PromocionDAO.obtenerPromocionesPorIdEmpresa(this.administradorComercial.getIdEmpresa()),
-                this.administradorComercial
-            );
-    }
-
-    @FXML
-    private void buscarPromocion(ActionEvent event){
-        String busqueda = txtBusqueda.getText();
-        String filtro = comboFiltro.getSelectionModel().getSelectedItem();
-        
-        if(Verificaciones.Datos.cadena(busqueda) && Verificaciones.Datos.cadena(filtro)){
-            List<Promocion> pms = new ArrayList();
-            
-            switch(filtro){
-                case "Fecha de Inicio":
-                    pms = PromocionDAO.obtenerPromocionesPorFechaInicio(busqueda);
-                    break;
-                case "Fecha de Término":
-                    pms = PromocionDAO.obtenerPromocionesPorFechaTermino(busqueda);
-                    break;
-                case "Nombre":
-                    pms = PromocionDAO.obtenerPromocionesPorNombre(busqueda);
-                    break;
-                default:
-                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, "Filtro no encontrado", Alert.AlertType.ERROR);
-            }
-            
-            if(Verificaciones.Datos.claseNula(this.administradorComercial))
-                inicializarInformacion(pms, null);
-            else{
-                pms.removeIf((promocion) -> (
-                    !this.administradorComercial.getIdEmpresa().equals(promocion.getIdEmpresa())
-                ));
-
-                inicializarInformacion(pms, this.administradorComercial);
-            }
-        }else if(!Verificaciones.Datos.cadena(busqueda)){
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.BUSQUEDA, Alert.AlertType.WARNING);
-        }else if(!Verificaciones.Datos.cadena(filtro)){
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.FILTRO, Alert.AlertType.WARNING);
-        }else{
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.BUSQUEDA_FILTRO, Alert.AlertType.WARNING);
-        }
+        cargarPromociones(
+            Verificaciones.Datos.claseNula(this.administradorComercial) ? PromocionDAO.obtenerPromociones() : PromocionDAO.obtenerPromocionesPorIdEmpresa(this.administradorComercial.getIdEmpresa())
+        );
     }
     
     private void irPantallaFormPromocion(Promocion promocion, Integer idEmpresa){
@@ -207,33 +187,30 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
     private void modificarPromocion(ActionEvent event){
         Promocion promocion = tbPromociones.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.claseNoNula(promocion)){
+        if(Verificaciones.Datos.claseNoNula(promocion))
             irPantallaFormPromocion(
                 promocion,
                 Verificaciones.Datos.claseNula(this.administradorComercial) ? 0 : this.administradorComercial.getId()
             );
-        }else{
+        else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.SIN_SELECCION, "Debe seleccionar una promoción para su modificación", Alert.AlertType.WARNING);
-        }
     }
 
     @FXML
     private void eliminarPromocion(ActionEvent event){
         Promocion promocion = tbPromociones.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.claseNoNula(promocion)){
+        if(Verificaciones.Datos.claseNoNula(promocion))
             if(Utilidades.mostrarAlertaConfirmacion(Constantes.Pantallas.CONFIRMAR_ELIMINACION, "¿Está seguro de eliminar la promoción " + promocion.getNombre() + "?")){
                 Mensaje mensaje = PromocionDAO.eliminarPromocion(promocion.getId());
                 
                 if(!mensaje.getError()){
-                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, mensaje.getMensaje(), Alert.AlertType.INFORMATION);
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Promoción eliminada exitosamente", Alert.AlertType.INFORMATION);
                     notificarGuardado();
-                }else{
+                }else
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
-                }
             }
-        }else{
+        else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.SIN_SELECCION, "Debe seleccionar una promoción para su eliminación", Alert.AlertType.WARNING);
-        }
     }
 }
