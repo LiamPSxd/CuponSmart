@@ -1,5 +1,7 @@
 package cuponsmart.modelo.pojo.entidad;
 
+import javafx.beans.property.SimpleBooleanProperty;
+
 public class Sucursal{
     private Integer id;
     private String nombre;
@@ -9,6 +11,7 @@ public class Sucursal{
     private String direccion;
     private Integer idEmpresa;
     private String empresa;
+    private SimpleBooleanProperty promocion = new SimpleBooleanProperty(false);
     
     public Sucursal(){}
 
@@ -83,5 +86,17 @@ public class Sucursal{
 
     public void setEmpresa(String empresa){
         this.empresa = empresa;
+    }
+    
+    public SimpleBooleanProperty promocionProperty(){
+        return promocion;
+    }
+    
+    public Boolean getPromocion(){
+        return promocionProperty().get();
+    }
+
+    public void setPromocion(Boolean promocion){
+        promocionProperty().set(promocion);
     }
 }
