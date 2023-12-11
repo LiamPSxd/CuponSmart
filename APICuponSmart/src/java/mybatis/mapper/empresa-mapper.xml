@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <update id="modificarEmpresa" parameterType="modelo.pojo.entidad.Empresa">
         UPDATE empresa 
-        SET nombre=#{nombre}, nombreComercial=#{nombreComercial}, logo=#{logo}, nombreRepresentanteLegal=#{nombreRepresentanteLegal}, correo=#{correo}, telefono=#{telefono}, paginaWeb=#{paginaWeb}, idEstatus=#{idEstatus}, idDireccion=#{idDireccion} 
+        SET nombre=#{nombre}, nombreComercial=#{nombreComercial}, nombreRepresentanteLegal=#{nombreRepresentanteLegal}, correo=#{correo}, telefono=#{telefono}, paginaWeb=#{paginaWeb}, idEstatus=#{idEstatus}, idDireccion=#{idDireccion} 
         WHERE id = #{id}
     </update>
     
