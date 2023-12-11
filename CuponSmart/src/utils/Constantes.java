@@ -81,6 +81,7 @@ public class Constantes{
         public static final String MALFORMED_URL = "Se ha encontrado un error en la dirección de conexión, " + VERIFICAR;
         public static final String PERSISTENCE = "El correo ya ha sido registrado, " + VERIFICAR;
         public static final String IO = "Error de conexión con la Base de Datos, por favor inténtelo más tarde";
+        public static final String PARSE = "Error al convertir la fecha, " + VERIFICAR;
     }
     
     public class Pantallas{
