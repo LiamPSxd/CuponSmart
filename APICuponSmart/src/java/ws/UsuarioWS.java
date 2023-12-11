@@ -70,7 +70,7 @@ public class UsuarioWS{
             Gson gson = new Gson();
             Usuario usuario = gson.fromJson(jsonParam, Usuario.class);
             
-            if(Verificaciones.Datos.claseNoNula(usuario) && Verificaciones.Datos.numerico(usuario.getIdRol()) && Verificaciones.Datos.numerico(usuario.getIdEmpresa())){
+            if(Verificaciones.Datos.claseNoNula(usuario) && Verificaciones.Datos.numerico(usuario.getIdRol())){
                 respuesta = UsuarioDAO.registrarUsuario(usuario);
             }else{
                 return (RespuestaUsuario) Verificaciones.Excepciones.badRequest();
