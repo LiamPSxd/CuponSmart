@@ -89,4 +89,11 @@ public class PromocionSucursalWS{
         
         return respuesta;
     }
+    
+    @DELETE
+    @Path("eliminarPromocionSucursales/{idPromocion}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RespuestaPromocionSucursal eliminarPromocionSucursal(@PathParam("idPromocion") Integer idPromocion){
+        return Verificaciones.Datos.numerico(idPromocion) ? PromocionSucursalDAO.eliminarPromocionSucursales(idPromocion) : (RespuestaPromocionSucursal) Verificaciones.Excepciones.badRequest();
+    }
 }
