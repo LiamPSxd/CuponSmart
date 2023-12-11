@@ -27,7 +27,6 @@ import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -98,7 +97,7 @@ public class FXMLFormPromocionController implements Initializable{
     @FXML
     private TableView<Sucursal> tbSucursales;
     @FXML
-    private TableColumn<Boolean, Boolean> clmSeleccion;
+    private TableColumn<Sucursal, Boolean> clmSeleccion;
     @FXML
     private TableColumn clmNombre;
     @FXML
@@ -119,7 +118,6 @@ public class FXMLFormPromocionController implements Initializable{
         descargarTiposPromocion();
         descargarEstatus();
         descargarCategorias();
-        descargarEmpresas();
         
         comboTipo.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             this.idTipo = observable.getValue().getId();
@@ -136,12 +134,12 @@ public class FXMLFormPromocionController implements Initializable{
         comboEmpresa.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             this.idEmpresa = observable.getValue().getId();
             
-            rellenarTabla(this.idEmpresa);
+            rellenarTabla(this.idEmpresa, 0);
         });
     }
     
     private void configurarTabla(){
-        clmSeleccion.setCellValueFactory((param) -> new SimpleBooleanProperty(param.getValue()));
+        clmSeleccion.setCellValueFactory(s -> s.getValue().promocionProperty());
         clmSeleccion.setCellFactory((s) -> new CheckBoxTableCell());
         clmNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
         clmEncargado.setCellValueFactory(new PropertyValueFactory("nombreEncargado"));
@@ -151,7 +149,7 @@ public class FXMLFormPromocionController implements Initializable{
     private void descargarTiposPromocion(){
         List<TipoPromocion> tipos = CatalogoDAO.obtenerTiposPromocion();
         
-        if(Verificaciones.Datos.listaNoVacia(tipos)){
+        if(Verificaciones.listaNoVacia(tipos)){
             comboTipo.getItems().clear();
             comboTipo.getItems().addAll(tipos);
         }else
@@ -161,7 +159,7 @@ public class FXMLFormPromocionController implements Initializable{
     private void descargarEstatus(){
         List<Estatus> estatus = CatalogoDAO.obtenerEstatus();
         
-        if(Verificaciones.Datos.listaNoVacia(estatus)){
+        if(Verificaciones.listaNoVacia(estatus)){
             comboEstatus.getItems().clear();
             comboEstatus.getItems().addAll(estatus);
         }else
@@ -171,39 +169,50 @@ public class FXMLFormPromocionController implements Initializable{
     private void descargarCategorias(){
         List<Categoria> categorias = CategoriaDAO.obtenerCategorias();
         
-        if(Verificaciones.Datos.listaNoVacia(categorias)){
+        if(Verificaciones.listaNoVacia(categorias)){
             comboCategoria.getItems().clear();
             comboCategoria.getItems().addAll(categorias);
         }else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.COMBO_CATEGORIA, Alert.AlertType.ERROR);
     }
     
-    private void descargarEmpresas(){
+    private void descargarEmpresas(Integer idEmpresa){
         List<Empresa> empresas = EmpresaDAO.obtenerEmpresas();
         
-        if(Verificaciones.Datos.numerico(this.idEmpresa)){
+        if(Verificaciones.numerico(idEmpresa)){
             empresas.clear();
-            empresas.add(EmpresaDAO.obtenerEmpresaPorId(this.idEmpresa));
+            empresas.add(EmpresaDAO.obtenerEmpresaPorId(idEmpresa));
         }
         
-        if(Verificaciones.Datos.listaNoVacia(empresas)){
+        if(Verificaciones.listaNoVacia(empresas)){
             comboEmpresa.getItems().clear();
             comboEmpresa.getItems().addAll(empresas);
         }else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.COMBO_EMPRESA, Alert.AlertType.ERROR);
     }
     
-    private void rellenarTabla(Integer idEmpresa){
+    private void rellenarTabla(Integer idEmpresa, Integer idPromocion){
         List<Sucursal> scrs = SucursalDAO.obtenerSucursalesPorIdEmpresa(idEmpresa);
-        scrs.forEach((sucursal) -> {
-            Direccion direccion = DireccionDAO.obtenerDireccionPorId(sucursal.getIdDireccion());
-            sucursal.setDireccion(direccion.getCalle() + " " + direccion.getColonia() + " " + direccion.getNumero());
-        });
+        List<PromocionSucursal> promocionsucursales = PromocionSucursalDAO.obtenerPromocionesSucursalesPorIdPromocion(idPromocion);
         
-        this.sucursales.clear();
-        this.sucursales.addAll(scrs);
-        
-        tbSucursales.setItems(this.sucursales);
+        if(Verificaciones.listaNoVacia(scrs)){
+            scrs.forEach((sucursal) -> {
+                Direccion direccion = DireccionDAO.obtenerDireccionPorId(sucursal.getIdDireccion());
+                sucursal.setDireccion(direccion.getCalle() + " " + direccion.getColonia() + " " + direccion.getNumero());
+                
+                if(Verificaciones.listaNoVacia(promocionsucursales)){
+                    promocionsucursales.forEach((ps) -> {
+                        if(sucursal.getId().equals(ps.getIdSucursal())) sucursal.setPromocion(true);
+                    });
+                }
+            });
+            
+            this.sucursales.clear();
+            this.sucursales.addAll(scrs);
+
+            tbSucursales.setItems(this.sucursales);
+        }else
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "La empresa no cuenta con sucursales a las que aplicar", Alert.AlertType.WARNING);
     }
     
     private void mostrarFoto(String fotoBase64){
@@ -217,7 +226,7 @@ public class FXMLFormPromocionController implements Initializable{
     private void obtenerFoto(){
         Promocion mensaje = MediaDAO.obtenerImagenPromocion(this.promocion.getId());
         
-        if(Verificaciones.Datos.claseNoNula(mensaje) && Verificaciones.Datos.cadena(mensaje.getImagenBase64()))
+        if(Verificaciones.claseNoNula(mensaje) && Verificaciones.cadena(mensaje.getImagenBase64()))
             mostrarFoto(mensaje.getImagenBase64());
     }
     
@@ -234,10 +243,10 @@ public class FXMLFormPromocionController implements Initializable{
         txtRestricciones.setText(this.promocion.getRestricciones());
         comboEstatus.getSelectionModel().select(CatalogoDAO.obtenerEstatusPorId(this.promocion.getIdEstatus()));
         comboCategoria.getSelectionModel().select(CategoriaDAO.obtenerCategoriaPorId(this.promocion.getIdCategoria()));
-        comboEmpresa.getSelectionModel().select(EmpresaDAO.obtenerEmpresaPorId(this.idEmpresa));
+        comboEmpresa.getSelectionModel().select(EmpresaDAO.obtenerEmpresaPorId(this.promocion.getIdEmpresa()));
         
         obtenerFoto();
-        rellenarTabla(this.idEmpresa);
+        rellenarTabla(this.promocion.getIdEmpresa(), this.promocion.getId());
     }
     
     public void inicializarInformacion(Promocion promocion, Integer idEmpresa, IRespuesta observador){
@@ -249,9 +258,14 @@ public class FXMLFormPromocionController implements Initializable{
             if(estatus.getEstado().equals("Activo")) comboEstatus.getSelectionModel().select(estatus);
         });
         
+        descargarEmpresas(this.idEmpresa);
+        
         comboEstatus.setDisable(true);
         
-        if(Verificaciones.Datos.claseNoNula(this.promocion) && Verificaciones.Datos.numerico(this.promocion.getId())){
+        if(Verificaciones.numerico(this.idEmpresa))
+            comboEmpresa.getSelectionModel().select(0);
+        
+        if(Verificaciones.claseNoNula(this.promocion) && Verificaciones.numerico(this.promocion.getId())){
             txtTitulo.setText("Modificar Promoción");
             btnFinalizar.setText("Modificar");
             
@@ -308,33 +322,31 @@ public class FXMLFormPromocionController implements Initializable{
     }
     
     private void registrarPromocion(Promocion promocion){
-        if(!Verificaciones.Datos.numerico(PromocionDAO.obtenerPromocionPorCodigo(promocion.getCodigo()).getId())){
+        if(Verificaciones.claseNula(PromocionDAO.obtenerPromocionPorCodigo(promocion.getCodigo()))){
             Mensaje mensaje = PromocionDAO.registrarPromocion(promocion);
         
-            if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
-                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Promoción registrada exitosamente", Alert.AlertType.INFORMATION);
-
+            if(Verificaciones.claseNoNula(mensaje) && !mensaje.getError()){
                 Integer idPromocion = PromocionDAO.obtenerPromocionesPorIdEmpresa(promocion.getIdEmpresa()).stream().filter((p) -> (
                     promocion.getCodigo().equals(p.getCodigo())
                 )).findFirst().get().getId();
+                
+                for(Sucursal sucursal : tbSucursales.getItems()){
+                    if(sucursal.getPromocion()){
+                        mensaje = PromocionSucursalDAO.registrarPromocionSucursal(new PromocionSucursal(
+                            idPromocion,
+                            sucursal.getId()
+                        ));
 
-                for(int i=0; i<tbSucursales.getItems().size(); i++){
-                    for(TableColumn column : tbSucursales.getVisibleLeafColumn(0).getColumns()){
-                        if(column.getCellData(i).equals(true)){
-                            mensaje = PromocionSucursalDAO.registrarPromocionSucursal(new PromocionSucursal(
-                                idPromocion,
-                                tbSucursales.getItems().get(i).getId()
-                            ));
-
-                            if(Verificaciones.Datos.claseNula(mensaje) && mensaje.getError())
-                                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
-                        }
+                        if(Verificaciones.claseNula(mensaje) && mensaje.getError())
+                            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
                     }
                 }
                 
-                if(imagenSeleccionada != null && !cargarFoto(imagenSeleccionada, idPromocion))
+                if(imagenSeleccionada != null)
+                    if(!cargarFoto(imagenSeleccionada, idPromocion))
                         Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.MEDIA, Alert.AlertType.ERROR);
 
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Promoción registrada exitosamente", Alert.AlertType.INFORMATION);
                 observador.notificarGuardado();
                 cerrarVentana();
             }else
@@ -346,29 +358,25 @@ public class FXMLFormPromocionController implements Initializable{
     private void modificarPromocion(){
         Mensaje mensaje = PromocionDAO.modificarPromocion(this.promocion);
         
-        if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Promoción modificada exitosamente", Alert.AlertType.INFORMATION);
-            
-            for(int i=0; i<tbSucursales.getItems().size(); i++){
-                for(TableColumn column : tbSucursales.getVisibleLeafColumn(0).getColumns()){
-                    if(column.getCellData(i).equals(true)){
-                        PromocionSucursal ps = new PromocionSucursal(
-                            this.promocion.getId(),
-                            tbSucursales.getItems().get(i).getId()
-                        );
-                        
-                        PromocionSucursalDAO.eliminarPromocionSucursal(ps);
-                        mensaje = PromocionSucursalDAO.registrarPromocionSucursal(ps);
-                        
-                        if(Verificaciones.Datos.claseNula(mensaje) && mensaje.getError())
-                            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
-                    }
-                }
+        if(Verificaciones.claseNoNula(mensaje) && !mensaje.getError()){
+            for(Sucursal sucursal : tbSucursales.getItems()){
+                PromocionSucursal ps = new PromocionSucursal(this.promocion.getId(), sucursal.getId());
+                
+                if(sucursal.getPromocion())
+                    mensaje = PromocionSucursalDAO.registrarPromocionSucursal(ps);
+                
+                if(!sucursal.getPromocion())
+                    mensaje = PromocionSucursalDAO.eliminarPromocionSucursal(ps);
+                
+                if(Verificaciones.claseNula(mensaje) && mensaje.getError())
+                        Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
             }
             
-            if(imagenSeleccionada != null && !cargarFoto(imagenSeleccionada, this.promocion.getId()))
-                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.REGISTRO, Alert.AlertType.ERROR);
+            if(imagenSeleccionada != null)
+                if(!cargarFoto(imagenSeleccionada, this.promocion.getId()))
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.REGISTRO, Alert.AlertType.ERROR);
             
+            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Promoción modificada exitosamente", Alert.AlertType.INFORMATION);
             observador.notificarGuardado();
             cerrarVentana();
         }else
@@ -391,15 +399,18 @@ public class FXMLFormPromocionController implements Initializable{
         Categoria categoria = comboCategoria.getSelectionModel().getSelectedItem();
         Empresa empresa = comboEmpresa.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.cadena(nombre) && Verificaciones.Datos.numerico(numeroCupones) && Verificaciones.Datos.cadena(codigo) && Verificaciones.Datos.cadena(fechaInicio) &&
-            Verificaciones.Datos.cadena(fechaTermino) && Verificaciones.Datos.claseNoNula(tipo) && Verificaciones.Datos.numerico(valor) && Verificaciones.Datos.cadena(descripcion) &&
-            Verificaciones.Datos.cadena(restricciones) && Verificaciones.Datos.claseNoNula(estatus) && Verificaciones.Datos.claseNoNula(categoria) && Verificaciones.Datos.claseNoNula(empresa)){
-            if(codigo.length() == 8)
+        if(Verificaciones.cadena(nombre) && Verificaciones.numerico(numeroCupones) && Verificaciones.cadena(codigo) && Verificaciones.cadena(fechaInicio) &&
+            Verificaciones.cadena(fechaTermino) && Verificaciones.claseNoNula(tipo) && Verificaciones.numerico(valor) && Verificaciones.cadena(descripcion) &&
+            Verificaciones.cadena(restricciones) && Verificaciones.claseNoNula(estatus) && Verificaciones.claseNoNula(categoria) && Verificaciones.claseNoNula(empresa)){
+            if(codigo.length() == 8){
                 switch(btnFinalizar.getText()){
                     case "Registrar":
                         registrarPromocion(new Promocion(0, nombre, descripcion, "", fechaInicio, fechaTermino, restricciones, numeroCupones, codigo, valor, this.idEstatus, this.idCategoria, this.idEmpresa, this.idTipo));
                         break;
                     case "Modificar":
+                        if(!this.promocion.getIdEmpresa().equals(this.idEmpresa))
+                            PromocionSucursalDAO.eliminarPromocionSucursales(this.promocion.getId());
+                        
                         this.promocion.setNombre(nombre);
                         this.promocion.setNumeroCupones(numeroCupones);
                         this.promocion.setCodigo(codigo);
@@ -418,9 +429,9 @@ public class FXMLFormPromocionController implements Initializable{
                     default:
                         Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Retornos.SELECCION, Alert.AlertType.ERROR);
                 }
-            else
+            }else
                 Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "El código debe de ser de 8 caracteres, favor de verificarlo", Alert.AlertType.WARNING);
-        }else if(!Verificaciones.Datos.numerico(numeroCupones) || !Verificaciones.Datos.numerico(valor))
+        }else if(!Verificaciones.numerico(numeroCupones) || !Verificaciones.numerico(valor))
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Errores.CAMPOS_NUMERICOS, Alert.AlertType.WARNING);
         else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.CAMPOS_VACIOS, Constantes.Errores.CAMPOS_VACIOS, Alert.AlertType.WARNING);

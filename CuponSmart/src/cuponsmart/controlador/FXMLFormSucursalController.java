@@ -72,7 +72,6 @@ public class FXMLFormSucursalController implements Initializable{
     
     @Override
     public void initialize(URL url, ResourceBundle rb){
-        descargarEmpresas();
         descargarEstados();
         
         comboEmpresa.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -96,15 +95,15 @@ public class FXMLFormSucursalController implements Initializable{
         });
     }
     
-    private void descargarEmpresas(){
+    private void descargarEmpresas(Integer idEmpresa){
         List<Empresa> empresas = EmpresaDAO.obtenerEmpresas();
         
-        if(Verificaciones.Datos.numerico(this.idEmpresa)){
+        if(Verificaciones.numerico(idEmpresa)){
             empresas.clear();
-            empresas.add(EmpresaDAO.obtenerEmpresaPorId(this.idEmpresa));
+            empresas.add(EmpresaDAO.obtenerEmpresaPorId(idEmpresa));
         }
         
-        if(Verificaciones.Datos.listaNoVacia(empresas)){
+        if(Verificaciones.listaNoVacia(empresas)){
             comboEmpresa.getItems().clear();
             comboEmpresa.getItems().addAll(empresas);
         }else
@@ -114,7 +113,7 @@ public class FXMLFormSucursalController implements Initializable{
     private void descargarEstados(){
         List<Estado> estados = CatalogoDAO.obtenerEstados();
         
-        if(Verificaciones.Datos.listaNoVacia(estados)){
+        if(Verificaciones.listaNoVacia(estados)){
             comboEstado.getItems().clear();
             comboEstado.getItems().addAll(estados);
         }else
@@ -124,7 +123,7 @@ public class FXMLFormSucursalController implements Initializable{
     private void descargarMunicipios(Integer idEstado){
         List<Municipio> municipios = CatalogoDAO.obtenerMunicipiosPorEstado(idEstado);
         
-        if(Verificaciones.Datos.listaNoVacia(municipios)){
+        if(Verificaciones.listaNoVacia(municipios)){
             comboMunicipio.getItems().clear();
             comboMunicipio.getItems().addAll(municipios);
         }else
@@ -134,7 +133,7 @@ public class FXMLFormSucursalController implements Initializable{
     private void descargarCiudades(Integer idMunicipio){
         List<Ciudad> ciudades = CiudadDAO.obtenerCiudadesPorIdMunicipio(idMunicipio);
         
-        if(Verificaciones.Datos.listaNoVacia(ciudades)){
+        if(Verificaciones.listaNoVacia(ciudades)){
             comboCiudad.getItems().clear();
             comboCiudad.getItems().addAll(ciudades);
         }else
@@ -146,7 +145,7 @@ public class FXMLFormSucursalController implements Initializable{
         txtNombreEncargado.setText(this.sucursal.getNombreEncargado());
         txtTelefono.setText(this.sucursal.getTelefono());
         
-        comboEmpresa.getSelectionModel().select(EmpresaDAO.obtenerEmpresaPorId(this.idEmpresa));
+        comboEmpresa.getSelectionModel().select(EmpresaDAO.obtenerEmpresaPorId(this.sucursal.getIdEmpresa()));
         
         txtCalle.setText(this.direccion.getCalle());
         txtColonia.setText(this.direccion.getColonia());
@@ -156,22 +155,28 @@ public class FXMLFormSucursalController implements Initializable{
         txtLongitud.setText(this.direccion.getLongitud());
         
         Ciudad ciudad = CiudadDAO.obtenerCiudadPorId(this.direccion.getIdCiudad());
-        comboCiudad.getSelectionModel().select(ciudad);
+        if(Verificaciones.claseNoNula(ciudad)) comboCiudad.getSelectionModel().select(ciudad);
         
         Municipio municipio = CatalogoDAO.obtenerMunicipioPorId(ciudad.getIdMunicipio());
-        comboMunicipio.getSelectionModel().select(municipio);
-        
-        comboEstado.getSelectionModel().select(CatalogoDAO.obtenerEstadoPorId(municipio.getIdEstado()));
+        if(Verificaciones.claseNoNula(municipio)){
+            comboMunicipio.getSelectionModel().select(municipio);
+            comboEstado.getSelectionModel().select(CatalogoDAO.obtenerEstadoPorId(municipio.getIdEstado()));
+        }
     }
     
     public void inicializarInformacion(Sucursal sucursal, Integer idEmpresa, IRespuesta observador){
         this.sucursal = sucursal;
-        this.direccion = Verificaciones.Datos.claseNoNula(this.sucursal) ? DireccionDAO.obtenerDireccionPorId(this.sucursal.getIdDireccion()) : null;
+        this.direccion = Verificaciones.claseNoNula(this.sucursal) ? DireccionDAO.obtenerDireccionPorId(this.sucursal.getIdDireccion()) : null;
         this.idEmpresa = idEmpresa;
         this.observador = observador;
         
-        if(Verificaciones.Datos.claseNoNula(this.sucursal) && Verificaciones.Datos.numerico(this.sucursal.getId()) &&
-            Verificaciones.Datos.claseNoNula(this.direccion) && Verificaciones.Datos.numerico(this.direccion.getId())){
+        descargarEmpresas(this.idEmpresa);
+        
+        if(Verificaciones.numerico(this.idEmpresa))
+            comboEmpresa.getSelectionModel().select(0);
+        
+        if(Verificaciones.claseNoNula(this.sucursal) && Verificaciones.numerico(this.sucursal.getId()) &&
+            Verificaciones.claseNoNula(this.direccion) && Verificaciones.numerico(this.direccion.getId())){
             txtTitulo.setText("Modificar Sucursal");
             btnFinalizar.setText("Modificar");
             
@@ -199,7 +204,7 @@ public class FXMLFormSucursalController implements Initializable{
         if(!this.isRegistrado){
             Mensaje mensaje = DireccionDAO.registrarDireccion(direccion);
         
-            if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
+            if(Verificaciones.claseNoNula(mensaje) && !mensaje.getError()){
                 Integer idDireccion = DireccionDAO.obtenerDirecciones().stream().filter((d) -> (
                     direccion.getCalle().equals(d.getCalle()) &&
                     direccion.getColonia().equals(d.getColonia()) &&
@@ -214,7 +219,7 @@ public class FXMLFormSucursalController implements Initializable{
 
                 mensaje = SucursalDAO.registrarSucursal(sucursal);
 
-                if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
+                if(Verificaciones.claseNoNula(mensaje) && !mensaje.getError()){
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Sucursal registrada exitosamente", Alert.AlertType.INFORMATION);
                     observador.notificarGuardado();
                     cerrarVentana();
@@ -229,10 +234,10 @@ public class FXMLFormSucursalController implements Initializable{
     private void moficarSucursal(){
         Mensaje mensaje = DireccionDAO.modificarDireccion(this.direccion);
         
-        if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
+        if(Verificaciones.claseNoNula(mensaje) && !mensaje.getError()){
             mensaje = SucursalDAO.modificarSucursal(this.sucursal);
             
-            if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
+            if(Verificaciones.claseNoNula(mensaje) && !mensaje.getError()){
                 Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Sucursal modificada exitosamente", Alert.AlertType.INFORMATION);
                 observador.notificarGuardado();
                 cerrarVentana();
@@ -258,9 +263,9 @@ public class FXMLFormSucursalController implements Initializable{
         Municipio municipio = comboMunicipio.getSelectionModel().getSelectedItem();
         Ciudad ciudad = comboCiudad.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.cadena(nombre) && Verificaciones.Datos.cadena(nombreEncargado) && Verificaciones.Datos.cadena(telefono) && Verificaciones.Datos.cadena(calle) &&
-            Verificaciones.Datos.cadena(colonia) && Verificaciones.Datos.cadena(numero) && Verificaciones.Datos.cadena(codigoPostal) && Verificaciones.Datos.cadena(latitud) &&
-            Verificaciones.Datos.cadena(longitud) && Verificaciones.Datos.claseNoNula(estado) && Verificaciones.Datos.claseNoNula(municipio) && Verificaciones.Datos.claseNoNula(ciudad)){
+        if(Verificaciones.cadena(nombre) && Verificaciones.cadena(nombreEncargado) && Verificaciones.cadena(telefono) && Verificaciones.cadena(calle) &&
+            Verificaciones.cadena(colonia) && Verificaciones.cadena(numero) && Verificaciones.cadena(codigoPostal) && Verificaciones.cadena(latitud) &&
+            Verificaciones.cadena(longitud) && Verificaciones.claseNoNula(estado) && Verificaciones.claseNoNula(municipio) && Verificaciones.claseNoNula(ciudad)){
             if(telefono.length() == 10 && codigoPostal.length() == 5){
                 switch(btnFinalizar.getText()){
                     case "Registrar":

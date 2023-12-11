@@ -37,6 +37,8 @@ public class FXMLGestionUsuarioController implements Initializable, IRespuesta{
     private ObservableList<Usuario> usuarios;
     
     @FXML
+    private Button btnRegresar;
+    @FXML
     private Button imageBusqueda;
     @FXML
     private TextField txtBusqueda;
@@ -55,7 +57,7 @@ public class FXMLGestionUsuarioController implements Initializable, IRespuesta{
     @FXML
     private TableColumn clmApellidoMaterno;
     @FXML
-    private TableColumn clmCorreo;
+    private TableColumn clmUsername;
     @FXML
     private TableColumn clmRol;
     @FXML
@@ -65,6 +67,8 @@ public class FXMLGestionUsuarioController implements Initializable, IRespuesta{
     public void initialize(URL url, ResourceBundle rb){
         this.usuarios = FXCollections.observableArrayList();
         
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/regresar.png"), btnRegresar);
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/busqueda.png"), imageBusqueda);
         Utilidades.colocarImagenBoton(getClass().getResource("/img/registrar.png"), btnRegistrar);
         Utilidades.colocarImagenBoton(getClass().getResource("/img/modificar.png"), btnModificar);
         Utilidades.colocarImagenBoton(getClass().getResource("/img/eliminar.png"), btnEliminar);
@@ -75,20 +79,20 @@ public class FXMLGestionUsuarioController implements Initializable, IRespuesta{
         clmNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
         clmApellidoPaterno.setCellValueFactory(new PropertyValueFactory("apellidoPaterno"));
         clmApellidoMaterno.setCellValueFactory(new PropertyValueFactory("apellidoMaterno"));
-        clmCorreo.setCellValueFactory(new PropertyValueFactory("correo"));
+        clmUsername.setCellValueFactory(new PropertyValueFactory("username"));
         clmRol.setCellValueFactory(new PropertyValueFactory("rol"));
         clmEmpresa.setCellValueFactory(new PropertyValueFactory("empresa"));
     }
     
     private void cargarUsuarios(List<Usuario> usuarios){
-        if(Verificaciones.Datos.listaNoVacia(usuarios)){
+        if(Verificaciones.listaNoVacia(usuarios)){
             usuarios.forEach((usuario) -> {
                 usuario.setRol(
-                    CatalogoDAO.obtenerRolPorId(usuario.getIdRol()).getNombre()
+                    CatalogoDAO.obtenerRolPorId(usuario.getIdRol()).getNombre().replace("Administrador ", "")
                 );
 
                 usuario.setEmpresa(
-                    EmpresaDAO.obtenerEmpresaPorId(usuario.getIdEmpresa()).getNombre()
+                    Verificaciones.numerico(usuario.getIdEmpresa()) ? EmpresaDAO.obtenerEmpresaPorId(usuario.getIdEmpresa()).getNombre() : "No aplica"
                 );
             });
 
@@ -136,6 +140,12 @@ public class FXMLGestionUsuarioController implements Initializable, IRespuesta{
         cargarUsuarios(UsuarioDAO.obtenerUsuarios());
     }
     
+    @FXML
+    private void regresar(ActionEvent event){
+        Stage escenario = (Stage) txtBusqueda.getScene().getWindow();
+        escenario.close();
+    }
+    
     private void irPantallaFormUsuario(Usuario usuario){
         try{
             FXMLLoader carga = new FXMLLoader(CuponSmart.class.getResource(Constantes.Pantallas.URL_VISTA + "FXMLFormUsuario.fxml"));
@@ -163,8 +173,7 @@ public class FXMLGestionUsuarioController implements Initializable, IRespuesta{
     private void modificarUsuario(ActionEvent event){
         Usuario usuario = tbUsuarios.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.claseNoNula(usuario))
-            irPantallaFormUsuario(usuario);
+        if(Verificaciones.claseNoNula(usuario)) irPantallaFormUsuario(usuario);
         else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.SIN_SELECCION, "Debe seleccionar un usuario para su modificación", Alert.AlertType.WARNING);
     }
@@ -173,7 +182,7 @@ public class FXMLGestionUsuarioController implements Initializable, IRespuesta{
     private void eliminarUsuario(ActionEvent event){
         Usuario usuario = tbUsuarios.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.claseNoNula(usuario)){
+        if(Verificaciones.claseNoNula(usuario)){
             if(Utilidades.mostrarAlertaConfirmacion(Constantes.Pantallas.CONFIRMAR_ELIMINACION, "¿Está seguro de eliminar al usuario " + usuario.getUsername() + "?")){
                 Mensaje mensaje = UsuarioDAO.eliminarUsuario(usuario.getId());
                 

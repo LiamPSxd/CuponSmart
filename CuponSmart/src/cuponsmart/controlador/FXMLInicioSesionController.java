@@ -79,9 +79,8 @@ public class FXMLInicioSesionController implements Initializable{
             Utilidades.mostrarAlertaSimple("Credenciales correctas", respuesta.getMensaje(), Alert.AlertType.INFORMATION);
             
             irPantallaMainAdmin(respuesta.getContenido().get(0));
-        }else{
+        }else
             Utilidades.mostrarAlertaSimple("Credenciales incorrectas", respuesta.getMensaje(), Alert.AlertType.ERROR);
-        }
     }
 
     @FXML
@@ -89,14 +88,13 @@ public class FXMLInicioSesionController implements Initializable{
         String usuario = txtUsuario.getText();
         String contrasenia = txtContrasenia.getText();
         
-        if(Verificaciones.Datos.cadena(usuario) && Verificaciones.Datos.cadena(contrasenia)){
+        if(Verificaciones.cadena(usuario) && Verificaciones.cadena(contrasenia)){
             verificarCredenciales(usuario, contrasenia);
-        }else if(!Verificaciones.Datos.cadena(usuario)){
+        }else if(!Verificaciones.cadena(usuario))
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.CAMPO_VACIO, "El usuario es obligatorio", Alert.AlertType.WARNING);
-        }else if(!Verificaciones.Datos.cadena(contrasenia)){
+        else if(!Verificaciones.cadena(contrasenia))
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.CAMPO_VACIO, "La contraseña es obligatoria", Alert.AlertType.WARNING);
-        }else{
+        else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.CAMPO_VACIO, "El usuario y la contraseña son obligatoria", Alert.AlertType.WARNING);
-        }
     }
 }

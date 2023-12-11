@@ -36,6 +36,8 @@ public class FXMLGestionEmpresaController implements Initializable, IRespuesta{
     private ObservableList<Empresa> empresas;
     
     @FXML
+    private Button btnRegresar;
+    @FXML
     private Button imageBusqueda;
     @FXML
     private TextField txtBusqueda;
@@ -64,6 +66,7 @@ public class FXMLGestionEmpresaController implements Initializable, IRespuesta{
     public void initialize(URL url, ResourceBundle rb){
         this.empresas = FXCollections.observableArrayList();
         
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/regresar.png"), btnRegresar);
         Utilidades.colocarImagenBoton(getClass().getResource("/img/busqueda.png"), imageBusqueda);
         Utilidades.colocarImagenBoton(getClass().getResource("/img/registrar.png"), btnRegistrar);
         Utilidades.colocarImagenBoton(getClass().getResource("/img/modificar.png"), btnModificar);
@@ -81,7 +84,7 @@ public class FXMLGestionEmpresaController implements Initializable, IRespuesta{
     }
     
     private void cargarEmpresas(List<Empresa> empresas){
-        if(Verificaciones.Datos.listaNoVacia(empresas)){
+        if(Verificaciones.listaNoVacia(empresas)){
             empresas.forEach((empresa) -> {
                 empresa.setEstatus(
                     CatalogoDAO.obtenerEstatusPorId(empresa.getIdEstatus()).getEstado()
@@ -132,6 +135,12 @@ public class FXMLGestionEmpresaController implements Initializable, IRespuesta{
         cargarEmpresas(EmpresaDAO.obtenerEmpresas());
     }
     
+    @FXML
+    private void regresar(ActionEvent event){
+        Stage escenario = (Stage) txtBusqueda.getScene().getWindow();
+        escenario.close();
+    }
+    
     private void irPantallaFormEmpresa(Empresa empresa){
         try{
             FXMLLoader carga = new FXMLLoader(CuponSmart.class.getResource(Constantes.Pantallas.URL_VISTA + "FXMLFormEmpresa.fxml"));
@@ -159,8 +168,7 @@ public class FXMLGestionEmpresaController implements Initializable, IRespuesta{
     private void modificarEmpresa(ActionEvent event){
         Empresa empresa = tbEmpresas.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.claseNoNula(empresa))
-            irPantallaFormEmpresa(empresa);
+        if(Verificaciones.claseNoNula(empresa)) irPantallaFormEmpresa(empresa);
         else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.SIN_SELECCION, "Debe seleccionar una empresa para su modificación", Alert.AlertType.WARNING);
     }
@@ -169,7 +177,7 @@ public class FXMLGestionEmpresaController implements Initializable, IRespuesta{
     private void eliminarEmpresa(ActionEvent event){
         Empresa empresa = tbEmpresas.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.claseNoNula(empresa))
+        if(Verificaciones.claseNoNula(empresa)){
             if(Utilidades.mostrarAlertaConfirmacion(Constantes.Pantallas.CONFIRMAR_ELIMINACION, "¿Está seguro de eliminar la empresa " + empresa.getNombreComercial() + "?")){
                 Mensaje mensaje = EmpresaDAO.eliminarEmpresa(empresa.getId());
                 
@@ -179,7 +187,7 @@ public class FXMLGestionEmpresaController implements Initializable, IRespuesta{
                 }else
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
             }
-        else
+        }else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.SIN_SELECCION, "Debe seleccionar una empresa para su eliminación", Alert.AlertType.WARNING);
     }
 }

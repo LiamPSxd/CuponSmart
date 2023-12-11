@@ -119,7 +119,7 @@ public class FXMLFormEmpresaController implements Initializable{
     private void descargarEstatus(){
         List<Estatus> estatus = CatalogoDAO.obtenerEstatus();
         
-        if(Verificaciones.Datos.listaNoVacia(estatus)){
+        if(Verificaciones.listaNoVacia(estatus)){
             comboEstatus.getItems().clear();
             comboEstatus.getItems().addAll(estatus);
         }else
@@ -129,7 +129,7 @@ public class FXMLFormEmpresaController implements Initializable{
     private void descargarEstados(){
         List<Estado> estados = CatalogoDAO.obtenerEstados();
         
-        if(Verificaciones.Datos.listaNoVacia(estados)){
+        if(Verificaciones.listaNoVacia(estados)){
             comboEstado.getItems().clear();
             comboEstado.getItems().addAll(estados);
         }else
@@ -139,7 +139,7 @@ public class FXMLFormEmpresaController implements Initializable{
     private void descargarMunicipios(Integer idEstado){
         List<Municipio> municipios = CatalogoDAO.obtenerMunicipiosPorEstado(idEstado);
         
-        if(Verificaciones.Datos.listaNoVacia(municipios)){
+        if(Verificaciones.listaNoVacia(municipios)){
             comboMunicipio.getItems().clear();
             comboMunicipio.getItems().addAll(municipios);
         }else
@@ -149,7 +149,7 @@ public class FXMLFormEmpresaController implements Initializable{
     private void descargarCiudades(Integer idMunicipio){
         List<Ciudad> ciudades = CiudadDAO.obtenerCiudadesPorIdMunicipio(idMunicipio);
         
-        if(Verificaciones.Datos.listaNoVacia(ciudades)){
+        if(Verificaciones.listaNoVacia(ciudades)){
             comboCiudad.getItems().clear();
             comboCiudad.getItems().addAll(ciudades);
         }else
@@ -167,7 +167,7 @@ public class FXMLFormEmpresaController implements Initializable{
     private void obtenerLogo(){
         Empresa mensaje = MediaDAO.obtenerLogoEmpresa(this.empresa.getId());
         
-        if(Verificaciones.Datos.claseNoNula(mensaje) && Verificaciones.Datos.cadena(mensaje.getLogoBase64()))
+        if(Verificaciones.claseNoNula(mensaje) && Verificaciones.cadena(mensaje.getLogoBase64()))
             mostrarLogo(mensaje.getLogoBase64());
     }
     
@@ -187,19 +187,20 @@ public class FXMLFormEmpresaController implements Initializable{
         txtCodigoPostal.setText(this.direccion.getCodigoPostal());
 
         Ciudad ciudad = CiudadDAO.obtenerCiudadPorId(this.direccion.getIdCiudad());
-        comboCiudad.getSelectionModel().select(ciudad);
+        if(Verificaciones.claseNoNula(ciudad)) comboCiudad.getSelectionModel().select(ciudad);
 
         Municipio municipio = CatalogoDAO.obtenerMunicipioPorId(ciudad.getIdMunicipio());
-        comboMunicipio.getSelectionModel().select(municipio);
-
-        comboEstado.getSelectionModel().select(CatalogoDAO.obtenerEstadoPorId(municipio.getIdEstado()));
+        if(Verificaciones.claseNoNula(municipio)){
+            comboMunicipio.getSelectionModel().select(municipio);
+            comboEstado.getSelectionModel().select(CatalogoDAO.obtenerEstadoPorId(municipio.getIdEstado()));
+        }
         
         obtenerLogo();
     }
     
     public void inicializarInformacion(Empresa empresa, IRespuesta observador){
         this.empresa = empresa;
-        this.direccion = Verificaciones.Datos.claseNoNula(this.empresa) ? DireccionDAO.obtenerDireccionPorId(this.empresa.getIdDireccion()) : null;
+        this.direccion = Verificaciones.claseNoNula(this.empresa) ? DireccionDAO.obtenerDireccionPorId(this.empresa.getIdDireccion()) : null;
         this.observador = observador;
         
         CatalogoDAO.obtenerEstatus().forEach((estatus) -> {
@@ -208,8 +209,8 @@ public class FXMLFormEmpresaController implements Initializable{
         
         comboEstatus.setDisable(true);
         
-        if(Verificaciones.Datos.claseNoNula(this.empresa) && Verificaciones.Datos.numerico(this.empresa.getId()) &&
-            Verificaciones.Datos.claseNoNula(this.direccion) && Verificaciones.Datos.numerico(this.direccion.getId())){
+        if(Verificaciones.claseNoNula(this.empresa) && Verificaciones.numerico(this.empresa.getId()) &&
+            Verificaciones.claseNoNula(this.direccion) && Verificaciones.numerico(this.direccion.getId())){
             txtTitulo.setText("Modificar Empresa");
             btnFinalizar.setText("Modificar");
             
@@ -267,10 +268,10 @@ public class FXMLFormEmpresaController implements Initializable{
     }
     
     private void registrarEmpresa(Empresa empresa, Direccion direccion){
-        if(!Verificaciones.Datos.listaNoVacia(EmpresaDAO.obtenerEmpresasPorRFC(empresa.getRfc()))){
+        if(!Verificaciones.listaNoVacia(EmpresaDAO.obtenerEmpresasPorRFC(empresa.getRfc()))){
             Mensaje mensaje = DireccionDAO.registrarDireccion(direccion);
             
-            if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
+            if(Verificaciones.claseNoNula(mensaje) && !mensaje.getError()){
                 Integer idDireccion = DireccionDAO.obtenerDirecciones().stream().filter((d) -> (
                     direccion.getCalle().equals(d.getCalle()) &&
                     direccion.getNumero().equals(d.getNumero()) &&
@@ -282,13 +283,14 @@ public class FXMLFormEmpresaController implements Initializable{
 
                 mensaje = EmpresaDAO.registrarEmpresa(empresa);
 
-                if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
+                if(Verificaciones.claseNoNula(mensaje) && !mensaje.getError()){
                     Integer idEmpresa = EmpresaDAO.obtenerEmpresas().stream().filter((e) -> (
                         empresa.getRfc().equals(e.getRfc())
                     )).findFirst().get().getId();
                     
-                    if(imagenSeleccionada != null && !cargarLogo(imagenSeleccionada, idEmpresa))
-                        Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.MEDIA, Alert.AlertType.ERROR);
+                    if(imagenSeleccionada != null)
+                        if(!cargarLogo(imagenSeleccionada, idEmpresa))
+                            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.MEDIA, Alert.AlertType.ERROR);
                     
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Empresa registrada exitosamente", Alert.AlertType.INFORMATION);
                     observador.notificarGuardado();
@@ -304,12 +306,13 @@ public class FXMLFormEmpresaController implements Initializable{
     private void modificarEmpresa(){
         Mensaje mensaje = DireccionDAO.modificarDireccion(this.direccion);
             
-        if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
+        if(Verificaciones.claseNoNula(mensaje) && !mensaje.getError()){
             mensaje = EmpresaDAO.modificarEmpresa(this.empresa);
             
-            if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
-                if(imagenSeleccionada != null && !cargarLogo(imagenSeleccionada, this.empresa.getId()))
-                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.MEDIA, Alert.AlertType.ERROR);
+            if(Verificaciones.claseNoNula(mensaje) && !mensaje.getError()){
+                if(imagenSeleccionada != null)
+                    if(!cargarLogo(imagenSeleccionada, this.empresa.getId()))
+                        Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Errores.MEDIA, Alert.AlertType.ERROR);
                 
                 Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Empresa modificada exitosamente", Alert.AlertType.INFORMATION);
                 observador.notificarGuardado();
@@ -338,10 +341,9 @@ public class FXMLFormEmpresaController implements Initializable{
         Municipio municipio = comboMunicipio.getSelectionModel().getSelectedItem();
         Ciudad ciudad = comboCiudad.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.cadena(nombreComercial) && Verificaciones.Datos.claseNoNula(estatus) && Verificaciones.Datos.cadena(nombre) && Verificaciones.Datos.cadena(rfc) &&
-            Verificaciones.Datos.cadena(nombreRepresentanteLegal) && Verificaciones.Datos.cadena(correo) && Verificaciones.Datos.cadena(telefono) && Verificaciones.Datos.cadena(paginaWeb) &&
-            Verificaciones.Datos.cadena(calle) && Verificaciones.Datos.cadena(numero) && Verificaciones.Datos.cadena(codigoPostal) && Verificaciones.Datos.claseNoNula(estado) &&
-            Verificaciones.Datos.claseNoNula(municipio) && Verificaciones.Datos.claseNoNula(ciudad)){
+        if(Verificaciones.cadena(nombreComercial) && Verificaciones.claseNoNula(estatus) && Verificaciones.cadena(nombre) && Verificaciones.cadena(rfc) && Verificaciones.cadena(nombreRepresentanteLegal) &&
+            Verificaciones.cadena(correo) && Verificaciones.cadena(telefono) && Verificaciones.cadena(paginaWeb) && Verificaciones.cadena(calle) && Verificaciones.cadena(numero) &&
+            Verificaciones.cadena(codigoPostal) && Verificaciones.claseNoNula(estado) && Verificaciones.claseNoNula(municipio) && Verificaciones.claseNoNula(ciudad)){
             if(rfc.length() == 12 && telefono.length() == 10 && codigoPostal.length() == 5){
                 switch(btnFinalizar.getText()){
                     case "Registrar":

@@ -40,6 +40,8 @@ public class FXMLGestionSucursalController implements Initializable, IRespuesta{
     private Usuario administradorComercial;
     
     @FXML
+    private Button btnRegresar;
+    @FXML
     private Button imageBusqueda;
     @FXML
     private TextField txtBusqueda;
@@ -66,6 +68,8 @@ public class FXMLGestionSucursalController implements Initializable, IRespuesta{
     public void initialize(URL url, ResourceBundle rb){
         this.sucursales = FXCollections.observableArrayList();
         
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/regresar.png"), btnRegresar);
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/busqueda.png"), imageBusqueda);
         Utilidades.colocarImagenBoton(getClass().getResource("/img/registrar.png"), btnRegistrar);
         Utilidades.colocarImagenBoton(getClass().getResource("/img/modificar.png"), btnModificar);
         Utilidades.colocarImagenBoton(getClass().getResource("/img/eliminar.png"), btnEliminar);
@@ -81,7 +85,7 @@ public class FXMLGestionSucursalController implements Initializable, IRespuesta{
     }
     
     private void cargarSucursales(List<Sucursal> sucursales){
-        if(Verificaciones.Datos.listaNoVacia(sucursales)){
+        if(Verificaciones.listaNoVacia(sucursales)){
             sucursales.forEach((sucursal) -> {
                 Direccion direccion = DireccionDAO.obtenerDireccionPorId(sucursal.getIdDireccion());
                 sucursal.setDireccion(direccion.getCalle() + " " + direccion.getColonia() + " " + direccion.getNumero());
@@ -133,8 +137,14 @@ public class FXMLGestionSucursalController implements Initializable, IRespuesta{
     @Override
     public void notificarGuardado(){
         cargarSucursales(
-            Verificaciones.Datos.claseNula(this.administradorComercial) ? SucursalDAO.obtenerSucursales() : SucursalDAO.obtenerSucursalesPorIdEmpresa(this.administradorComercial.getIdEmpresa())
+            Verificaciones.claseNula(this.administradorComercial) ? SucursalDAO.obtenerSucursales() : SucursalDAO.obtenerSucursalesPorIdEmpresa(this.administradorComercial.getIdEmpresa())
         );
+    }
+    
+    @FXML
+    private void regresar(ActionEvent event){
+        Stage escenario = (Stage) txtBusqueda.getScene().getWindow();
+        escenario.close();
     }
     
     private void irPantallaFormSucursal(Sucursal sucursal, Integer idEmpresa){
@@ -159,7 +169,7 @@ public class FXMLGestionSucursalController implements Initializable, IRespuesta{
     private void registrarSucursal(ActionEvent event){
         irPantallaFormSucursal(
             null,
-            Verificaciones.Datos.claseNula(this.administradorComercial) ? 0 : this.administradorComercial.getIdEmpresa()
+            Verificaciones.claseNula(this.administradorComercial) ? 0 : this.administradorComercial.getIdEmpresa()
         );
     }
 
@@ -167,10 +177,10 @@ public class FXMLGestionSucursalController implements Initializable, IRespuesta{
     private void modificarSucursal(ActionEvent event){
         Sucursal sucursal = tbSucursales.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.claseNoNula(sucursal))
+        if(Verificaciones.claseNoNula(sucursal))
             irPantallaFormSucursal(
                 sucursal,
-                Verificaciones.Datos.claseNula(this.administradorComercial) ? 0 : this.administradorComercial.getIdEmpresa()
+                Verificaciones.claseNula(this.administradorComercial) ? 0 : this.administradorComercial.getIdEmpresa()
             );
         else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.SIN_SELECCION, "Debe seleccionar una sucursal para su modificación", Alert.AlertType.WARNING);
@@ -180,7 +190,7 @@ public class FXMLGestionSucursalController implements Initializable, IRespuesta{
     private void eliminarSucursal(ActionEvent event){
         Sucursal sucursal = tbSucursales.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.claseNoNula(sucursal))
+        if(Verificaciones.claseNoNula(sucursal)){
             if(Utilidades.mostrarAlertaConfirmacion(Constantes.Pantallas.CONFIRMAR_ELIMINACION, "¿Está seguro de eliminar la sucursal " + sucursal.getNombre() + "?")){
                 Mensaje mensaje = SucursalDAO.eliminarSucursal(sucursal.getId());
                 
@@ -190,7 +200,7 @@ public class FXMLGestionSucursalController implements Initializable, IRespuesta{
                 }else
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
             }
-        else
+        }else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.SIN_SELECCION, "Debe seleccionar una sucursal para su eliminación", Alert.AlertType.WARNING);
     }
 }

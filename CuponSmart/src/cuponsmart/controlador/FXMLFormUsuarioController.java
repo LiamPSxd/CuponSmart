@@ -63,14 +63,22 @@ public class FXMLFormUsuarioController implements Initializable{
         comboRol.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             this.idRol = observable.getValue().getId();
             
-            if(observable.getValue().getNombre().equals("Administrador Comercial")) descargarEmpresas();
+            if(observable.getValue().getNombre().equals("Administrador Comercial")){
+                comboEmpresa.setDisable(false);
+                descargarEmpresas();
+            }else
+                comboEmpresa.setDisable(true);
+        });
+        
+        comboEmpresa.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            this.idEmpresa = observable.getValue().getId();
         });
     }
     
     private void descargarRol(){
         List<Rol> roles = CatalogoDAO.obtenerRoles();
         
-        if(Verificaciones.Datos.listaNoVacia(roles)){
+        if(Verificaciones.listaNoVacia(roles)){
             comboRol.getItems().clear();
             comboRol.getItems().addAll(roles);
         }else
@@ -80,7 +88,7 @@ public class FXMLFormUsuarioController implements Initializable{
     private void descargarEmpresas(){
         List<Empresa> empresas = EmpresaDAO.obtenerEmpresas();
         
-        if(Verificaciones.Datos.listaNoVacia(empresas)){
+        if(Verificaciones.listaNoVacia(empresas)){
             comboEmpresa.getItems().clear();
             comboEmpresa.getItems().addAll(empresas);
         }else
@@ -97,7 +105,7 @@ public class FXMLFormUsuarioController implements Initializable{
         txtContrasenia.setText(this.usuario.getContrasenia());
         comboRol.getSelectionModel().select(CatalogoDAO.obtenerRolPorId(this.usuario.getIdRol()));
         
-        if(Verificaciones.Datos.numerico(this.usuario.getIdEmpresa()))
+        if(Verificaciones.numerico(this.usuario.getIdEmpresa()))
             comboEmpresa.getSelectionModel().select(EmpresaDAO.obtenerEmpresaPorId(this.usuario.getIdEmpresa()));
     }
     
@@ -107,9 +115,9 @@ public class FXMLFormUsuarioController implements Initializable{
         
         comboEmpresa.setDisable(true);
         
-        if(Verificaciones.Datos.claseNoNula(this.usuario) && Verificaciones.Datos.numerico(this.usuario.getId())){
+        if(Verificaciones.claseNoNula(this.usuario) && Verificaciones.numerico(this.usuario.getId())){
             txtTitulo.setText("Modificar Usuario");
-            btnFinalizar.setText("Finalizar");
+            btnFinalizar.setText("Modificar");
             
             rellenarForm();
             
@@ -129,10 +137,10 @@ public class FXMLFormUsuarioController implements Initializable{
     }
     
     private void registrarUsuario(Usuario usuario){
-        if(Verificaciones.Datos.claseNula(UsuarioDAO.obtenerUsuarioPorUsername(usuario.getUsername()))){
+        if(Verificaciones.claseNula(UsuarioDAO.obtenerUsuarioPorUsername(usuario.getUsername()))){
             Mensaje mensaje = UsuarioDAO.registrarUsuario(usuario);
         
-            if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
+            if(Verificaciones.claseNoNula(mensaje) && !mensaje.getError()){
                 Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Usuario registrado exitosamente", Alert.AlertType.INFORMATION);
                 observador.notificarGuardado();
                 cerrarVentana();
@@ -145,7 +153,7 @@ public class FXMLFormUsuarioController implements Initializable{
     private void modificarUsuario(){
         Mensaje mensaje = UsuarioDAO.modificarUsuario(this.usuario);
         
-        if(Verificaciones.Datos.claseNoNula(mensaje) && !mensaje.getError()){
+        if(Verificaciones.claseNoNula(mensaje) && !mensaje.getError()){
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Usuario modificado exitosamente", Alert.AlertType.INFORMATION);
             observador.notificarGuardado();
             cerrarVentana();
@@ -166,34 +174,37 @@ public class FXMLFormUsuarioController implements Initializable{
         Rol rol = comboRol.getSelectionModel().getSelectedItem();
         Empresa empresa = comboEmpresa.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.cadena(nombre) && Verificaciones.Datos.cadena(apellidoPaterno) && Verificaciones.Datos.cadena(apellidoMaterno) && Verificaciones.Datos.cadena(curp) &&
-            Verificaciones.Datos.cadena(username) && Verificaciones.Datos.cadena(correo) && Verificaciones.Datos.cadena(contrasenia) && Verificaciones.Datos.cadena(confirmarContrasenia) &&
-            Verificaciones.Datos.claseNoNula(rol) && Verificaciones.Datos.claseNoNula(empresa)){
-            if(curp.length() == 18 && contrasenia.equals(confirmarContrasenia))
-                switch(btnFinalizar.getText()){
-                    case "Registrar":
-                        registrarUsuario(new Usuario(0, nombre, apellidoPaterno, apellidoMaterno, curp, correo, username, contrasenia, this.idRol, Verificaciones.Datos.numerico(this.idEmpresa) ? this.idEmpresa : 0));
-                        break;
-                    case "Modificar":
-                        this.usuario.setNombre(nombre);
-                        this.usuario.setApellidoPaterno(apellidoPaterno);
-                        this.usuario.setApellidoMaterno(apellidoMaterno);
-                        this.usuario.setCurp(curp);
-                        this.usuario.setUsername(username);
-                        this.usuario.setCorreo(correo);
-                        this.usuario.setContrasenia(contrasenia);
-                        this.usuario.setIdRol(this.idRol);
-                        this.usuario.setIdEmpresa(Verificaciones.Datos.numerico(this.idEmpresa) ? this.idEmpresa : 0);
+        if(Verificaciones.cadena(nombre) && Verificaciones.cadena(apellidoPaterno) && Verificaciones.cadena(apellidoMaterno) && Verificaciones.cadena(curp) &&
+            Verificaciones.cadena(username) && Verificaciones.cadena(correo) && Verificaciones.cadena(contrasenia) && Verificaciones.cadena(confirmarContrasenia) &&
+            Verificaciones.claseNoNula(rol)){
+            if(rol.getNombre().equals("Administrador Comercial") && Verificaciones.claseNula(empresa))
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "Debe seleccionar una empresa", Alert.AlertType.WARNING);
+            else{
+                if(curp.length() == 18 && contrasenia.equals(confirmarContrasenia)){
+                    switch(btnFinalizar.getText()){
+                        case "Registrar":
+                            registrarUsuario(new Usuario(0, nombre, apellidoPaterno, apellidoMaterno, curp, correo, username, contrasenia, this.idRol, Verificaciones.numerico(this.idEmpresa) ? this.idEmpresa : null));
+                            break;
+                        case "Modificar":
+                            this.usuario.setNombre(nombre);
+                            this.usuario.setApellidoPaterno(apellidoPaterno);
+                            this.usuario.setApellidoMaterno(apellidoMaterno);
+                            this.usuario.setCurp(curp);
+                            this.usuario.setUsername(username);
+                            this.usuario.setCorreo(correo);
+                            this.usuario.setContrasenia(contrasenia);
+                            this.usuario.setIdEmpresa(this.idEmpresa);
 
-                        modificarUsuario();
-                        break;
-                    default:
-                        Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Retornos.SELECCION, Alert.AlertType.ERROR);
-                }
-            else if(curp.length() != 18)
-                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "El CURP debe tener 18 caracteres, favor de verificarlo", Alert.AlertType.WARNING);
-            else if(!contrasenia.equals(confirmarContrasenia))
-                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "Las contraseñas no coinciden, favor de verificarlas", Alert.AlertType.WARNING);
+                            modificarUsuario();
+                            break;
+                        default:
+                            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Retornos.SELECCION, Alert.AlertType.ERROR);
+                    }
+                }else if(curp.length() != 18)
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "El CURP debe tener 18 caracteres, favor de verificarlo", Alert.AlertType.WARNING);
+                else if(!contrasenia.equals(confirmarContrasenia))
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "Las contraseñas no coinciden, favor de verificarlas", Alert.AlertType.WARNING);
+            }
         }else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.CAMPOS_VACIOS, Constantes.Errores.CAMPOS_VACIOS, Alert.AlertType.WARNING);
     }

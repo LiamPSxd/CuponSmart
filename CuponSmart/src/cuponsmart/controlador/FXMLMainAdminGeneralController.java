@@ -135,24 +135,22 @@ public class FXMLMainAdminGeneralController implements Initializable{
     private void canjearCupon(ActionEvent event){
         String codigo = txtCodigo.getText();
         
-        if(Verificaciones.Datos.cadena(codigo)){
+        if(Verificaciones.cadena(codigo)){
             if(codigo.length() == 8){
                 Promocion cupon = PromocionDAO.obtenerPromocionPorCodigo(codigo);
 
-                if(Verificaciones.Datos.claseNoNula(cupon) && Verificaciones.Datos.numerico(cupon.getNumeroCupones())){
+                if(Verificaciones.claseNoNula(cupon) && Verificaciones.numerico(cupon.getNumeroCupones())){
                     cupon.setNumeroCupones(cupon.getNumeroCupones() - 1);
 
                     if(cupon.getNumeroCupones() == 0){
                         CatalogoDAO.obtenerEstatus().forEach((estatus) -> {
-                            if(estatus.getEstado().equals(Constantes.Retornos.ESTATUS_INACTIVO)){
-                                cupon.setIdEstatus(estatus.getId());
-                            }
+                            if(estatus.getEstado().equals(Constantes.Retornos.ESTATUS_INACTIVO)) cupon.setIdEstatus(estatus.getId());
                         });
                     }
 
                     Mensaje mensaje = PromocionDAO.modificarPromocion(cupon);
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, Constantes.Retornos.CUPON_EXITO, Alert.AlertType.INFORMATION);
-                }else if(Verificaciones.Datos.numerico(cupon.getNumeroCupones()))
+                }else if(Verificaciones.numerico(cupon.getNumeroCupones()))
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.CUPON_INACTIVO, Alert.AlertType.WARNING);
                 else
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.CUPON_FALLO, Alert.AlertType.WARNING);

@@ -4,6 +4,7 @@ import cuponsmart.modelo.dao.CatalogoDAO;
 import cuponsmart.modelo.dao.CategoriaDAO;
 import cuponsmart.modelo.dao.EmpresaDAO;
 import cuponsmart.modelo.dao.PromocionDAO;
+import cuponsmart.modelo.dao.PromocionSucursalDAO;
 import cuponsmart.modelo.pojo.entidad.Promocion;
 import cuponsmart.modelo.pojo.entidad.Usuario;
 import cuponsmart.modelo.pojo.respuesta.Mensaje;
@@ -11,6 +12,12 @@ import cuponsmart.modelo.pojo.respuesta.interfaz.IRespuesta;
 import cuponsmart.vista.CuponSmart;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -40,9 +47,13 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
     private Usuario administradorComercial;
     
     @FXML
+    private Button btnRegresar;
+    @FXML
     private Button imageBusqueda;
     @FXML
     private TextField txtBusqueda;
+    @FXML
+    private Button btnLista;
     @FXML
     private Button btnRegistrar;
     @FXML
@@ -62,7 +73,7 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
     @FXML
     private TableColumn clmCodigo;
     @FXML
-    private TableColumn clmNumero;
+    private TableColumn clmCantidad;
     @FXML
     private TableColumn clmEstatus;
     @FXML
@@ -74,6 +85,7 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
     public void initialize(URL url, ResourceBundle rb){
         this.promociones = FXCollections.observableArrayList();
         
+        Utilidades.colocarImagenBoton(getClass().getResource("/img/regresar.png"), btnRegresar);
         Utilidades.colocarImagenBoton(getClass().getResource("/img/busqueda.png"), imageBusqueda);
         Utilidades.colocarImagenBoton(getClass().getResource("/img/registrar.png"), btnRegistrar);
         Utilidades.colocarImagenBoton(getClass().getResource("/img/modificar.png"), btnModificar);
@@ -87,14 +99,14 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
         clmFechaInicio.setCellValueFactory(new PropertyValueFactory("fechaInicio"));
         clmFechaTermino.setCellValueFactory(new PropertyValueFactory("fechaTermino"));
         clmCodigo.setCellValueFactory(new PropertyValueFactory("codigo"));
-        clmNumero.setCellValueFactory(new PropertyValueFactory("numeroCupones"));
+        clmCantidad.setCellValueFactory(new PropertyValueFactory("numeroCupones"));
         clmEstatus.setCellValueFactory(new PropertyValueFactory("estatus"));
         clmCategoria.setCellValueFactory(new PropertyValueFactory("categoria"));
         clmEmpresa.setCellValueFactory(new PropertyValueFactory("empresa"));
     }
     
     private void cargarPromociones(List<Promocion> promociones){
-        if(Verificaciones.Datos.listaNoVacia(promociones)){
+        if(Verificaciones.listaNoVacia(promociones)){
             promociones.forEach((promocion) -> {
                 promocion.setEstatus(
                     CatalogoDAO.obtenerEstatusPorId(promocion.getIdEstatus()).getEstado()
@@ -153,8 +165,14 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
     @Override
     public void notificarGuardado(){
         cargarPromociones(
-            Verificaciones.Datos.claseNula(this.administradorComercial) ? PromocionDAO.obtenerPromociones() : PromocionDAO.obtenerPromocionesPorIdEmpresa(this.administradorComercial.getIdEmpresa())
+            Verificaciones.claseNula(this.administradorComercial) ? PromocionDAO.obtenerPromociones() : PromocionDAO.obtenerPromocionesPorIdEmpresa(this.administradorComercial.getIdEmpresa())
         );
+    }
+    
+    @FXML
+    private void regresar(ActionEvent event){
+        Stage escenario = (Stage) txtBusqueda.getScene().getWindow();
+        escenario.close();
     }
     
     private void irPantallaFormPromocion(Promocion promocion, Integer idEmpresa){
@@ -179,7 +197,7 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
     private void registrarPromocion(ActionEvent event){
         irPantallaFormPromocion(
             null,
-            Verificaciones.Datos.claseNula(this.administradorComercial) ? 0 : this.administradorComercial.getId()
+            Verificaciones.claseNula(this.administradorComercial) ? 0 : this.administradorComercial.getIdEmpresa()
         );
     }
 
@@ -187,10 +205,10 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
     private void modificarPromocion(ActionEvent event){
         Promocion promocion = tbPromociones.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.claseNoNula(promocion))
+        if(Verificaciones.claseNoNula(promocion))
             irPantallaFormPromocion(
                 promocion,
-                Verificaciones.Datos.claseNula(this.administradorComercial) ? 0 : this.administradorComercial.getId()
+                Verificaciones.claseNula(this.administradorComercial) ? 0 : this.administradorComercial.getIdEmpresa()
             );
         else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.SIN_SELECCION, "Debe seleccionar una promoción para su modificación", Alert.AlertType.WARNING);
@@ -200,9 +218,18 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
     private void eliminarPromocion(ActionEvent event){
         Promocion promocion = tbPromociones.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.Datos.claseNoNula(promocion))
+        if(Verificaciones.claseNoNula(promocion)){
             if(Utilidades.mostrarAlertaConfirmacion(Constantes.Pantallas.CONFIRMAR_ELIMINACION, "¿Está seguro de eliminar la promoción " + promocion.getNombre() + "?")){
-                Mensaje mensaje = PromocionDAO.eliminarPromocion(promocion.getId());
+                Mensaje mensaje;
+                
+                if(Verificaciones.listaNoVacia(PromocionSucursalDAO.obtenerPromocionesSucursalesPorIdPromocion(promocion.getId()))){
+                    mensaje = PromocionSucursalDAO.eliminarPromocionSucursales(promocion.getId());
+
+                    if(mensaje.getError())
+                        Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
+                }
+                
+                mensaje = PromocionDAO.eliminarPromocion(promocion.getId());
                 
                 if(!mensaje.getError()){
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, "Promoción eliminada exitosamente", Alert.AlertType.INFORMATION);
@@ -210,7 +237,52 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
                 }else
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, mensaje.getMensaje(), Alert.AlertType.ERROR);
             }
-        else
+        }else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.SIN_SELECCION, "Debe seleccionar una promoción para su eliminación", Alert.AlertType.WARNING);
+    }
+
+    @FXML
+    private void mostrarCupones(ActionEvent event){
+        List<Promocion> cupones = Verificaciones.claseNoNula(this.administradorComercial)
+                ? PromocionDAO.obtenerPromocionesPorIdEmpresa(this.administradorComercial.getIdEmpresa())
+                : PromocionDAO.obtenerPromociones();
+        
+        switch(btnLista.getText()){
+            case "Lista de Cupones":
+                List<Promocion> cuponesFiltrados = new ArrayList();
+                
+                cupones.forEach((cupon) -> {
+                    try{
+                        cupon.setEstatus(
+                            CatalogoDAO.obtenerEstatusPorId(cupon.getIdEstatus()).getEstado()
+                        );
+                        
+                        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+                        Date fechaActual = formato.parse(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()));
+                        Date fechaTermino = formato.parse(cupon.getFechaTermino());
+
+                        if(fechaTermino.after(fechaActual) &&
+                            Verificaciones.numerico(cupon.getNumeroCupones()) &&
+                            cupon.getEstatus().equals("Activo"))
+                            cuponesFiltrados.add(cupon);
+                    }catch(ParseException e){
+                        Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Excepciones.PARSE, Alert.AlertType.ERROR);
+                    }
+                });
+                
+                if(Verificaciones.listaNoVacia(cuponesFiltrados)){
+                    cupones = cuponesFiltrados;
+                    btnLista.setText("Lista de Promociones");
+                }else
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "No hay cupones disponibles para mostrar", Alert.AlertType.WARNING);
+                break;
+            case "Lista de Promociones":
+                btnLista.setText("Lista de Cupones");
+                break;
+            default:
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Retornos.SELECCION, Alert.AlertType.ERROR);
+        }
+        
+        cargarPromociones(cupones);
     }
 }
