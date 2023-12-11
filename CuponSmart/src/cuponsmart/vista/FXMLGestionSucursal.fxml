@@ -17,6 +17,11 @@
             <Font name="Century Gothic Bold" size="48.0" />
          </font>
       </Label>
+      <Button id="botonSeleccion" fx:id="btnRegresar" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#regresar" prefHeight="60.0" prefWidth="60.0" stylesheets="@../../utils/Estilos.css">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
       <AnchorPane id="tarjeta" layoutX="22.0" layoutY="110.0" prefHeight="630.0" prefWidth="1315.0" stylesheets="@../../utils/Estilos.css">
          <children>
             <TextField id="entrada" fx:id="txtBusqueda" layoutX="50.0" layoutY="50.0" prefHeight="50.0" prefWidth="600.0" promptText="Buscar sucursal" stylesheets="@../../utils/Estilos.css">

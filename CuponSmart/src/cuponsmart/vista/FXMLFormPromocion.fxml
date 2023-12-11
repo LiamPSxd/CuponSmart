@@ -131,14 +131,14 @@
                         </Label>
                         <ScrollPane layoutY="85.0" prefHeight="525.0" prefWidth="1315.0" style="-fx-background-color: #f2eee9;">
                            <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="525.0" prefWidth="1300.0" style="-fx-background-color: #f2eee9;">
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="525.0" prefWidth="1295.0" style="-fx-background-color: #f2eee9;">
                                  <children>
-                                    <TableView id="entrada" fx:id="tbSucursales" layoutX="25.0" prefHeight="500.0" prefWidth="1260.0" style="-fx-font-size: 20;" stylesheets="@../../utils/Estilos.css">
+                                    <TableView id="entrada" fx:id="tbSucursales" editable="true" layoutX="20.0" prefHeight="520.0" prefWidth="1260.0" style="-fx-font-size: 20;" stylesheets="@../../utils/Estilos.css">
                                        <columns>
-                                          <TableColumn fx:id="clmSeleccion" prefWidth="193.6666717529297" sortable="false" text="Selección" />
-                                          <TableColumn fx:id="clmNombre" prefWidth="310.66668701171875" text="Nombre" />
-                                          <TableColumn fx:id="clmEncargado" prefWidth="341.0" text="Encargado" />
-                                          <TableColumn fx:id="clmDireccion" minWidth="0.0" prefWidth="413.0" text="Dirección" />
+                                          <TableColumn fx:id="clmSeleccion" prefWidth="164.0" sortable="false" text="Selecciona" />
+                                          <TableColumn fx:id="clmNombre" prefWidth="314.33331298828125" text="Nombre" />
+                                          <TableColumn fx:id="clmEncargado" prefWidth="355.3333740234375" text="Encargado" />
+                                          <TableColumn fx:id="clmDireccion" minWidth="0.0" prefWidth="427.6666259765625" text="Dirección" />
                                        </columns>
                                     </TableView>
                                  </children>

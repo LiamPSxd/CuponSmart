@@ -127,7 +127,7 @@
                               <Font name="Century Gothic Bold" size="30.0" />
                            </font>
                         </Label>
-                        <ComboBox id="entrada" fx:id="comboCiudad" layoutX="50.0" layoutY="360.0" prefHeight="50.0" prefWidth="350.0" promptText="Seleccione estado" stylesheets="@../../utils/Estilos.css" />
+                        <ComboBox id="entrada" fx:id="comboEstado" layoutX="50.0" layoutY="360.0" prefHeight="50.0" prefWidth="350.0" promptText="Seleccione estado" stylesheets="@../../utils/Estilos.css" />
                         <Label id="subtitulo" layoutX="466.0" layoutY="310.0" stylesheets="@../../utils/Estilos.css" text="Municipio">
                            <font>
                               <Font name="Century Gothic Bold" size="30.0" />
@@ -139,7 +139,7 @@
                               <Font name="Century Gothic Bold" size="30.0" />
                            </font>
                         </Label>
-                        <ComboBox id="entrada" fx:id="comboEstado" layoutX="922.0" layoutY="360.0" prefHeight="50.0" prefWidth="350.0" promptText="Seleccione ciudad" stylesheets="@../../utils/Estilos.css" />
+                        <ComboBox id="entrada" fx:id="comboCiudad" layoutX="922.0" layoutY="360.0" prefHeight="50.0" prefWidth="350.0" promptText="Seleccione ciudad" stylesheets="@../../utils/Estilos.css" />
                      </children>
                   </AnchorPane>
                   <Button id="boton" layoutX="900.0" layoutY="875.0" mnemonicParsing="false" onAction="#cancelar" prefHeight="60.0" prefWidth="200.0" stylesheets="@../../utils/Estilos.css" text="Cancelar">
