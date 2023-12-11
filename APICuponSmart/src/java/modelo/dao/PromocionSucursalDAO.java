@@ -120,4 +120,32 @@ public class PromocionSucursalDAO{
         
         return respuesta;
     }
+    
+    public static RespuestaPromocionSucursal eliminarPromocionSucursales(Integer idPromocion){
+        RespuestaPromocionSucursal respuesta = new RespuestaPromocionSucursal();
+        
+        SqlSession conexionBD = MyBatisUtil.getSession();
+        
+        if(conexionBD != null){
+            try{
+                int numFilasAfectadas = conexionBD.delete("promocionesSucursales.eliminarPromocionSucursales", idPromocion);
+                conexionBD.commit();
+                
+                if(Verificaciones.Datos.numerico(numFilasAfectadas)){
+                    respuesta.setError(false);
+                    respuesta.setMensaje(Constantes.Retornos.ELIMINACION);
+                }else{
+                    respuesta.setMensaje(Constantes.Errores.ELIMINACION);
+                }
+            }catch(Exception e){
+                respuesta.setMensaje(Constantes.Errores.ELIMINACION);
+            }finally{
+                conexionBD.close();
+            }
+        }else{
+            respuesta.mensajeSinConexionBD();
+        }
+        
+        return respuesta;
+    }
 }
