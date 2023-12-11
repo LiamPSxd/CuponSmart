@@ -22,7 +22,7 @@ public class EmpresaDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaEmpresa peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaEmpresa.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -30,7 +30,7 @@ public class EmpresaDAO{
     }
     
     public static Empresa obtenerEmpresaPorId(Integer idEmpresa){
-        Empresa respuesta = new Empresa();
+        Empresa respuesta = null;
         
         String url = Constantes.Servicios.EMPRESA + "obtenerEmpresaPorId/" + idEmpresa;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -38,7 +38,7 @@ public class EmpresaDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaEmpresa peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaEmpresa.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         
@@ -54,7 +54,7 @@ public class EmpresaDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaEmpresa peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaEmpresa.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -70,7 +70,7 @@ public class EmpresaDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaEmpresa peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaEmpresa.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -86,7 +86,7 @@ public class EmpresaDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaEmpresa peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaEmpresa.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         

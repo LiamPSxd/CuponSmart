@@ -22,7 +22,7 @@ public class PromocionSucursalDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaPromocionSucursal peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaPromocionSucursal.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -38,7 +38,7 @@ public class PromocionSucursalDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaPromocionSucursal peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaPromocionSucursal.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -54,7 +54,7 @@ public class PromocionSucursalDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaPromocionSucursal peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaPromocionSucursal.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -89,6 +89,20 @@ public class PromocionSucursalDAO{
         
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK)
             respuesta = gson.fromJson(respuestaPeticion.getContenido(), Mensaje.class);
+        else
+            respuesta.setMensaje(Constantes.Errores.ELIMINACION);
+        
+        return respuesta;
+    }
+    
+    public static Mensaje eliminarPromocionSucursales(Integer idPromocion){
+        Mensaje respuesta = new Mensaje();
+        
+        String url = Constantes.Servicios.PROMOCION_SUCURSAL + "eliminarPromocionSucursales/" + idPromocion;
+        RespuestaHTTP respuestaPeticion = ConexionWS.peticionDELETE(url);
+        
+        if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK)
+            respuesta = new Gson().fromJson(respuestaPeticion.getContenido(), Mensaje.class);
         else
             respuesta.setMensaje(Constantes.Errores.ELIMINACION);
         

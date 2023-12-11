@@ -22,7 +22,7 @@ public class PromocionDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaPromocion peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaPromocion.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -38,7 +38,7 @@ public class PromocionDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaPromocion peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaPromocion.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -54,7 +54,7 @@ public class PromocionDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaPromocion peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaPromocion.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -70,7 +70,7 @@ public class PromocionDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaPromocion peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaPromocion.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -86,7 +86,7 @@ public class PromocionDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaPromocion peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaPromocion.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -94,7 +94,7 @@ public class PromocionDAO{
     }
     
     public static Promocion obtenerPromocionPorId(Integer idPromocion){
-        Promocion respuesta = new Promocion();
+        Promocion respuesta = null;
         
         String url = Constantes.Servicios.PROMOCION + "obtenerPromocionPorId/" + idPromocion;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -102,7 +102,7 @@ public class PromocionDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaPromocion peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaPromocion.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         
@@ -110,7 +110,7 @@ public class PromocionDAO{
     }
     
     public static Promocion obtenerPromocionPorCodigo(String codigoPromocion){
-        Promocion respuesta = new Promocion();
+        Promocion respuesta = null;
         
         String url = Constantes.Servicios.PROMOCION + "obtenerPromocionPorCodigo/" + codigoPromocion;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -118,7 +118,7 @@ public class PromocionDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaPromocion peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaPromocion.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         

@@ -22,7 +22,7 @@ public class DireccionDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaDireccion peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaDireccion.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -38,7 +38,7 @@ public class DireccionDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaDireccion peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaDireccion.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -46,7 +46,7 @@ public class DireccionDAO{
     }
     
     public static Direccion obtenerDireccionPorId(Integer idDireccion){
-        Direccion respuesta = new Direccion();
+        Direccion respuesta = null;
         
         String url = Constantes.Servicios.DIRECCION + "obtenerDireccionPorId/" + idDireccion;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -54,7 +54,7 @@ public class DireccionDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaDireccion peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaDireccion.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         

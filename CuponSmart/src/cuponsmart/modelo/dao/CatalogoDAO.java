@@ -29,7 +29,7 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaEstado peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaEstado.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -37,7 +37,7 @@ public class CatalogoDAO{
     }
     
     public static Estado obtenerEstadoPorId(Integer idEstado){
-        Estado respuesta = new Estado();
+        Estado respuesta = null;
         
         String url = Constantes.Servicios.CATALOGO + "obtenerEstadoPorId/" + idEstado;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -45,7 +45,7 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaEstado peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaEstado.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         
@@ -61,7 +61,7 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaEstatus peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaEstatus.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -69,7 +69,7 @@ public class CatalogoDAO{
     }
     
     public static Estatus obtenerEstatusPorId(Integer idEstatus){
-        Estatus respuesta = new Estatus();
+        Estatus respuesta = null;
         
         String url = Constantes.Servicios.CATALOGO + "obtenerEstatusPorId/" + idEstatus;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -77,7 +77,7 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaEstatus peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaEstatus.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         
@@ -93,7 +93,7 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaRol peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaRol.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -101,7 +101,7 @@ public class CatalogoDAO{
     }
     
     public static Rol obtenerRolPorId(Integer idRol){
-        Rol respuesta = new Rol();
+        Rol respuesta = null;
         
         String url = Constantes.Servicios.CATALOGO + "obtenerRolPorId/" + idRol;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -109,7 +109,7 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaRol peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaRol.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         
@@ -125,7 +125,7 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaTipoPromocion peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaTipoPromocion.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -133,7 +133,7 @@ public class CatalogoDAO{
     }
     
     public static TipoPromocion obtenerTipoPromocionPorId(Integer idTipoPromocion){
-        TipoPromocion respuesta = new TipoPromocion();
+        TipoPromocion respuesta = null;
         
         String url = Constantes.Servicios.CATALOGO + "obtenerTipoPromocionPorId/" + idTipoPromocion;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -141,7 +141,7 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaTipoPromocion peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaTipoPromocion.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         
@@ -157,7 +157,7 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaMunicipio peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaMunicipio.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -165,7 +165,7 @@ public class CatalogoDAO{
     }
     
     public static Municipio obtenerMunicipioPorId(Integer idMunicipio){
-        Municipio respuesta = new Municipio();
+        Municipio respuesta = null;
         
         String url = Constantes.Servicios.CATALOGO + "obtenerMunicipioPorId/" + idMunicipio;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -173,7 +173,7 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaMunicipio peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaMunicipio.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         
@@ -189,7 +189,7 @@ public class CatalogoDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaMunicipio peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaMunicipio.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         

@@ -22,7 +22,7 @@ public class ClienteDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaCliente peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaCliente.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -30,7 +30,7 @@ public class ClienteDAO{
     }
     
     public static Cliente obtenerClientePorId(Integer idCliente){
-        Cliente respuesta = new Cliente();
+        Cliente respuesta = null;
         
         String url = Constantes.Servicios.CLIENTE + "obtenerClientePorId/" + idCliente;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -38,7 +38,7 @@ public class ClienteDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaCliente peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaCliente.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         

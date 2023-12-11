@@ -22,7 +22,7 @@ public class UsuarioDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaUsuario peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaUsuario.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -38,7 +38,7 @@ public class UsuarioDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaUsuario peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaUsuario.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -46,7 +46,7 @@ public class UsuarioDAO{
     }
     
     public static Usuario obtenerUsuarioPorId(Integer idUsuario){
-        Usuario respuesta = new Usuario();
+        Usuario respuesta = null;
         
         String url = Constantes.Servicios.USUARIO + "obtenerUsuarioPorId/" + idUsuario;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -54,7 +54,7 @@ public class UsuarioDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaUsuario peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaUsuario.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         
@@ -62,7 +62,7 @@ public class UsuarioDAO{
     }
     
     public static Usuario obtenerUsuarioPorNombre(String nombre){
-        Usuario respuesta = new Usuario();
+        Usuario respuesta = null;
         
         String url = Constantes.Servicios.USUARIO + "obtenerUsuarioPorNombre/" + nombre;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -70,7 +70,7 @@ public class UsuarioDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaUsuario peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaUsuario.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         
@@ -78,7 +78,7 @@ public class UsuarioDAO{
     }
     
     public static Usuario obtenerUsuarioPorUsername(String username){
-        Usuario respuesta = new Usuario();
+        Usuario respuesta = null;
         
         String url = Constantes.Servicios.USUARIO + "obtenerUsuarioPorUsername/" + username;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -86,7 +86,7 @@ public class UsuarioDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaUsuario peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaUsuario.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         

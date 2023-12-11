@@ -22,7 +22,7 @@ public class CiudadDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaCiudad peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaCiudad.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -38,7 +38,7 @@ public class CiudadDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaCiudad peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaCiudad.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -46,7 +46,7 @@ public class CiudadDAO{
     }
     
     public static Ciudad obtenerCiudadPorId(Integer idCiudad){
-        Ciudad respuesta = new Ciudad();
+        Ciudad respuesta = null;
         
         String url = Constantes.Servicios.CIUDAD + "obtenerCiudadPorId/" + idCiudad;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -54,7 +54,7 @@ public class CiudadDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
              RespuestaCiudad peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaCiudad.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         

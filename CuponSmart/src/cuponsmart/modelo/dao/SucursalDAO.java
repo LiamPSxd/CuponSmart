@@ -22,7 +22,7 @@ public class SucursalDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaSucursal peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaSucursal.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -32,13 +32,13 @@ public class SucursalDAO{
     public static List<Sucursal> obtenerSucursalesPorNombre(String nombre){
         List<Sucursal> respuesta = new ArrayList();
         
-        String url = Constantes.Servicios.SUCURSAL + "obtenerSucursalesPorNombre" + nombre;
+        String url = Constantes.Servicios.SUCURSAL + "obtenerSucursalesPorNombre/" + nombre;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
         
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaSucursal peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaSucursal.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -48,13 +48,13 @@ public class SucursalDAO{
     public static List<Sucursal> obtenerSucursalesPorIdEmpresa(Integer idEmpresa){
         List<Sucursal> respuesta = new ArrayList();
         
-        String url = Constantes.Servicios.SUCURSAL + "obtenerSucursalesPorIdEmpresa" + idEmpresa;
+        String url = Constantes.Servicios.SUCURSAL + "obtenerSucursalesPorIdEmpresa/" + idEmpresa;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
         
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaSucursal peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaSucursal.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -62,7 +62,7 @@ public class SucursalDAO{
     }
     
     public static Sucursal obtenerSucursalPorIdDireccion(Integer idDireccion){
-        Sucursal respuesta = new Sucursal();
+        Sucursal respuesta = null;
         
         String url = Constantes.Servicios.SUCURSAL + "obtenerSucursalPorIdDireccion/" + idDireccion;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -70,7 +70,7 @@ public class SucursalDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaSucursal peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaSucursal.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         
@@ -78,7 +78,7 @@ public class SucursalDAO{
     }
     
     public static Sucursal obtenerSucursalPorId(Integer idSucursal){
-        Sucursal respuesta = new Sucursal();
+        Sucursal respuesta = null;
         
         String url = Constantes.Servicios.SUCURSAL + "obtenerSucursalPorId/" + idSucursal;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -86,7 +86,7 @@ public class SucursalDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaSucursal peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaSucursal.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         

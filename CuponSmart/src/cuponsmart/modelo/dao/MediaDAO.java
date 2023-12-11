@@ -14,7 +14,7 @@ import utils.Verificaciones;
 
 public class MediaDAO{
     public static Empresa obtenerLogoEmpresa(Integer idEmpresa){
-        Empresa respuesta = new Empresa();
+        Empresa respuesta = null;
         
         String url = Constantes.Servicios.MEDIA + "obtenerLogoEmpresa/" + idEmpresa;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -22,7 +22,7 @@ public class MediaDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaEmpresa peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaEmpresa.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         
@@ -44,7 +44,7 @@ public class MediaDAO{
     }
     
     public static Promocion obtenerImagenPromocion(Integer idPromocion){
-        Promocion respuesta = new Promocion();
+        Promocion respuesta = null;
         
         String url = Constantes.Servicios.MEDIA + "obtenerImagenPromocion/" + idPromocion;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -52,7 +52,7 @@ public class MediaDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaPromocion peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaPromocion.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         

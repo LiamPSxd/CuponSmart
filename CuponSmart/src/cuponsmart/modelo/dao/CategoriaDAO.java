@@ -22,7 +22,7 @@ public class CategoriaDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaCategoria peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaCategoria.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido();
         }
         
@@ -30,7 +30,7 @@ public class CategoriaDAO{
     }
     
     public static Categoria obtenerCategoriaPorId(Integer idCategoria){
-        Categoria respuesta = new Categoria();
+        Categoria respuesta = null;
         
         String url = Constantes.Servicios.CATEGORIA + "obtenerCategoriaPorId/" + idCategoria;
         RespuestaHTTP respuestaPeticion = ConexionWS.peticionGET(url);
@@ -38,7 +38,7 @@ public class CategoriaDAO{
         if(respuestaPeticion.getCodigo() == HttpURLConnection.HTTP_OK){
             RespuestaCategoria peticion = new Gson().fromJson(respuestaPeticion.getContenido(), RespuestaCategoria.class);
             
-            if(!peticion.getError() && Verificaciones.Datos.success(peticion.getMensaje()))
+            if(!peticion.getError() && Verificaciones.success(peticion.getMensaje()))
                 respuesta = peticion.getContenido().get(0);
         }
         
