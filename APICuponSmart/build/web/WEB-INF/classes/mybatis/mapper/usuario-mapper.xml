@@ -30,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>        
             
     <insert id="registrarUsuario" parameterType="modelo.pojo.entidad.Usuario">
-        INSERT INTO usuario (nombre, apellidoPaterno, apellidoMaterno, curp, correo, username, contrasenia, idRol, idEmpresa) 
+        INSERT INTO usuario(nombre, apellidoPaterno, apellidoMaterno, curp, correo, username, contrasenia, idRol, idEmpresa) 
         VALUES (#{nombre}, #{apellidoPaterno}, #{apellidoMaterno}, #{curp}, #{correo}, #{username}, #{contrasenia}, #{idRol}, #{idEmpresa})
     </insert>
     

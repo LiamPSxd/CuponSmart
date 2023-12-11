@@ -28,4 +28,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         DELETE FROM promocionsucursal 
         WHERE idPromocion = #{idPromocion} AND idSucursal = #{idSucursal}
     </delete>
+    
+    <delete id="eliminarPromocionSucursales" parameterType="Integer">
+        DELETE FROM promocionsucursal 
+        WHERE idPromocion = #{idPromocion}
+    </delete>
 </mapper>

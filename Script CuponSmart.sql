@@ -274,3 +274,5 @@ SELECT * FROM promocionSucursal;
 USE cuponsmart;
 
 SELECT * FROM empresa;
+
+UPDATE empresa SET logo = "" WHERE id = 17;

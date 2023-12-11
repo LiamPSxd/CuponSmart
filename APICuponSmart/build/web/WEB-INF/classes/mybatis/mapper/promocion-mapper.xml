@@ -46,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <update id="modificarPromocion" parameterType="modelo.pojo.entidad.Promocion">
         UPDATE promocion 
-        SET nombre = #{nombre}, descripcion = #{descripcion}, imagen = #{imagen}, fechaInicio = #{fechaInicio}, fechaTermino = #{fechaTermino}, restricciones = #{restricciones}, numeroCupones = #{numeroCupones}, codigo = #{codigo}, valor = #{valor}, idEstatus = #{idEstatus}, idCategoria = #{idCategoria}, idEmpresa = #{idEmpresa}, idTipoPromocion = #{idTipoPromocion} 
+        SET nombre = #{nombre}, descripcion = #{descripcion}, fechaInicio = #{fechaInicio}, fechaTermino = #{fechaTermino}, restricciones = #{restricciones}, numeroCupones = #{numeroCupones}, codigo = #{codigo}, valor = #{valor}, idEstatus = #{idEstatus}, idCategoria = #{idCategoria}, idEmpresa = #{idEmpresa}, idTipoPromocion = #{idTipoPromocion} 
         WHERE id = #{id}
     </update>
     
