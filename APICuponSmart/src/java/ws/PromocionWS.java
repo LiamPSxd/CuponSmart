@@ -32,6 +32,13 @@ public class PromocionWS{
     }
     
     @GET
+    @Path("obtenerPromocionesPorIdCategoria/{idCategoria}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RespuestaPromocion obtenerPromocionesPorIdCategoria(@PathParam("idCategoria") Integer idCategoria){
+        return Verificaciones.Datos.numerico(idCategoria) ? PromocionDAO.obtenerPromocionesPorIdCategoria(idCategoria) : (RespuestaPromocion) Verificaciones.Excepciones.badRequest();
+    }
+    
+    @GET
     @Path("obtenerPromocionesPorFechaInicio/{fechaInicio}")
     @Produces(MediaType.APPLICATION_JSON)
     public RespuestaPromocion obtenerPromocionesPorFechaInicio(@PathParam("fechaInicio") String fechaInicio){
