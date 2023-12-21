@@ -38,6 +38,34 @@ public class PromocionDAO{
         return respuesta;
     }
     
+    public static RespuestaPromocion obtenerPromocionesPorIdCategoria(Integer idCategoria){
+        RespuestaPromocion respuesta = new RespuestaPromocion();
+        
+        SqlSession conexionBD = MyBatisUtil.getSession();
+        
+        if(conexionBD != null){
+            try{
+                List<Promocion> promociones = conexionBD.selectList("promociones.obtenerPromocionesPorIdCategoria", idCategoria);
+                
+                if(Verificaciones.Datos.listaNoVacia(promociones)){
+                    respuesta.setError(false);
+                    respuesta.mensajeSuccess();
+                    respuesta.setContenido(promociones);
+                }else{
+                    respuesta.mensajeSinDatos();
+                }
+            }catch(Exception e){
+                respuesta.setMensaje(Constantes.Excepciones.EXCEPTION);
+            }finally{
+                conexionBD.close();
+            }
+        }else{
+            respuesta.mensajeSinConexionBD();
+        }
+        
+        return respuesta;
+    }
+    
     public static RespuestaPromocion obtenerPromocionesPorFechaInicioTerminoONombre(String tipo, String param){
         RespuestaPromocion respuesta = new RespuestaPromocion();
         
