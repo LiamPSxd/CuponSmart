@@ -9,6 +9,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT * FROM promocion
     </select>
     
+    <select id="obtenerPromocionesPorIdCategoria" resultType="modelo.pojo.entidad.Promocion" parameterType="Integer">
+        SELECT * FROM promocion 
+        WHERE idCategoria = #{idCategoria}
+    </select>
+    
     <select id="obtenerPromocionesPorFechaInicio" resultType="modelo.pojo.entidad.Promocion" parameterType="String">
         SELECT * FROM promocion 
         WHERE fechaInicio LIKE #{%fechaInicion%}

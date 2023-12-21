@@ -20,13 +20,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <insert id="registrarCliente" parameterType="modelo.pojo.entidad.Cliente">
-        INSERT INTO cliente (nombre, apellidoPaterno, apellidoMaterno, telefono, correo, fechaNacimiento, contrasenia, idDireccion) 
-        VALUES (#{nombre}, #{apellidoPaterno}, #{apellidoMaterno}, #{telefono}, #{correo}, #{fechaNacimiento}, #{contrasenia}, #{idDireccion})
+        INSERT INTO cliente (nombre, apellidoPaterno, apellidoMaterno, telefono, correo, fechaNacimiento, contrasenia, idDireccion, foto) 
+        VALUES (#{nombre}, #{apellidoPaterno}, #{apellidoMaterno}, #{telefono}, #{correo}, #{fechaNacimiento}, #{contrasenia}, #{idDireccion}, #{foto})
     </insert>
     
     <update id="modificarCliente" parameterType="modelo.pojo.entidad.Cliente">
         UPDATE cliente 
-        SET nombre = #{nombre}, apellidoPaterno = #{apellidoPaterno}, apellidoMaterno = #{apellidoMaterno}, telefono= #{telefono}, fechaNacimiento = #{fechaNacimiento}, contrasenia = #{contrasenia}, idDireccion = #{idDireccion} 
+        SET nombre = #{nombre}, apellidoPaterno = #{apellidoPaterno}, apellidoMaterno = #{apellidoMaterno}, telefono= #{telefono}, fechaNacimiento = #{fechaNacimiento}, contrasenia = #{contrasenia}, idDireccion = #{idDireccion}, foto = #{foto} 
         WHERE id = #{id}
     </update>
     
