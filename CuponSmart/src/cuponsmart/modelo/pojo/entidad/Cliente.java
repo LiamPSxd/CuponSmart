@@ -9,6 +9,8 @@ public class Cliente{
     private String correo;
     private String fechaNacimiento;
     private String contrasenia;
+    private String foto;
+    private String fotoBase64;
     private Integer idDireccion;
     
     public Cliente(){}
@@ -22,6 +24,7 @@ public class Cliente{
         this.correo = correo;
         this.fechaNacimiento = fechaNacimiento;
         this.contrasenia = contrasenia;
+        this.foto = foto;
         this.idDireccion = idDireccion;
     }
 
@@ -87,6 +90,22 @@ public class Cliente{
 
     public void setContrasenia(String contrasenia){
         this.contrasenia = contrasenia;
+    }
+    
+    public String getFoto(){
+        return foto;
+    }
+
+    public void setFoto(String foto){
+        this.foto = foto;
+    }
+    
+    public String getFotoBase64(){
+        return fotoBase64;
+    }
+
+    public void setFotoBase64(String fotoBase64){
+        this.fotoBase64 = fotoBase64;
     }
 
     public Integer getIdDireccion(){
