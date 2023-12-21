@@ -28,4 +28,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SET imagen = #{imagen} 
         WHERE id = #{idPromocion}
     </update>
+    
+    <select id="obtenerFotoCliente" parameterType="Integer" resultType="modelo.pojo.entidad.Cliente">
+        SELECT TO_BASE64(foto) AS 'fotoBase64' 
+        FROM cliente 
+        WHERE id = #{idCliente}
+    </select>
+
+    <update id="registrarFotoCliente" parameterType="map">
+        UPDATE cliente 
+        SET foto = #{foto} 
+        WHERE id = #{idCliente}
+    </update>
 </mapper>
