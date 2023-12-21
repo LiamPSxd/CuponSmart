@@ -216,15 +216,16 @@ CREATE TABLE IF NOT EXISTS cliente(
     apellidoPaterno VARCHAR(20) NOT NULL,
     apellidoMaterno VARCHAR(20) NOT NULL,
     telefono VARCHAR(15) NOT NULL,
-    correo VARCHAR(50) NOT NULL,
+    correo VARCHAR(50) NOT NULL UNIQUE,
     fechaNacimiento DATE NOT NULL,
     contrasenia VARCHAR(30) NOT NULL,
+    foto LONGBLOB NOT NULL,
     idDireccion INT,
     PRIMARY KEY (id),
     FOREIGN KEY (idDireccion) REFERENCES direccion(id)
 );
 
-INSERT INTO cliente(nombre, apellidoPaterno, apellidoMaterno, telefono, correo, fechaNacimiento, contrasenia, idDireccion) VALUES ("Liam", "Pérez", "Sulvarán", "2288586861", "liam@gmail.com", "2002-05-18", "liam", 1);
+INSERT INTO cliente(nombre, apellidoPaterno, apellidoMaterno, telefono, correo, fechaNacimiento, contrasenia, foto, idDireccion) VALUES ("Liam", "Pérez", "Sulvarán", "2288586861", "liam@gmail.com", "2002-05-18", "liam", "", 1);
 
 SELECT * FROM cliente;
 
@@ -274,5 +275,3 @@ SELECT * FROM promocionSucursal;
 USE cuponsmart;
 
 SELECT * FROM empresa;
-
-UPDATE empresa SET logo = "" WHERE id = 17;
