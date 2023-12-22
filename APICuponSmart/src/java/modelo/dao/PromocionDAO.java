@@ -38,14 +38,14 @@ public class PromocionDAO{
         return respuesta;
     }
     
-    public static RespuestaPromocion obtenerPromocionesPorIdCategoria(Integer idCategoria){
+    public static RespuestaPromocion obtenerCupones(){
         RespuestaPromocion respuesta = new RespuestaPromocion();
         
         SqlSession conexionBD = MyBatisUtil.getSession();
         
         if(conexionBD != null){
             try{
-                List<Promocion> promociones = conexionBD.selectList("promociones.obtenerPromocionesPorIdCategoria", idCategoria);
+                List<Promocion> promociones = conexionBD.selectList("promociones.obtenerCupones");
                 
                 if(Verificaciones.Datos.listaNoVacia(promociones)){
                     respuesta.setError(false);

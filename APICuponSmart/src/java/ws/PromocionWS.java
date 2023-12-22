@@ -32,10 +32,10 @@ public class PromocionWS{
     }
     
     @GET
-    @Path("obtenerPromocionesPorIdCategoria/{idCategoria}")
+    @Path("obtenerCupones")
     @Produces(MediaType.APPLICATION_JSON)
-    public RespuestaPromocion obtenerPromocionesPorIdCategoria(@PathParam("idCategoria") Integer idCategoria){
-        return Verificaciones.Datos.numerico(idCategoria) ? PromocionDAO.obtenerPromocionesPorIdCategoria(idCategoria) : (RespuestaPromocion) Verificaciones.Excepciones.badRequest();
+    public RespuestaPromocion obtenerCupones(){
+        return PromocionDAO.obtenerCupones();
     }
     
     @GET
