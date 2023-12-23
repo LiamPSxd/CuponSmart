@@ -38,6 +38,13 @@ public class ClienteWS{
         return Verificaciones.Datos.numerico(idCliente) ? ClienteDAO.obtenerClientePorId(idCliente) : (RespuestaCliente) Verificaciones.Excepciones.badRequest();
     }
     
+    @GET
+    @Path("obtenerClientePorCorreo/{correo}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RespuestaCliente obtenerClientePorCorreo(@PathParam("correo") String correo){
+        return Verificaciones.Datos.cadena(correo)? ClienteDAO.obtenerClientePorCorreo(correo) : (RespuestaCliente) Verificaciones.Excepciones.badRequest();
+    }
+    
     @POST
     @Path("registrar")
     @Produces(MediaType.APPLICATION_JSON)

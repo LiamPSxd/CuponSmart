@@ -68,6 +68,35 @@ public class ClienteDAO{
         return respuesta;
     }
     
+    public static RespuestaCliente obtenerClientePorCorreo(String correo){
+        RespuestaCliente respuesta = new RespuestaCliente();
+        
+        SqlSession conexionDB = MyBatisUtil.getSession();
+        
+        if(conexionDB != null){
+            try{
+                List<Cliente> clientes = new ArrayList<>();
+                clientes.add(conexionDB.selectOne("clientes.obtenerClientePorCorreo", correo));
+                
+                if(Verificaciones.Datos.listaNoVacia(clientes)){
+                    respuesta.setError(false);
+                    respuesta.mensajeSuccess();
+                    respuesta.setContenido(clientes);
+                }else{
+                    respuesta.mensajeNoId();
+                }
+            }catch(Exception e){
+                respuesta.setMensaje(Constantes.Excepciones.EXCEPTION);
+            }finally{
+                conexionDB.close();
+            }
+        }else{
+            respuesta.mensajeSinConexionBD();
+        }
+        
+        return respuesta;
+    }
+    
     public static RespuestaCliente registrarCliente(Cliente cliente){
         RespuestaCliente respuesta = new RespuestaCliente();
         
