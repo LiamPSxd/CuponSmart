@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <update id="modificarCliente" parameterType="modelo.pojo.entidad.Cliente">
         UPDATE cliente 
-        SET nombre = #{nombre}, apellidoPaterno = #{apellidoPaterno}, apellidoMaterno = #{apellidoMaterno}, telefono= #{telefono}, fechaNacimiento = #{fechaNacimiento}, contrasenia = #{contrasenia}, idDireccion = #{idDireccion}, foto = #{foto} 
+        SET nombre = #{nombre}, apellidoPaterno = #{apellidoPaterno}, apellidoMaterno = #{apellidoMaterno}, telefono= #{telefono}, fechaNacimiento = #{fechaNacimiento}, contrasenia = #{contrasenia}, idDireccion = #{idDireccion} 
         WHERE id = #{id}
     </update>
     
