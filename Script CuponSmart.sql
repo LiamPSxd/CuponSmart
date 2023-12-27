@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS empresa(
     FOREIGN KEY (idDireccion) REFERENCES direccion(id)
 );
 
-INSERT INTO empresa(nombre, nombreComercial, logo, nombreRepresentanteLegal, correo, telefono, paginaWeb, rfc, idEstatus, idDireccion) VALUES ("Tacos y Gorditas Vázquez", "Tacos y Gorditas Vázquez", "0", "Lucía Hernández Hernández", "tacosgorditas@gmail.com", "2288497572", "www.tacosgorditasvazquez.com", "TGV000518HE3", 1, 2);
+INSERT INTO empresa(nombre, nombreComercial, logo, nombreRepresentanteLegal, correo, telefono, paginaWeb, rfc, idEstatus, idDireccion) VALUES ("Tacos y Gorditas Vázquez", "Tacos y Gorditas Vázquez", "", "Lucía Hernández Hernández", "tacosgorditas@gmail.com", "2288497572", "www.tacosgorditasvazquez.com", "TGV000518HE3", 1, 2);
 
 SELECT * FROM empresa;
 
@@ -253,7 +253,7 @@ CREATE TABLE IF NOT EXISTS promocion(
     FOREIGN KEY (idTipoPromocion) REFERENCES tipoPromocion(id)
 );
 
-INSERT INTO promocion(nombre, descripcion, imagen, fechaInicio, fechaTermino, restricciones, numeroCupones, codigo, valor, idEstatus, idCategoria, idEmpresa, idTipoPromocion) VALUES ("Viaje Gratis", "Obtén un vuelo gratis a cualquier parte del mundo", "0", "2023-12-04", "2023-12-06", "Aplica solo en Guadalajara", 2, "VIAJFR33", "100", 1, 1, 1, 1);
+INSERT INTO promocion(nombre, descripcion, imagen, fechaInicio, fechaTermino, restricciones, numeroCupones, codigo, valor, idEstatus, idCategoria, idEmpresa, idTipoPromocion) VALUES ("Viaje Gratis", "Obtén un vuelo gratis a cualquier parte del mundo", "", "2023-12-04", "2023-12-06", "Aplica solo en Guadalajara", 2, "VIAJFR33", "100", 1, 1, 1, 1);
 
 SELECT * FROM promocion;
 
