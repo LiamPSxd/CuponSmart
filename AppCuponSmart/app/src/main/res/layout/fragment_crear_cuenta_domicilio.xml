@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/frgCrearCuentaDomicilio"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grisUltraLightGreek"
+    tools:context=".ui.view.fragment.CrearCuentaDomicilio">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:scrollbarThumbVertical="@null">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tituloDomicilio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="20dp"
+                android:text="Ahora, los datos de su domicilio"
+                android:textSize="24sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/gilroy_bold"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardDomicilio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="22dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/tituloDomicilio"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="20dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etqCalle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentTop="true"
+                        android:hint="Calle"
+                        android:gravity="start|center"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textColorHint="@color/gris"
+                        app:hintAnimationEnabled="true"
+                        app:boxBackgroundMode="outline"
+                        app:boxStrokeWidth="0dp"
+                        app:boxCollapsedPaddingTop="10dp"
+                        app:boxBackgroundColor="@color/blancoGreek"
+                        app:boxCornerRadiusTopStart="25dp"
+                        app:boxCornerRadiusTopEnd="25dp"
+                        app:boxCornerRadiusBottomStart="25dp"
+                        app:boxCornerRadiusBottomEnd="25dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txtCalle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp"
+                            android:autofillHints="name"
+                            android:inputType="textAutoCorrect|textAutoComplete"
+                            android:textColor="@color/black"
+                            android:textSize="22sp"
+                            android:textColorHighlight="@color/splash"
+                            android:gravity="start|center" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etqColonia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/etqCalle"
+                        android:hint="Colonia"
+                        android:gravity="start|center"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textColorHint="@color/gris"
+                        app:hintAnimationEnabled="true"
+                        app:boxBackgroundMode="outline"
+                        app:boxStrokeWidth="0dp"
+                        app:boxCollapsedPaddingTop="10dp"
+                        app:boxBackgroundColor="@color/blancoGreek"
+                        app:boxCornerRadiusTopStart="25dp"
+                        app:boxCornerRadiusTopEnd="25dp"
+                        app:boxCornerRadiusBottomStart="25dp"
+                        app:boxCornerRadiusBottomEnd="25dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txtColonia"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp"
+                            android:autofillHints="name"
+                            android:inputType="textAutoComplete|textAutoCorrect"
+                            android:textColor="@color/black"
+                            android:textSize="22sp"
+                            android:textColorHighlight="@color/splash"
+                            android:gravity="start|center" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etqNumero"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/etqColonia"
+                        android:hint="Número"
+                        android:gravity="start|center"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textColorHint="@color/gris"
+                        app:hintAnimationEnabled="true"
+                        app:boxBackgroundMode="outline"
+                        app:boxStrokeWidth="0dp"
+                        app:boxCollapsedPaddingTop="10dp"
+                        app:boxBackgroundColor="@color/blancoGreek"
+                        app:boxCornerRadiusTopStart="25dp"
+                        app:boxCornerRadiusTopEnd="25dp"
+                        app:boxCornerRadiusBottomStart="25dp"
+                        app:boxCornerRadiusBottomEnd="25dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txtNumero"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp"
+                            android:autofillHints="phone"
+                            android:inputType="number"
+                            android:textColor="@color/black"
+                            android:textSize="22sp"
+                            android:textColorHighlight="@color/splash"
+                            android:gravity="start|center" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etqCodigoPostal"
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/etqColonia"
+                        android:hint="Código Postal"
+                        android:gravity="start|center"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textColorHint="@color/gris"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="5"
+                        app:counterTextColor="@color/black"
+                        app:hintAnimationEnabled="true"
+                        app:boxBackgroundMode="outline"
+                        app:boxStrokeWidth="0dp"
+                        app:boxCollapsedPaddingTop="10dp"
+                        app:boxBackgroundColor="@color/blancoGreek"
+                        app:boxCornerRadiusTopStart="25dp"
+                        app:boxCornerRadiusTopEnd="25dp"
+                        app:boxCornerRadiusBottomStart="25dp"
+                        app:boxCornerRadiusBottomEnd="25dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txtCodigoPostal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp"
+                            android:autofillHints="postalCode"
+                            android:inputType="number"
+                            android:textColor="@color/black"
+                            android:textSize="22sp"
+                            android:textColorHighlight="@color/splash"
+                            android:gravity="start|center" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:id="@+id/comboEstado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/etqCodigoPostal"
+                        android:hint="Estado"
+                        android:gravity="start|center"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textColorHint="@color/gris"
+                        android:enabled="false"
+                        app:placeholderText="Seleccione un estado"
+                        app:hintAnimationEnabled="true"
+                        app:boxBackgroundMode="outline"
+                        app:boxStrokeWidth="0dp"
+                        app:boxCollapsedPaddingTop="10dp"
+                        app:boxBackgroundColor="@color/blancoGreek"
+                        app:boxCornerRadiusTopStart="25dp"
+                        app:boxCornerRadiusTopEnd="25dp"
+                        app:boxCornerRadiusBottomStart="25dp"
+                        app:boxCornerRadiusBottomEnd="25dp">
+
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/itemsEstado"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp"
+                            android:inputType="none"
+                            android:textColor="@color/black"
+                            android:textSize="22sp"
+                            android:textColorHighlight="@color/splash"
+                            android:gravity="start|center" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:id="@+id/comboMunicipio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/comboEstado"
+                        android:hint="Municipio"
+                        android:gravity="start|center"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textColorHint="@color/gris"
+                        android:enabled="false"
+                        app:placeholderText="Seleccione un municipio"
+                        app:hintAnimationEnabled="true"
+                        app:boxBackgroundMode="outline"
+                        app:boxStrokeWidth="0dp"
+                        app:boxCollapsedPaddingTop="10dp"
+                        app:boxBackgroundColor="@color/blancoGreek"
+                        app:boxCornerRadiusTopStart="25dp"
+                        app:boxCornerRadiusTopEnd="25dp"
+                        app:boxCornerRadiusBottomStart="25dp"
+                        app:boxCornerRadiusBottomEnd="25dp">
+
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/itemsMunicipio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp"
+                            android:inputType="none"
+                            android:textColor="@color/black"
+                            android:textSize="22sp"
+                            android:textColorHighlight="@color/splash"
+                            android:gravity="start|center" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:id="@+id/comboCiudad"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginVertical="10dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/comboMunicipio"
+                        android:hint="Ciudad"
+                        android:gravity="start|center"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textColorHint="@color/gris"
+                        android:enabled="false"
+                        app:placeholderText="Seleccione una ciudad"
+                        app:hintAnimationEnabled="true"
+                        app:boxBackgroundMode="outline"
+                        app:boxStrokeWidth="0dp"
+                        app:boxCollapsedPaddingTop="10dp"
+                        app:boxBackgroundColor="@color/blancoGreek"
+                        app:boxCornerRadiusTopStart="25dp"
+                        app:boxCornerRadiusTopEnd="25dp"
+                        app:boxCornerRadiusBottomStart="25dp"
+                        app:boxCornerRadiusBottomEnd="25dp">
+
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/itemsCiudad"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp"
+                            android:inputType="none"
+                            android:textColor="@color/black"
+                            android:textSize="22sp"
+                            android:textColorHighlight="@color/splash"
+                            android:gravity="start|center" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnContinuar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/cardDomicilio"
+                android:focusable="true"
+                app:backgroundTint="@color/naranjado"
+                app:maxImageSize="40dp"
+                app:srcCompat="@drawable/continuar"
+                app:tint="@color/black"
+                app:elevation="21dp" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

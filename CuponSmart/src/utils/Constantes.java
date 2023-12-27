@@ -41,6 +41,7 @@ public class Constantes{
         public static final String CUPON_INACTIVO = "El cupón ya no está activo";
         public static final String CUPON_LONG = "El código debe de ser de 8 caracteres, favor de verificarlo";
         public static final String CUPON_FALTANTE = "Para canjear un cupón primero debe ingresar el código";
+        public static final String CUPON_NO_INICIADO = "Este cupón todavía no entra en vigencia";
         public static final String SUCCESS = "Success";
         public static final String BUSQUEDA = "Debe ingresar algún dato para realizar la búsqueda";
         public static final String FILTRO = "Debe seleccionar un filtro para realizar la búsqueda";

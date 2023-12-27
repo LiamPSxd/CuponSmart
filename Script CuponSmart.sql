@@ -274,4 +274,4 @@ SELECT * FROM promocionSucursal;
 ## Proyecciones
 USE cuponsmart;
 
-SELECT * FROM empresa;
+SELECT * FROM tipopromocion;

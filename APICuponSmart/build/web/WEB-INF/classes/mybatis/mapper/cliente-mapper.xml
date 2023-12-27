@@ -14,9 +14,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE id = #{id}
     </select>
     
-    <select id="obtenerClientePorNombre" resultType="modelo.pojo.entidad.Cliente" parameterType="String">
+    <select id="obtenerClientePorCorreo" resultType="modelo.pojo.entidad.Cliente" parameterType="String">
         SELECT * FROM cliente 
-        WHERE nombre = #{nombre}
+        WHERE correo = #{correo}
     </select>
     
     <insert id="registrarCliente" parameterType="modelo.pojo.entidad.Cliente">

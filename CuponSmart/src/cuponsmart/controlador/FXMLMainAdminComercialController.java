@@ -9,6 +9,11 @@ import cuponsmart.modelo.pojo.respuesta.Mensaje;
 import cuponsmart.vista.CuponSmart;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -100,8 +105,20 @@ public class FXMLMainAdminComercialController implements Initializable{
         if(Verificaciones.cadena(codigo)){
             if(codigo.length() == 8){
                 Promocion cupon = PromocionDAO.obtenerPromocionPorCodigo(codigo);
+                Boolean iniciada = false;
+                
+                try{
+                    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+                    Date fechaActual = formato.parse(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()));
+                    Date fechaInicio = formato.parse(cupon.getFechaInicio());
 
-                if(Verificaciones.claseNoNula(cupon) && Verificaciones.numerico(cupon.getNumeroCupones())){
+                    if(fechaInicio.before(fechaActual))
+                        iniciada = true;
+                }catch(ParseException e){
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Excepciones.PARSE, Alert.AlertType.ERROR);
+                }
+
+                if(Verificaciones.claseNoNula(cupon) && Verificaciones.numerico(cupon.getNumeroCupones()) && iniciada){
                     cupon.setNumeroCupones(cupon.getNumeroCupones() - 1);
 
                     if(cupon.getNumeroCupones() == 0){
@@ -114,8 +131,10 @@ public class FXMLMainAdminComercialController implements Initializable{
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, Constantes.Retornos.CUPON_EXITO, Alert.AlertType.INFORMATION);
                 }else if(Verificaciones.claseNula(cupon))
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.CUPON_FALLO, Alert.AlertType.WARNING);
-                else if(Verificaciones.numerico(cupon.getNumeroCupones()))
+                else if(!Verificaciones.numerico(cupon.getNumeroCupones()))
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.CUPON_INACTIVO, Alert.AlertType.WARNING);
+                else if(!iniciada)
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.CUPON_NO_INICIADO, Alert.AlertType.WARNING);
             }else
                 Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.CUPON_LONG, Alert.AlertType.WARNING);
         }else

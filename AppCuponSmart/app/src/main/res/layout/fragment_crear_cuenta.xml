@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frgCrearCuenta"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/grisUltraLightGreek"
+    tools:context=".ui.view.fragment.CrearCuenta">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:scrollbarThumbVertical="@null">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tituloCuenta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="20dp"
+                android:text="Finalmente, sus datos de usuario"
+                android:textSize="24sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/gilroy_bold"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="22dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/tituloCuenta"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="20dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etqCorreo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentTop="true"
+                        android:hint="Correo electrónico"
+                        android:gravity="start|center"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textColorHint="@color/gris"
+                        app:hintAnimationEnabled="true"
+                        app:boxBackgroundMode="outline"
+                        app:boxStrokeWidth="0dp"
+                        app:boxCollapsedPaddingTop="10dp"
+                        app:boxBackgroundColor="@color/blancoGreek"
+                        app:boxCornerRadiusTopStart="25dp"
+                        app:boxCornerRadiusTopEnd="25dp"
+                        app:boxCornerRadiusBottomStart="25dp"
+                        app:boxCornerRadiusBottomEnd="25dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txtCorreo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp"
+                            android:autofillHints="emailAddress"
+                            android:inputType="textEmailAddress"
+                            android:textColor="@color/black"
+                            android:textSize="22sp"
+                            android:textColorHighlight="@color/splash"
+                            android:gravity="start|center" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etqContrasenia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/etqCorreo"
+                        android:hint="Contraseña"
+                        android:gravity="start|center"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textColorHint="@color/gris"
+                        app:hintAnimationEnabled="true"
+                        app:endIconMode="password_toggle"
+                        app:boxBackgroundMode="outline"
+                        app:boxStrokeWidth="0dp"
+                        app:boxCollapsedPaddingTop="10dp"
+                        app:boxBackgroundColor="@color/blancoGreek"
+                        app:boxCornerRadiusTopStart="25dp"
+                        app:boxCornerRadiusTopEnd="25dp"
+                        app:boxCornerRadiusBottomStart="25dp"
+                        app:boxCornerRadiusBottomEnd="25dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txtContrasenia"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp"
+                            android:autofillHints="password"
+                            android:inputType="textPassword"
+                            android:textColor="@color/black"
+                            android:textSize="22sp"
+                            android:textColorHighlight="@color/splash"
+                            android:gravity="start|center" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etqConfirmarContrasenia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/etqContrasenia"
+                        android:hint="Confirmar contraseña"
+                        android:gravity="start|center"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textColorHint="@color/gris"
+                        app:hintAnimationEnabled="true"
+                        app:endIconMode="password_toggle"
+                        app:boxBackgroundMode="outline"
+                        app:boxStrokeWidth="0dp"
+                        app:boxCollapsedPaddingTop="10dp"
+                        app:boxBackgroundColor="@color/blancoGreek"
+                        app:boxCornerRadiusTopStart="25dp"
+                        app:boxCornerRadiusTopEnd="25dp"
+                        app:boxCornerRadiusBottomStart="25dp"
+                        app:boxCornerRadiusBottomEnd="25dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txtConfirmarContrasenia"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp"
+                            android:autofillHints="password"
+                            android:inputType="textPassword"
+                            android:textColor="@color/black"
+                            android:textSize="22sp"
+                            android:textColorHighlight="@color/splash"
+                            android:gravity="start|center" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/btnCrearCuenta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/etqConfirmarContrasenia"
+                        android:text="Crear Cuenta"
+                        android:textSize="20sp" />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
+
