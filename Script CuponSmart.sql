@@ -1,3 +1,10 @@
+## Proyecciones - Pruebas
+USE cuponsmart;
+
+SELECT * FROM cliente;
+SELECT * FROM direccion;
+
+## Script
 DROP DATABASE cuponsmart;
 CREATE DATABASE IF NOT EXISTS cuponsmart;
 
@@ -270,8 +277,3 @@ CREATE TABLE IF NOT EXISTS promocionSucursal(
 INSERT INTO promocionSucursal VALUES (1, 1);
 
 SELECT * FROM promocionSucursal;
-
-## Proyecciones
-USE cuponsmart;
-
-SELECT * FROM cliente;
