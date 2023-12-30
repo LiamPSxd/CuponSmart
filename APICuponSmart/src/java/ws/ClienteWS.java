@@ -55,6 +55,7 @@ public class ClienteWS{
         try{
             Gson gson = new Gson();
             Cliente cliente = gson.fromJson(jsonParam, Cliente.class);
+            cliente.setFoto("");
             
             if(Verificaciones.Datos.claseNoNula(cliente) && Verificaciones.Datos.numerico(cliente.getIdDireccion())){
                 respuesta = ClienteDAO.registrarCliente(cliente);
