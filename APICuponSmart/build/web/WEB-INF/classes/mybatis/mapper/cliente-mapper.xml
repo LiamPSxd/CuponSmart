@@ -20,8 +20,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <insert id="registrarCliente" parameterType="modelo.pojo.entidad.Cliente">
-        INSERT INTO cliente (nombre, apellidoPaterno, apellidoMaterno, telefono, correo, fechaNacimiento, contrasenia, idDireccion, foto) 
-        VALUES (#{nombre}, #{apellidoPaterno}, #{apellidoMaterno}, #{telefono}, #{correo}, #{fechaNacimiento}, #{contrasenia}, #{idDireccion}, #{foto})
+        INSERT INTO cliente (nombre, apellidoPaterno, apellidoMaterno, telefono, correo, fechaNacimiento, contrasenia, foto, idDireccion) 
+        VALUES (#{nombre}, #{apellidoPaterno}, #{apellidoMaterno}, #{telefono}, #{correo}, #{fechaNacimiento}, #{contrasenia}, #{foto}, #{idDireccion})
     </insert>
     
     <update id="modificarCliente" parameterType="modelo.pojo.entidad.Cliente">
