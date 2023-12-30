@@ -11,33 +11,39 @@ import androidx.fragment.app.replace
 import com.google.android.material.datepicker.MaterialDatePicker
 import uv.tc.appcuponsmart.R
 import uv.tc.appcuponsmart.data.model.entidad.Cliente
-import uv.tc.appcuponsmart.databinding.FragmentCrearCuentaPersonalBinding
 import uv.tc.appcuponsmart.di.Constantes
 import uv.tc.appcuponsmart.ui.view.fragment.CrearCuentaDomicilio
 import uv.tc.appcuponsmart.ui.view.fragment.CrearCuentaPersonal
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 class CrearCuentaPersonalEvent(
     private val fragment: CrearCuentaPersonal,
-    private val binding: FragmentCrearCuentaPersonalBinding,
     private val savedInstanceState: Bundle?
 ): View.OnClickListener{
     private var fotoByteArray = byteArrayOf()
 
     override fun onClick(v: View?){
-        when(v?.id){
-            binding.btnCambiarFoto.id -> cambiarFoto()
-            binding.etqFechaNacimiento.id -> seleccionarFecha()
-            binding.btnContinuar.id -> irCrearCuentaDomicilio()
+        fragment.binding.apply{
+            when(v?.id){
+                btnCambiarFoto.id -> cambiarFoto()
+                txtFechaNacimiento.id -> seleccionarFecha()
+                btnContinuar.id -> irCrearCuentaDomicilio()
+            }
         }
     }
 
     private val pickMedia = fragment.registerForActivityResult(PickVisualMedia()){
-        it?.let{ uri ->
-            fotoByteArray = uri.toFile().readBytes()
-            binding.foto.setImageURI(uri)
+        fragment.apply{
+            it?.let{ uri ->
+                fotoByteArray = activity?.contentResolver?.openInputStream(uri)?.use{ inputStream ->
+                    inputStream.buffered().readBytes()
+                } ?: byteArrayOf()
+
+                binding.foto.setImageURI(uri)
+            }
         }
     }
 
@@ -45,15 +51,19 @@ class CrearCuentaPersonalEvent(
         pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
 
     private fun seleccionarFecha(){
+        val formato = SimpleDateFormat(Constantes.Utileria.FORMATO_FECHA, Locale.getDefault())
+
         val datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Selecciona una fecha")
+            .setTitleText("Seleccione una fecha")
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+            .setTextInputFormat(formato)
             .build()
 
         datePicker.addOnPositiveButtonClickListener{
-            binding.txtFechaNacimiento.setText(
-                SimpleDateFormat(Constantes.Utileria.FORMATO_FECHA, Locale.US)
-                    .format(Date(it))
+            formato.timeZone = TimeZone.getTimeZone(Constantes.Utileria.TIME_ZONE)
+
+            fragment.binding.txtFechaNacimiento.setText(
+                formato.format(Date(it))
             )
         }
 

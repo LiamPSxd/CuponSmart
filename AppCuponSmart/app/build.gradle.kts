@@ -95,4 +95,7 @@ dependencies {
 
     //DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    //Swipe to Refresh
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
 }

@@ -1,73 +1,92 @@
 package uv.tc.appcuponsmart.controller.activity
 
 import android.content.Intent
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
-import android.widget.SearchView
-import uv.tc.appcuponsmart.controller.adapter.PromocionesAdapter
 import uv.tc.appcuponsmart.data.model.entidad.Categoria
 import uv.tc.appcuponsmart.data.model.entidad.Promocion
-import uv.tc.appcuponsmart.databinding.ActivityHomeBinding
+import uv.tc.appcuponsmart.di.Constantes
 import uv.tc.appcuponsmart.ui.view.activity.Home
 import uv.tc.appcuponsmart.ui.view.activity.Perfil
 
 class HomeEvent(
-    private val activity: Home,
-    private val binding: ActivityHomeBinding
-): View.OnClickListener, SearchView.OnQueryTextListener, AdapterView.OnItemSelectedListener{
+    private val activity: Home
+): View.OnClickListener, TextWatcher, AdapterView.OnItemClickListener{
     private val promociones = mutableListOf<Promocion>()
+    private val promocionesCategoria = mutableListOf<Promocion>()
 
     override fun onClick(v: View?){
         when(v?.id){
-            binding.foto.id -> irPerfil()
+            activity.binding.foto.id -> irPerfil()
         }
     }
 
-    override fun onQueryTextSubmit(query: String?): Boolean{
-        binding.busquedaView.clearFocus()
-        return true
-    }
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int){}
 
-    override fun onQueryTextChange(newText: String?): Boolean{
-        val busqueda = newText?.lowercase()
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int){
+        val busqueda = s?.toString()?.lowercase()
 
         if(activity.verificaciones.cadena(busqueda)){
-            promociones.forEach{ promo ->
-                if(promo.empresa?.lowercase()?.contains(busqueda!!) == false ||
-                    promo.vigencia?.lowercase()?.contains(busqueda!!) == false)
-                    promociones.remove(promo)
+            val cuponesFiltrados = promocionesCategoria.filter{ promo ->
+                promo.empresa?.lowercase()?.contains(busqueda!!) == true ||
+                promo.vigencia?.lowercase()?.contains(busqueda!!) == true
             }
 
-            iniciarAdapter(promociones)
-        }else
-            iniciarAdapter(activity.cupones)
-
-        return false
+            activity.cupones.clear()
+            activity.cupones.addAll(cuponesFiltrados)
+            notificarAdapter()
+        }else{
+            activity.cupones.clear()
+            activity.cupones.addAll(promocionesCategoria)
+            notificarAdapter()
+        }
     }
 
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long){
+    override fun afterTextChanged(s: Editable?){}
+
+    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long){
         val idCategoria = (parent?.getItemAtPosition(position) as Categoria).id ?: 0
-        promociones.clear()
 
         if(activity.verificaciones.numerico(idCategoria)){
-            activity.cupones.forEach{ promo ->
-                if(promo.idCategoria?.equals(idCategoria) == true)
-                    promociones.add(promo)
+            val cuponesFiltrados = promociones.filter{ promo ->
+                promo.idCategoria?.equals(idCategoria) == true
             }
 
-            iniciarAdapter(promociones)
-        }else
-            iniciarAdapter(activity.cupones)
-    }
+            promocionesCategoria.clear()
+            promocionesCategoria.addAll(cuponesFiltrados)
 
-    override fun onNothingSelected(parent: AdapterView<*>?){}
+            activity.cupones.clear()
+            activity.cupones.addAll(promocionesCategoria)
+            notificarAdapter()
+        }else{
+            promocionesCategoria.clear()
+            promocionesCategoria.addAll(promociones)
+
+            activity.cupones.clear()
+            activity.cupones.addAll(promocionesCategoria)
+            notificarAdapter()
+        }
+    }
 
     private fun irPerfil() =
         activity.startActivity(Intent(activity, Perfil::class.java)
-            .putExtra("idCliente", activity.intent.extras?.getInt("idCliente"))
+            .putExtra(Constantes.DataStore.ID_CLIENTE, activity.intent.extras?.getInt(Constantes.DataStore.ID_CLIENTE))
     )
 
-    private fun iniciarAdapter(promociones: MutableList<Promocion>){
-        binding.recyclerView.adapter = PromocionesAdapter(promociones, activity)
+    private fun notificarAdapter(){
+        activity.apply{
+            binding.recyclerView.adapter?.notifyDataSetChanged()
+            binding.noItems.visibility = if(verificaciones.listaNoVacia(cupones)) View.INVISIBLE else View.VISIBLE
+        }
+    }
+
+    fun inicializarPromociones(promociones: MutableList<Promocion>){
+        this.promociones.clear()
+        this.promociones.addAll(promociones)
+
+        promocionesCategoria.clear()
+        promocionesCategoria.addAll(promociones)
     }
 }

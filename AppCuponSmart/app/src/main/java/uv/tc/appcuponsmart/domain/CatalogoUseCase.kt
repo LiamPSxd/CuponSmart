@@ -7,10 +7,12 @@ import uv.tc.appcuponsmart.data.model.entidad.Estatus
 import uv.tc.appcuponsmart.data.model.entidad.Municipio
 import uv.tc.appcuponsmart.data.model.entidad.TipoPromocion
 import uv.tc.appcuponsmart.data.repository.CatalogoRepository
+import uv.tc.appcuponsmart.di.Verificaciones
 import javax.inject.Inject
 
 class CatalogoUseCase @Inject constructor(
-    private val repository: CatalogoRepository
+    private val repository: CatalogoRepository,
+    private val verificaciones: Verificaciones
 ){
     suspend operator fun invoke(): String? = withContext(Dispatchers.IO){
         repository.error()
@@ -21,7 +23,9 @@ class CatalogoUseCase @Inject constructor(
     }
 
     suspend fun getEstado(idEstado: Int): Estado? = withContext(Dispatchers.IO){
-        repository.getEstado(idEstado)
+        if(verificaciones.numerico(idEstado))
+            repository.getEstado(idEstado)
+        else null
     }
 
     suspend fun getEstatus(): MutableList<Estatus>? = withContext(Dispatchers.IO){
@@ -29,7 +33,9 @@ class CatalogoUseCase @Inject constructor(
     }
 
     suspend fun getEstatus(idEstatus: Int): Estatus? = withContext(Dispatchers.IO){
-        repository.getEstatus(idEstatus)
+        if(verificaciones.numerico(idEstatus))
+            repository.getEstatus(idEstatus)
+        else null
     }
 
     suspend fun getMunicipios(): MutableList<Municipio>? = withContext(Dispatchers.IO){
@@ -37,11 +43,15 @@ class CatalogoUseCase @Inject constructor(
     }
 
     suspend fun getMunicipiosPorEstado(idEstado: Int): MutableList<Municipio>? = withContext(Dispatchers.IO){
-        repository.getMunicipiosPorEstado(idEstado)
+        if(verificaciones.numerico(idEstado))
+            repository.getMunicipiosPorEstado(idEstado)
+        else null
     }
 
     suspend fun getMunicipio(idMunicipio: Int): Municipio? = withContext(Dispatchers.IO){
-        repository.getMunicipio(idMunicipio)
+        if(verificaciones.numerico(idMunicipio))
+            repository.getMunicipio(idMunicipio)
+        else null
     }
 
     suspend fun getTiposPromocion(): MutableList<TipoPromocion>? = withContext(Dispatchers.IO){
@@ -49,6 +59,8 @@ class CatalogoUseCase @Inject constructor(
     }
 
     suspend fun getTipoPromocion(idTipoPromocion: Int): TipoPromocion? = withContext(Dispatchers.IO){
-        repository.getTipoPromocion(idTipoPromocion)
+        if(verificaciones.numerico(idTipoPromocion))
+            repository.getTipoPromocion(idTipoPromocion)
+        else null
     }
 }

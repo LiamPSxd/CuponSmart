@@ -2,45 +2,52 @@ package uv.tc.appcuponsmart.controller.activity
 
 import android.content.Intent
 import android.view.View
-import uv.tc.appcuponsmart.databinding.ActivityIniciarSesionBinding
 import uv.tc.appcuponsmart.ui.view.activity.CrearCuenta
 import uv.tc.appcuponsmart.ui.view.activity.IniciarSesion
-import uv.tc.appcuponsmart.ui.viewmodel.AutenticacionViewModel
 
 class IniciarSesionEvent(
-    private val activity: IniciarSesion,
-    private val binding: ActivityIniciarSesionBinding,
-    private val autenticacion: AutenticacionViewModel
+    private val activity: IniciarSesion
 ): View.OnClickListener{
     override fun onClick(v: View?){
-        when(v?.id){
-            binding.btnIniciarSesion.id -> iniciarSesion()
-            binding.crearCuenta.id -> irCrearCuenta()
+        activity.binding.apply{
+            when(v?.id){
+                btnIniciarSesion.id -> iniciarSesion()
+                crearCuenta.id -> irCrearCuenta()
+            }
         }
     }
 
     private fun validarCampos(correo: String, contrasenia: String): Boolean{
-        var res = true
+        activity.apply{
+            var res = true
 
-        if(!activity.verificaciones.cadena(correo)){
-            res = false
-            binding.etqCorreo.error = "El correo es obligatorio"
+            if(!verificaciones.cadena(correo)){
+                res = false
+                binding.etqCorreo.error = "El correo es obligatorio"
+            }else{
+                binding.etqCorreo.isErrorEnabled = false
+            }
+
+            if(!verificaciones.cadena(contrasenia)){
+                res = false
+                binding.etqContrasenia.error = "La contraseña es obligatoria"
+            }else{
+                binding.etqContrasenia.isErrorEnabled = false
+            }
+
+            return res
         }
-
-        if(!activity.verificaciones.cadena(contrasenia)){
-            res = false
-            binding.etqContrasenia.error = "La contraseña es obligatoria"
-        }
-
-        return res
     }
 
     private fun iniciarSesion(){
-        val correo = binding.txtCorreo.text.toString()
-        val contrasenia = binding.txtContrasenia.text.toString()
+        activity.binding.apply{
+            val correo = txtCorreo.text.toString()
+            val contrasenia = txtContrasenia.text.toString()
 
-        if(validarCampos(correo, contrasenia))
-            autenticacion.loginMovil(correo, contrasenia)
+            if(validarCampos(correo, contrasenia)){
+                activity.viewModel.loginMovil(correo, contrasenia)
+            }
+        }
     }
 
     private fun irCrearCuenta() =

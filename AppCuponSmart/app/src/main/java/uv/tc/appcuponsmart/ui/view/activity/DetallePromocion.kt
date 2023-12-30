@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import uv.tc.appcuponsmart.R
 import uv.tc.appcuponsmart.controller.adapter.SucursalesAdapter
 import uv.tc.appcuponsmart.core.MensajeHelper
 import uv.tc.appcuponsmart.data.model.entidad.Promocion
@@ -16,24 +18,14 @@ import uv.tc.appcuponsmart.data.model.interfaz.NotificarClicSucursal
 import uv.tc.appcuponsmart.databinding.ActivityDetallePromocionBinding
 import uv.tc.appcuponsmart.di.Constantes
 import uv.tc.appcuponsmart.di.Verificaciones
-import uv.tc.appcuponsmart.ui.viewmodel.DireccionViewModel
-import uv.tc.appcuponsmart.ui.viewmodel.MediaViewModel
-import uv.tc.appcuponsmart.ui.viewmodel.PromocionSucursalViewModel
-import uv.tc.appcuponsmart.ui.viewmodel.PromocionViewModel
-import uv.tc.appcuponsmart.ui.viewmodel.SucursalViewModel
+import uv.tc.appcuponsmart.ui.viewmodel.view.DetallePromocionViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetallePromocion: AppCompatActivity(), NotificarClicSucursal{
     private lateinit var binding: ActivityDetallePromocionBinding
 
-    private val promocion: PromocionViewModel by viewModels()
-    private val sucursal: SucursalViewModel by viewModels()
-    private val direccion: DireccionViewModel by viewModels()
-    private val promocionSucursal: PromocionSucursalViewModel by viewModels()
-    private val media: MediaViewModel by viewModels()
-
-    private var sucursales = mutableListOf<Sucursal>()
+    private val viewModel: DetallePromocionViewModel by viewModels()
 
     @Inject
     lateinit var mensaje: MensajeHelper
@@ -44,109 +36,70 @@ class DetallePromocion: AppCompatActivity(), NotificarClicSucursal{
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-        binding = ActivityDetallePromocionBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = ActivityDetallePromocionBinding.inflate(layoutInflater).apply{
+            setContentView(root)
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.setHasFixedSize(true)
+            recyclerView.layoutManager = LinearLayoutManager(this@DetallePromocion)
+            recyclerView.setHasFixedSize(true)
 
-        promocion.error.observe(this){
-            it?.let{ error ->
-                mostrarMensaje(error)
-            }
-        }
-
-        sucursal.error.observe(this){
-            it?.let{ error ->
-                mostrarMensaje(error)
-            }
-        }
-
-        direccion.error.observe(this){
-            it?.let{ error ->
-                mostrarMensaje(error)
-            }
-        }
-
-        promocionSucursal.error.observe(this){
-            it?.let{ error ->
-                mostrarMensaje(error)
-            }
-        }
-
-        media.error.observe(this){
-            it?.let{ error ->
-                mostrarMensaje(error)
-            }
-        }
-
-        promocion.promocion.observe(this){
-            it?.let{
-                it.id?.let{ id ->
-                    promocionSucursal.getPromocionesSucursalesPorPromocion(id)
-                    media.getImagenPromocion(id)
+            viewModel.error.observe(this@DetallePromocion){ error ->
+                error?.let{ err ->
+                    mostrarMensajeError(err)
                 }
-
-                binding.txtNombre.text = it.nombre
-                binding.txtCantidad.text = it.numeroCupones.toString()
-                binding.txtEmpresa.text = it.empresa
-                binding.txtValorTipo.text = it.valorTipo
-                binding.txtCodigo.text = it.codigo
-                binding.txtVigencia.text = it.vigencia
-
-                binding.txtDescripcion.text = it.descripcion
-                binding.txtRestricciones.text = it.restricciones
             }
-        }
 
-        media.imagenPromocion.observe(this){
-            it?.let{ imagen64 ->
-                binding.imagen.setImageBitmap(verificaciones.base64ToBitMap(imagen64))
+            viewModel.promocionJSON.observe(this@DetallePromocion){ promocionJSON ->
+                if(verificaciones.cadena(promocionJSON))
+                    viewModel.setPromocion(json.fromJson(promocionJSON, Promocion::class.java))
+                else viewModel.setError(Constantes.Excepciones.DATOS_PROMOCION)
             }
-        }
 
-        promocionSucursal.promocionesSucursales.observe(this){
-            if(verificaciones.listaNoVacia(it)){
-                binding.noItems.visibility = View.INVISIBLE
+            viewModel.promocion.observe(this@DetallePromocion){ promocion ->
+                promocion?.let{ promo ->
+                    txtNombre.text = promo.nombre
+                    txtCantidad.text = promo.numeroCupones.toString()
+                    txtEmpresa.text = promo.empresa
+                    txtValorTipo.text = promo.valorTipo
+                    txtCodigo.text = promo.codigo
+                    txtVigencia.text = promo.vigencia
 
-                it?.forEach{ promoSucur ->
-                    sucursal.getSucursal(promoSucur.idSucursal!!)
+                    txtDescripcion.text = promo.descripcion
+                    txtRestricciones.text = promo.restricciones
+
+                    if(verificaciones.cadena(promo.imagenBase64))
+                        imagen.setImageBitmap(verificaciones.base64ToBitMap(promo.imagenBase64!!))
+                    else
+                        imagen.setImageDrawable(AppCompatResources.getDrawable(this@DetallePromocion, R.drawable.promocion))
+
+                    viewModel.setSucursales(promo.sucursales ?: mutableListOf())
                 }
-            }else binding.noItems.visibility = View.VISIBLE
-        }
-
-        sucursal.sucursal.observe(this){
-            it?.let{
-                direccion.direccion.observe(this){ dir ->
-                    dir?.let{ d ->
-                        it.direccion = "${d.calle}, ${d.numero}, ${d.colonia}"
-                    }
-                }
-
-                direccion.getDireccion(it.idDireccion!!)
-
-                sucursales.add(it)
             }
+
+            viewModel.carga.observe(this@DetallePromocion){
+                carga.visibility = if(it) View.VISIBLE else View.GONE
+            }
+
+            viewModel.sucursales.observe(this@DetallePromocion){ sucursales ->
+                if(verificaciones.listaNoVacia(sucursales)){
+                    noItems.visibility = View.INVISIBLE
+
+                    recyclerView.adapter = SucursalesAdapter(sucursales!!, this@DetallePromocion)
+                }else noItems.visibility = View.VISIBLE
+            }
+
+            recuperarPromocion()
         }
-
-        recuperarPromocion()
-
-        binding.recyclerView.adapter = SucursalesAdapter(sucursales, this)
     }
 
-    private fun recuperarPromocion(){
-        val promo = intent.extras?.getString("promocion")
+    private fun recuperarPromocion() =
+        viewModel.getPromocion()
 
-        if(verificaciones.cadena(promo))
-            promocion.promocion.postValue(json.fromJson(promo, Promocion::class.java))
-        else mostrarMensaje(Constantes.Excepciones.DATOS_PROMOCION)
-    }
-
-    private fun mostrarMensaje(contenido: String) =
+    private fun mostrarMensajeError(contenido: String) =
         mensaje.mostrarMensaje(supportFragmentManager, Constantes.Mensajes.ERROR, contenido)
 
-    override fun seleccionarItem(sucursal: Sucursal) =
-        startActivity(Intent(this, DetalleSucursal::class.java)
-            .putExtra("sucursal", json.toJson(sucursal))
-    )
+    override fun seleccionarItem(sucursal: Sucursal){
+        viewModel.putSucursal(json.toJson(sucursal))
+
+        startActivity(Intent(this, DetalleSucursal::class.java))
+    }
 }

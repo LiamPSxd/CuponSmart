@@ -5,5 +5,5 @@ import uv.tc.appcuponsmart.data.model.entidad.Promocion
 class RespuestaPromocion(
     error: Boolean,
     mensaje: String,
-    var promociones: MutableList<Promocion>? = null
+    var contenido: MutableList<Promocion>? = null
 ): Mensaje(error, mensaje)

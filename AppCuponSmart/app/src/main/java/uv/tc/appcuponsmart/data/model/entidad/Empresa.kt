@@ -4,7 +4,6 @@ data class Empresa(
     var id: Int? = null,
     var nombre: String? = null,
     var nombreComercial: String? = null,
-    var logoBase64: String? = null,
     var nombreRepresentanteLegal: String? = null,
     var correo: String? = null,
     var telefono: String? = null,

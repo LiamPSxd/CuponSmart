@@ -4,10 +4,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import uv.tc.appcuponsmart.data.model.entidad.Direccion
 import uv.tc.appcuponsmart.data.repository.DireccionRepository
+import uv.tc.appcuponsmart.di.Verificaciones
 import javax.inject.Inject
 
 class DireccionUseCase @Inject constructor(
-    private val repository: DireccionRepository
+    private val repository: DireccionRepository,
+    private val verificaciones: Verificaciones
 ){
     suspend operator fun invoke(): String? = withContext(Dispatchers.IO){
         repository.error()
@@ -18,18 +20,26 @@ class DireccionUseCase @Inject constructor(
     }
 
     suspend fun getDireccion(idDireccion: Int): Direccion? = withContext(Dispatchers.IO){
-        repository.getDireccion(idDireccion)
+        if(verificaciones.numerico(idDireccion))
+            repository.getDireccion(idDireccion)
+        else null
     }
 
     suspend fun addDireccion(direccion: Direccion): Boolean = withContext(Dispatchers.IO){
-        repository.addDireccion(direccion)
+        if(!verificaciones.isClassNull(direccion))
+            repository.addDireccion(direccion)
+        else false
     }
 
     suspend fun updateDireccion(direccion: Direccion): Boolean = withContext(Dispatchers.IO){
-        repository.updateDireccion(direccion)
+        if(!verificaciones.isClassNull(direccion))
+            repository.updateDireccion(direccion)
+        else false
     }
 
     suspend fun deleteDireccion(idDireccion: Int): Boolean = withContext(Dispatchers.IO){
-        repository.deleteDireccion(idDireccion)
+        if(verificaciones.numerico(idDireccion))
+            repository.deleteDireccion(idDireccion)
+        else false
     }
 }

@@ -18,5 +18,6 @@ data class Promocion(
     var idEmpresa: Int? = null,
     var empresa: String? = null,
     var idTipoPromocion: Int? = null,
-    var tipo: String? = null
+    var tipo: String? = null,
+    var sucursales: MutableList<Sucursal>? = mutableListOf()
 )

@@ -14,8 +14,8 @@ import uv.tc.appcuponsmart.core.MensajeHelper
 import uv.tc.appcuponsmart.databinding.FragmentCrearCuentaDomicilioBinding
 import uv.tc.appcuponsmart.di.Constantes
 import uv.tc.appcuponsmart.di.Verificaciones
-import uv.tc.appcuponsmart.ui.viewmodel.CatalogoViewModel
-import uv.tc.appcuponsmart.ui.viewmodel.CiudadViewModel
+import uv.tc.appcuponsmart.ui.viewmodel.model.CatalogoViewModel
+import uv.tc.appcuponsmart.ui.viewmodel.model.CiudadViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint

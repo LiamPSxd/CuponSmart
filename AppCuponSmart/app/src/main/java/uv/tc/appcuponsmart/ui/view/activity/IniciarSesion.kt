@@ -1,33 +1,23 @@
 package uv.tc.appcuponsmart.ui.view.activity
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import uv.tc.appcuponsmart.controller.activity.IniciarSesionEvent
 import uv.tc.appcuponsmart.core.MensajeHelper
 import uv.tc.appcuponsmart.databinding.ActivityIniciarSesionBinding
 import uv.tc.appcuponsmart.di.Constantes
 import uv.tc.appcuponsmart.di.Verificaciones
-import uv.tc.appcuponsmart.ui.viewmodel.AutenticacionViewModel
+import uv.tc.appcuponsmart.ui.viewmodel.view.IniciarSesionViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class IniciarSesion: AppCompatActivity(){
-    private lateinit var binding: ActivityIniciarSesionBinding
+    lateinit var binding: ActivityIniciarSesionBinding
 
-    private val autenticacion: AutenticacionViewModel by viewModels()
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "almacenamiento")
+    val viewModel: IniciarSesionViewModel by viewModels()
 
     private lateinit var event: IniciarSesionEvent
 
@@ -38,37 +28,33 @@ class IniciarSesion: AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-        binding = ActivityIniciarSesionBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = ActivityIniciarSesionBinding.inflate(layoutInflater).apply{
+            setContentView(root)
 
-        event = IniciarSesionEvent(this, binding, autenticacion)
+            event = IniciarSesionEvent(this@IniciarSesion)
 
-        binding.btnIniciarSesion.setOnClickListener(event)
-        binding.crearCuenta.setOnClickListener(event)
+            btnIniciarSesion.setOnClickListener(event)
+            crearCuenta.setOnClickListener(event)
+        }
 
-        autenticacion.error.observe(this){
-            it?.let{ error ->
-                mostrarMensaje(Constantes.Mensajes.ERROR, error)
+        viewModel.error.observe(this){ error ->
+            error?.let{ err ->
+                mostrarMensaje(Constantes.Mensajes.ERROR, err)
             }
         }
 
-        autenticacion.cliente.observe(this){ cliente ->
+        viewModel.cliente.observe(this){ cliente ->
             if(cliente != null){
-                cliente.id?.let{
-                    lifecycleScope.launch(Dispatchers.IO){
-                        dataStore.edit{ preferences ->
-                            preferences[intPreferencesKey("idCliente")] = it
-                        }
-                    }
-
-                    mostrarMensaje(Constantes.Mensajes.EXITO, Constantes.Mensajes.bienvenida(cliente.nombre.toString()))
+                cliente.id?.let{ id ->
+                    viewModel.putIdCliente(id)
+                    viewModel.putNombreCliente("${cliente.nombre}, 1")
 
                     startActivity(Intent(this, Home::class.java)
-                        .putExtra("idCliente", it)
+                        .putExtra(Constantes.DataStore.ID_CLIENTE, id)
                     )
                     finish()
                 }
-            }else mensaje.mostrarMensaje(supportFragmentManager, Constantes.Mensajes.ADVERTENCIA, "Las credenciales son incorrectas, favor de verificarlas")
+            }else mostrarMensaje(Constantes.Mensajes.ADVERTENCIA, "Las credenciales son incorrectas, favor de verificarlas")
         }
     }
 

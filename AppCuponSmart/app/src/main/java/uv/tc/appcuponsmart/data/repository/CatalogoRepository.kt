@@ -20,11 +20,21 @@ class CatalogoRepository @Inject constructor(
     private val url = "${Constantes.Servicios.URL_WS}catalogo/"
     private var error: String? = null
 
-    private fun detectarError(response: String?): String? =
-        if(response?.contains("Error ")!!){
-            error = response
-            null
-    }else response
+    private fun detectarError(response: String?): String?{
+        if(!response.isNullOrEmpty()){
+            if(response.contains("Error ")){
+                error = response
+                return null
+            }
+
+            if(response.contains("<!DOCTYPE ")){
+                error = Constantes.Excepciones.PETICION
+                return null
+            }
+        }
+
+        return response
+    }
 
     fun error(): String? = error
 
@@ -32,7 +42,7 @@ class CatalogoRepository @Inject constructor(
         .fromJson(detectarError(api.get("${url}obtenerEstados")), RespuestaEstado::class.java)
         .let{ respuesta ->
             return if(respuesta != null) respuesta.error?.let{ error ->
-                if(!error) respuesta.estados else null
+                if(!error) respuesta.contenido else null
             } else null
     }
 
@@ -40,7 +50,7 @@ class CatalogoRepository @Inject constructor(
         .fromJson(detectarError(api.get("${url}obtenerEstadoPorId/$idEstado")), RespuestaEstado::class.java)
         .let{ respuesta ->
             return if(respuesta != null) respuesta.error?.let{ error ->
-                if(!error) respuesta.estados?.get(0) else null
+                if(!error) respuesta.contenido?.get(0) else null
             } else null
     }
 
@@ -48,7 +58,7 @@ class CatalogoRepository @Inject constructor(
         .fromJson(detectarError(api.get("${url}obtenerEstatus")), RespuestaEstatus::class.java)
         .let{ respuesta ->
             return if(respuesta != null) respuesta.error?.let{ error ->
-                if(!error) respuesta.estatus else null
+                if(!error) respuesta.contenido else null
             } else null
     }
 
@@ -56,7 +66,7 @@ class CatalogoRepository @Inject constructor(
         .fromJson(detectarError(api.get("${url}obtenerEstatusPorId/$idEstatus")), RespuestaEstatus::class.java)
         .let{ respuesta ->
             return if(respuesta != null) respuesta.error?.let{ error ->
-                if(!error) respuesta.estatus?.get(0) else null
+                if(!error) respuesta.contenido?.get(0) else null
             } else null
     }
 
@@ -64,7 +74,7 @@ class CatalogoRepository @Inject constructor(
         .fromJson(detectarError(api.get("${url}obtenerMunicipios")), RespuestaMunicipio::class.java)
         .let{ respuesta ->
             return if(respuesta != null) respuesta.error?.let{ error ->
-                if(!error) respuesta.municipios else null
+                if(!error) respuesta.contenido else null
             } else null
     }
 
@@ -72,7 +82,7 @@ class CatalogoRepository @Inject constructor(
         .fromJson(detectarError(api.get("${url}obtenerMunicipiosPorEstado/$idEstado")), RespuestaMunicipio::class.java)
         .let{ respuesta ->
             return if(respuesta != null) respuesta.error?.let{ error ->
-                if(!error) respuesta.municipios else null
+                if(!error) respuesta.contenido else null
             } else null
     }
 
@@ -80,7 +90,7 @@ class CatalogoRepository @Inject constructor(
         .fromJson(detectarError(api.get("${url}obtenerMunicipioPorId/$idMunicipio")), RespuestaMunicipio::class.java)
         .let{ respuesta ->
             return if(respuesta != null) respuesta.error?.let{ error ->
-                if(!error) respuesta.municipios?.get(0) else null
+                if(!error) respuesta.contenido?.get(0) else null
             } else null
     }
 
@@ -88,7 +98,7 @@ class CatalogoRepository @Inject constructor(
         .fromJson(detectarError(api.get("${url}obtenerTiposPromocion")), RespuestaTipoPromocion::class.java)
         .let{ respuesta ->
             return if(respuesta != null) respuesta.error?.let{ error ->
-                if(!error) respuesta.tiposPromocion else null
+                if(!error) respuesta.contenido else null
             } else null
     }
 
@@ -96,7 +106,7 @@ class CatalogoRepository @Inject constructor(
         .fromJson(detectarError(api.get("${url}obtenerTipoPromocionPorId/$idTipoPromocion")), RespuestaTipoPromocion::class.java)
         .let{ respuesta ->
             return if(respuesta != null) respuesta.error?.let{ error ->
-                if(!error) respuesta.tiposPromocion?.get(0) else null
+                if(!error) respuesta.contenido?.get(0) else null
             } else null
     }
 }

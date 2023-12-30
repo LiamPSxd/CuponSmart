@@ -21,11 +21,13 @@ class SucursalesAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int){
         val sucursal = sucursales[position]
 
-        holder.binding.txtNombre.text = sucursal.nombre
-        holder.binding.txtDireccion.text = sucursal.direccion
+        holder.binding.apply{
+            txtNombre.text = sucursal.nombre
+            txtDireccion.text = sucursal.direccionPromo
 
-        holder.binding.item.setOnClickListener{
-            observador.seleccionarItem(sucursal)
+            item.setOnClickListener{
+                observador.seleccionarItem(sucursal)
+            }
         }
     }
 

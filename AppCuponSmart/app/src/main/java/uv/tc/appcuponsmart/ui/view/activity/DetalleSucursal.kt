@@ -17,22 +17,17 @@ import uv.tc.appcuponsmart.data.model.entidad.Sucursal
 import uv.tc.appcuponsmart.databinding.ActivityDetalleSucursalBinding
 import uv.tc.appcuponsmart.di.Constantes
 import uv.tc.appcuponsmart.di.Verificaciones
-import uv.tc.appcuponsmart.ui.viewmodel.CatalogoViewModel
-import uv.tc.appcuponsmart.ui.viewmodel.CiudadViewModel
-import uv.tc.appcuponsmart.ui.viewmodel.DireccionViewModel
-import uv.tc.appcuponsmart.ui.viewmodel.SucursalViewModel
+import uv.tc.appcuponsmart.ui.viewmodel.view.DetalleSucursalViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetalleSucursal: AppCompatActivity(), OnMapReadyCallback{
     private lateinit var binding: ActivityDetalleSucursalBinding
 
-    private val sucursal: SucursalViewModel by viewModels()
-    private val direccion: DireccionViewModel by viewModels()
-    private val ciudad: CiudadViewModel by viewModels()
-    private val catalogo: CatalogoViewModel by viewModels()
+    private val viewModel: DetalleSucursalViewModel by viewModels()
 
     private lateinit var map: GoogleMap
+    private var coordenadas = hashMapOf<String, Double>()
 
     @Inject
     lateinit var mensaje: MensajeHelper
@@ -43,84 +38,45 @@ class DetalleSucursal: AppCompatActivity(), OnMapReadyCallback{
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-        binding = ActivityDetalleSucursalBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = ActivityDetalleSucursalBinding.inflate(layoutInflater).apply{
+            setContentView(root)
 
-        sucursal.error.observe(this){
-            it?.let{ error ->
-                mostrarMensaje(error)
+            viewModel.error.observe(this@DetalleSucursal){ error ->
+                error?.let{ err ->
+                    mostrarMensajeError(err)
+                }
             }
-        }
 
-        direccion.error.observe(this){
-            it?.let{ error ->
-                mostrarMensaje(error)
+            viewModel.sucursalJSON.observe(this@DetalleSucursal){ sucursalJSON ->
+                if(verificaciones.cadena(sucursalJSON))
+                    viewModel.setSucursal(json.fromJson(sucursalJSON, Sucursal::class.java))
+                else viewModel.setError(Constantes.Excepciones.DATOS_SUCURSAL)
             }
-        }
 
-        ciudad.error.observe(this){
-            it?.let{ error ->
-                mostrarMensaje(error)
+            viewModel.sucursal.observe(this@DetalleSucursal){ sucursal ->
+                sucursal?.let{ suc ->
+                    txtNombre.text = suc.nombre
+                    txtNombreEncargado.text = suc.nombreEncargado
+                    txtTelefono.text = suc.telefono
+
+                    txtDireccion.text = suc.direccion
+                    txtUbicacion.text = suc.ubicacion
+
+                    coordenadas[Constantes.Utileria.LATITUD] = suc.coordenadas[Constantes.Utileria.LATITUD]!!
+                    coordenadas[Constantes.Utileria.LONGITUD] = suc.coordenadas[Constantes.Utileria.LONGITUD]!!
+                }
             }
+
+            recuperarSucursal()
+            crearMapa()
         }
-
-        catalogo.error.observe(this){
-            it?.let{ error ->
-                mostrarMensaje(error)
-            }
-        }
-
-        sucursal.sucursal.observe(this){
-            it?.let{
-                binding.txtNombre.text = it.nombre
-                binding.txtTelefono.text = it.telefono
-                binding.txtNombreEncargado.text = it.nombreEncargado
-
-                direccion.getDireccion(it.idDireccion!!)
-            }
-        }
-
-        direccion.direccion.observe(this){
-            it?.let{
-                binding.txtDireccion.text = "${it.calle}\n${it.numero}, ${it.codigoPostal}\n${it.colonia}"
-
-                ciudad.getCiudad(it.idCiudad!!)
-            }
-        }
-
-        ciudad.ciudad.observe(this){
-            it?.let{
-                binding.txtUbicacion.text = it.nombre
-
-                catalogo.getMunicipio(it.idMunicipio!!)
-            }
-        }
-
-        catalogo.municipio.observe(this){
-            it?.let{
-                binding.txtUbicacion.text = "${binding.txtUbicacion.text}, ${it.nombre}"
-
-                catalogo.getEstado(it.idEstado!!)
-            }
-        }
-
-        catalogo.estado.observe(this){
-            it?.let{
-                binding.txtUbicacion.text = "${binding.txtUbicacion.text}, ${it.nombre}"
-            }
-        }
-
-        recuperarSucursal()
-        crearMapa()
     }
 
-    private fun recuperarSucursal(){
-        val sucur = intent.extras?.getString("sucursal")
+    private fun recuperarSucursal() =
+        viewModel.getSucursal()
 
-        if(verificaciones.cadena(sucur))
-            sucursal.sucursal.postValue(json.fromJson(sucur, Sucursal::class.java))
-        else mostrarMensaje(Constantes.Excepciones.DATOS_SUCURSAL)
-    }
+    private fun mostrarMensajeError(contenido: String) =
+        mensaje.mostrarMensaje(supportFragmentManager, Constantes.Mensajes.ERROR, contenido)
 
     private fun crearMapa(){
         val mapFragment = supportFragmentManager.findFragmentById(R.id.maps) as SupportMapFragment
@@ -128,25 +84,23 @@ class DetalleSucursal: AppCompatActivity(), OnMapReadyCallback{
     }
 
     private fun crearMarcador(){
-        direccion.direccion.value?.let{
-            val coordenadas = LatLng(it.latitud?.toDouble()!!, it.longitud?.toDouble()!!)
+        val coordenadas = LatLng(
+            this.coordenadas[Constantes.Utileria.LATITUD] ?: Constantes.Utileria.VALOR_LATITUD,
+            this.coordenadas[Constantes.Utileria.LONGITUD] ?: Constantes.Utileria.VALOR_LONGITUD
+        )
 
-            map.addMarker(
-                MarkerOptions().position(coordenadas).title(sucursal.sucursal.value?.nombre)
-            )
-            map.animateCamera(
-                CameraUpdateFactory.newLatLngZoom(coordenadas, 18f),
-                3000,
-                null
-            )
-        }
+        map.addMarker(
+            MarkerOptions().position(coordenadas).title(binding.txtNombre.text.toString())
+        )
+        map.animateCamera(
+            CameraUpdateFactory.newLatLngZoom(coordenadas, 18f),
+            3000,
+            null
+        )
     }
 
     override fun onMapReady(googleMaps: GoogleMap){
         map = googleMaps
         crearMarcador()
     }
-
-    private fun mostrarMensaje(contenido: String) =
-        mensaje.mostrarMensaje(supportFragmentManager, Constantes.Mensajes.ERROR, contenido)
 }

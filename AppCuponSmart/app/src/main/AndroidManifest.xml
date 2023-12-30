@@ -40,7 +40,23 @@
             android:exported="false" />
 
         <activity
+            android:name=".ui.view.activity.CrearCuenta"
+            android:exported="false" />
+
+        <activity
             android:name=".ui.view.activity.Home"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.view.activity.DetallePromocion"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.view.activity.DetalleSucursal"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.view.activity.Perfil"
             android:exported="false" />
     </application>
 </manifest>

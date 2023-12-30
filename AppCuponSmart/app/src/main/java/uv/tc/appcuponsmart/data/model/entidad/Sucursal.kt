@@ -6,6 +6,9 @@ data class Sucursal(
     var telefono: String? = null,
     var nombreEncargado: String? = null,
     var idDireccion: Int? = null,
+    var idEmpresa: Int? = null,
     var direccion: String? = null,
-    var idEmpresa: Int? = null
+    var direccionPromo: String? = null,
+    var ubicacion: String? = null,
+    var coordenadas: HashMap<String, Double> = hashMapOf()
 )

@@ -12,9 +12,11 @@ object FuncionHelper{
     fun validarCorreoNoRegistrado(correo: String, correos: MutableList<String>): Boolean =
         !correos.contains(correo)
 
-    fun base64ToBitMap(base64: String): Bitmap{
-        val bytes = Base64.decode(base64, Base64.DEFAULT)
+    fun base64ToBitMap(base64: String): Bitmap?{
+        return if(base64.isNotEmpty()){
+            val bytes = Base64.decode(base64, Base64.DEFAULT)
 
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+            BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+        } else null
     }
 }

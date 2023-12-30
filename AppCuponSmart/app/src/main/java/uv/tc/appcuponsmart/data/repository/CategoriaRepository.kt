@@ -14,11 +14,21 @@ class CategoriaRepository @Inject constructor(
     private val url = "${Constantes.Servicios.URL_WS}categorias/"
     private var error: String? = null
 
-    private fun detectarError(response: String?): String? =
-        if(response?.contains("Error ")!!){
-            error = response
-            null
-    }else response
+    private fun detectarError(response: String?): String?{
+        if(!response.isNullOrEmpty()){
+            if(response.contains("Error ")){
+                error = response
+                return null
+            }
+
+            if(response.contains("<!DOCTYPE ")){
+                error = Constantes.Excepciones.PETICION
+                return null
+            }
+        }
+
+        return response
+    }
 
     fun error(): String? = error
 
@@ -26,7 +36,7 @@ class CategoriaRepository @Inject constructor(
         .fromJson(detectarError(api.get("${url}obtenerCategorias")), RespuestaCategoria::class.java)
         .let{ respuesta ->
             return if(respuesta != null) respuesta.error?.let{ error ->
-                if(!error) respuesta.categorias else null
+                if(!error) respuesta.contenido else null
             } else null
     }
 
@@ -34,7 +44,7 @@ class CategoriaRepository @Inject constructor(
         .fromJson(detectarError(api.get("${url}obtenerCategoriaPorId/$idCategoria")), RespuestaCategoria::class.java)
         .let{ respuesta ->
             return if(respuesta != null) respuesta.error?.let{ error ->
-                if(!error) respuesta.categorias?.get(0) else null
+                if(!error) respuesta.contenido?.get(0) else null
             } else null
     }
 }

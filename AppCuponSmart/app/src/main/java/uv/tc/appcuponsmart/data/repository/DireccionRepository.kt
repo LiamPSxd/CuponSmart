@@ -14,11 +14,21 @@ class DireccionRepository @Inject constructor(
     private val url = "${Constantes.Servicios.URL_WS}direcciones/"
     private var error: String? = null
 
-    private fun detectarError(response: String?): String? =
-        if(response?.contains("Error ")!!){
-            error = response
-            null
-    }else response
+    private fun detectarError(response: String?): String?{
+        if(!response.isNullOrEmpty()){
+            if(response.contains("Error ")){
+                error = response
+                return null
+            }
+
+            if(response.contains("<!DOCTYPE ")){
+                error = Constantes.Excepciones.PETICION
+                return null
+            }
+        }
+
+        return response
+    }
 
     fun error(): String? = error
 
@@ -26,7 +36,7 @@ class DireccionRepository @Inject constructor(
         .fromJson(detectarError(api.get("${url}obtenerDirecciones")), RespuestaDireccion::class.java)
         .let{ respuesta ->
             return if(respuesta != null) respuesta.error?.let{ error ->
-                if(!error) respuesta.direcciones else null
+                if(!error) respuesta.contenido else null
             } else null
     }
 
@@ -34,25 +44,25 @@ class DireccionRepository @Inject constructor(
         .fromJson(detectarError(api.get("${url}obtenerDireccionPorId/$idDireccion")), RespuestaDireccion::class.java)
         .let{ respuesta ->
             return if(respuesta != null) respuesta.error?.let{ error ->
-                if(!error) respuesta.direcciones?.get(0) else null
+                if(!error) respuesta.contenido?.get(0) else null
             } else null
     }
 
     suspend fun addDireccion(direccion: Direccion): Boolean = json
         .fromJson(detectarError(api.post("${url}registrar", direccion)), RespuestaDireccion::class.java)
         .let{ respuesta ->
-            return if(respuesta != null) respuesta.error!! else false
+            return if(respuesta != null) !respuesta.error!! else false
     }
 
     suspend fun updateDireccion(direccion: Direccion): Boolean = json
         .fromJson(detectarError(api.put("${url}modificar", direccion)), RespuestaDireccion::class.java)
         .let{ respuesta ->
-            return if(respuesta != null) respuesta.error!! else false
+            return if(respuesta != null) !respuesta.error!! else false
     }
 
     suspend fun deleteDireccion(idDireccion: Int): Boolean = json
         .fromJson(detectarError(api.delete("${url}eliminar/$idDireccion")), RespuestaDireccion::class.java)
         .let{ respuesta ->
-            return if(respuesta != null) respuesta.error!! else false
+            return if(respuesta != null) !respuesta.error!! else false
     }
 }

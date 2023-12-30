@@ -14,11 +14,21 @@ class CiudadRepository @Inject constructor(
     private val url = "${Constantes.Servicios.URL_WS}ciudades/"
     private var error: String? = null
 
-    private fun detectarError(response: String?): String? =
-        if(response?.contains("Error ")!!){
-            error = response
-            null
-    }else response
+    private fun detectarError(response: String?): String?{
+        if(!response.isNullOrEmpty()){
+            if(response.contains("Error ")){
+                error = response
+                return null
+            }
+
+            if(response.contains("<!DOCTYPE ")){
+                error = Constantes.Excepciones.PETICION
+                return null
+            }
+        }
+
+        return response
+    }
 
     fun error(): String? = error
 
@@ -26,7 +36,7 @@ class CiudadRepository @Inject constructor(
         .fromJson(detectarError(api.get("${url}obtenerCiudades")), RespuestaCiudad::class.java)
         .let{ respuesta ->
             return if(respuesta != null) respuesta.error?.let{ error ->
-                if(!error) respuesta.ciudades else null
+                if(!error) respuesta.contenido else null
             } else null
     }
 
@@ -34,7 +44,7 @@ class CiudadRepository @Inject constructor(
         .fromJson(detectarError(api.get("${url}obtenerCiudadesPorIdMunicipio/$idMunicipio")), RespuestaCiudad::class.java)
         .let{ respuesta ->
             return if(respuesta != null) respuesta.error?.let{ error ->
-                if(!error) respuesta.ciudades else null
+                if(!error) respuesta.contenido else null
             } else null
     }
 
@@ -42,7 +52,7 @@ class CiudadRepository @Inject constructor(
         .fromJson(detectarError(api.get("${url}obtenerCiudadPorId/$idCiudad")), RespuestaCiudad::class.java)
         .let{ respuesta ->
             return if(respuesta != null) respuesta.error?.let{ error ->
-                if(!error) respuesta.ciudades?.get(0) else null
+                if(!error) respuesta.contenido?.get(0) else null
             } else null
     }
 }

@@ -27,6 +27,6 @@ class Verificaciones @Inject constructor(
     fun validarCorreoNoRegistrado(correo: String, correos: MutableList<String>): Boolean =
         funciones.validarCorreoNoRegistrado(correo, correos)
 
-    fun base64ToBitMap(base64: String): Bitmap =
+    fun base64ToBitMap(base64: String): Bitmap? =
         funciones.base64ToBitMap(base64)
 }

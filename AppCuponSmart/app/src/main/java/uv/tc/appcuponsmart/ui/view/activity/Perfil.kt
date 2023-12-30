@@ -1,39 +1,42 @@
 package uv.tc.appcuponsmart.ui.view.activity
 
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import uv.tc.appcuponsmart.R
 import uv.tc.appcuponsmart.controller.activity.PerfilEvent
 import uv.tc.appcuponsmart.core.MensajeHelper
+import uv.tc.appcuponsmart.data.model.entidad.Ciudad
+import uv.tc.appcuponsmart.data.model.entidad.Estado
+import uv.tc.appcuponsmart.data.model.entidad.Municipio
 import uv.tc.appcuponsmart.databinding.ActivityPerfilBinding
 import uv.tc.appcuponsmart.di.Constantes
 import uv.tc.appcuponsmart.di.Verificaciones
-import uv.tc.appcuponsmart.ui.viewmodel.CatalogoViewModel
-import uv.tc.appcuponsmart.ui.viewmodel.CiudadViewModel
-import uv.tc.appcuponsmart.ui.viewmodel.ClienteViewModel
-import uv.tc.appcuponsmart.ui.viewmodel.DireccionViewModel
-import uv.tc.appcuponsmart.ui.viewmodel.MediaViewModel
+import uv.tc.appcuponsmart.ui.view.dialog.MensajeCerrarSesion
+import uv.tc.appcuponsmart.ui.viewmodel.view.PerfilViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class Perfil: AppCompatActivity(){
-    private lateinit var binding: ActivityPerfilBinding
+class Perfil: AppCompatActivity(), MensajeCerrarSesion.MensajeCerrarSesionListener{
+    lateinit var binding: ActivityPerfilBinding
 
-    val cliente: ClienteViewModel by viewModels()
-    val direccion: DireccionViewModel by viewModels()
-    val ciudad: CiudadViewModel by viewModels()
-    val catalogo: CatalogoViewModel by viewModels()
-    val media: MediaViewModel by viewModels()
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "almacenamiento")
+    val viewModel: PerfilViewModel by viewModels()
 
     private lateinit var event: PerfilEvent
-    var idCiudad = 0
+    private var estadoItem = Estado()
+    private var municipioItem = Municipio()
+    var ciudadItem = Ciudad()
+    var fotoByteArray = byteArrayOf()
 
     @Inject
     lateinit var mensaje: MensajeHelper
@@ -42,174 +45,227 @@ class Perfil: AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-        binding = ActivityPerfilBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = ActivityPerfilBinding.inflate(layoutInflater).apply{
+            setContentView(root)
 
-        event = PerfilEvent(this, binding, dataStore)
+            event = PerfilEvent(this@Perfil)
 
-        binding.btnAceptar.setOnClickListener(event)
-        binding.btnCancelar.setOnClickListener(event)
-        binding.btnModificar.setOnClickListener(event)
-        binding.btnCerrarSesion.setOnClickListener(event)
-        binding.btnCambiarFoto.setOnClickListener(event)
-        binding.etqFechaNacimiento.setOnClickListener(event)
-        binding.itemsEstado.onItemSelectedListener = event
-        binding.itemsMunicipio.onItemSelectedListener = event
-        binding.itemsCiudad.onItemSelectedListener = event
+            btnAceptar.setOnClickListener(event)
+            btnCancelar.setOnClickListener(event)
+            btnModificar.setOnClickListener(event)
+            btnCerrarSesion.setOnClickListener(event)
+            btnCambiarFoto.setOnClickListener(event)
+            txtFechaNacimiento.setOnClickListener(event)
+            txtFechaNacimiento.inputType = InputType.TYPE_NULL
 
-        cliente.error.observe(this){
-            it?.let{ error ->
-                mostrarMensaje(Constantes.Mensajes.ERROR, error)
-            }
-        }
+            itemsEstado.setOnItemClickListener{ parent, _, position, _ ->
+                municipioItem.nombre = "Seleccione un municipio"
+                ciudadItem.nombre = "Seleccione una ciudad"
 
-        direccion.error.observe(this){
-            it?.let{ error ->
-                mostrarMensaje(Constantes.Mensajes.ERROR, error)
-            }
-        }
-
-        ciudad.error.observe(this){
-            it?.let{ error ->
-                mostrarMensaje(Constantes.Mensajes.ERROR, error)
-            }
-        }
-
-        catalogo.error.observe(this){
-            it?.let{ error ->
-                mostrarMensaje(Constantes.Mensajes.ERROR, error)
-            }
-        }
-
-        media.error.observe(this){
-            it?.let{ error ->
-                mostrarMensaje(Constantes.Mensajes.ERROR, error)
-            }
-        }
-
-        cliente.cliente.observe(this){
-            it?.let{ cl ->
-                media.getFotoCliente(cl.id!!)
-                binding.txtNombre.setText(cl.nombre)
-                binding.txtApellidoPaterno.setText(cl.apellidoPaterno)
-                binding.txtApellidoMaterno.setText(cl.apellidoMaterno)
-                binding.txtTelefono.setText(cl.telefono)
-                binding.txtFechaNacimiento.setText(cl.fechaNacimiento)
-
-                direccion.getDireccion(cl.idDireccion!!)
-
-                binding.txtCorreo.setText(cl.correo)
-                binding.txtContrasenia.setText(cl.contrasenia)
-            }
-        }
-
-        media.fotoCliente.observe(this){
-            it?.let{ foto64 ->
-                binding.foto.setImageBitmap(verificaciones.base64ToBitMap(foto64))
-            }
-        }
-
-        direccion.direccion.observe(this){
-            it?.let{ direccion ->
-                binding.txtCalle.setText(direccion.calle)
-                binding.txtColonia.setText(direccion.colonia)
-                binding.txtNumero.setText(direccion.numero)
-                binding.txtCodigoPostal.setText(direccion.codigoPostal)
-
-                ciudad.getCiudad(direccion.idCiudad!!)
-            }
-        }
-
-        ciudad.ciudad.observe(this){
-            it?.idMunicipio?.let{ idMunicipio ->
-                catalogo.getMunicipio(idMunicipio)
-                ciudad.getCiudadesPorMunicipio(idMunicipio)
+                val idEstado = (parent.getItemAtPosition(position) as Estado).id ?: 0
+                viewModel.getMunicipiosPorEstado(idEstado)
             }
 
-            it?.let{ cd ->
-                idCiudad = cd.id!!
+            itemsMunicipio.setOnItemClickListener{ parent, _, position, _ ->
+                ciudadItem.nombre = "Seleccione una ciudad"
 
-                ciudad.ciudades.value?.let{cds ->
-                    binding.itemsCiudad.setSelection(cds.indexOf(cd))
+                val idMunicipio = (parent.getItemAtPosition(position) as Municipio).id ?: 0
+                viewModel.getCiudadesPorMunicipio(idMunicipio)
+            }
+
+            itemsCiudad.setOnItemClickListener{ parent, _, position, _ ->
+                ciudadItem.id = (parent.getItemAtPosition(position) as Ciudad).id ?: 0
+            }
+
+            viewModel.error.observe(this@Perfil){ error ->
+                error?.let{ err ->
+                    mostrarMensaje(Constantes.Mensajes.ERROR, err)
+                }
+            }
+
+            viewModel.fotoCliente.observe(this@Perfil){ media ->
+                if(verificaciones.cadena(media)){
+                    val bitmap = verificaciones.base64ToBitMap(media!!)
+                    foto.setImageBitmap(bitmap)
+                }else
+                    foto.setImageDrawable(AppCompatResources.getDrawable(this@Perfil, R.drawable.usuario))
+            }
+
+            viewModel.cliente.observe(this@Perfil){ cliente ->
+                cliente?.let{ cl ->
+                    txtNombre.setText(cl.nombre)
+                    txtApellidoPaterno.setText(cl.apellidoPaterno)
+                    txtApellidoMaterno.setText(cl.apellidoMaterno)
+                    txtTelefono.setText(cl.telefono)
+                    txtFechaNacimiento.setText(cl.fechaNacimiento)
+
+                    txtCorreo.setText(cl.correo)
+                    txtContrasenia.setText(cl.contrasenia)
+
+                    lifecycleScope.launch(Dispatchers.Main){
+                        async{
+                            async{ viewModel.getFotoCliente(cl.id ?: 0) }.await()
+
+                            async{ viewModel.getDireccion(cl.idDireccion ?: 0) }.await()
+                        }.await()
+                    }
+                }
+            }
+
+            viewModel.direccion.observe(this@Perfil){ direccion ->
+                direccion?.let{ dir ->
+                    txtCalle.setText(dir.calle)
+                    txtColonia.setText(dir.colonia)
+                    txtNumero.setText(dir.numero)
+                    txtCodigoPostal.setText(dir.codigoPostal)
+
+                    viewModel.getCiudad(dir.idCiudad ?: 0)
+                }
+            }
+
+            viewModel.ciudad.observe(this@Perfil){ ciudad ->
+                ciudad?.let{ cd ->
+                    ciudadItem = cd
+
+                    lifecycleScope.launch(Dispatchers.Main){
+                        async{ viewModel.getMunicipio(cd.idMunicipio ?: 0) }.await()
+                        async{ viewModel.getCiudadesPorMunicipio(cd.idMunicipio ?: 0) }.await()
+                    }
+                }
+            }
+
+            viewModel.municipio.observe(this@Perfil){ municipio ->
+                municipio?.let{ muni ->
+                    municipioItem = muni
+
+                    lifecycleScope.launch(Dispatchers.Main){
+                        async{ viewModel.getEstado(muni.idEstado ?: 0) }.await()
+                        async{ viewModel.getMunicipiosPorEstado(muni.idEstado ?: 0) }.await()
+                    }
+                }
+            }
+
+            viewModel.estado.observe(this@Perfil){ estado ->
+                estado?.let{ est ->
+                    estadoItem = est
+
+                    viewModel.getEstados()
+                }
+            }
+
+            viewModel.estados.observe(this@Perfil){ estados ->
+                if(verificaciones.listaNoVacia(estados)){
+                    estadoItem.nombre?.let{
+                        itemsEstado.setText(it)
+                    }
+
+                    itemsEstado.setAdapter(ArrayAdapter(
+                        this@Perfil,
+                        android.R.layout.simple_spinner_dropdown_item,
+                        estados?.toList()!!
+                    ))
+                }else viewModel.setError("No se pudieron obtener los estados, por favor inténte más tarde")
+            }
+
+            viewModel.municipios.observe(this@Perfil){ municipios ->
+                if(verificaciones.listaNoVacia(municipios)){
+                    municipioItem.nombre?.let{
+                        itemsMunicipio.setText(it)
+                    }
+
+                    itemsMunicipio.setAdapter(ArrayAdapter(
+                        this@Perfil,
+                        android.R.layout.simple_spinner_dropdown_item,
+                        municipios?.toList()!!
+                    ))
+                }else viewModel.setError("No se pudieron obtener los municipios, por favor inténte más tarde")
+            }
+
+            viewModel.ciudades.observe(this@Perfil){ ciudades ->
+                if(verificaciones.listaNoVacia(ciudades)){
+                    ciudadItem.nombre?.let{
+                        itemsCiudad.setText(it)
+                    }
+
+                    itemsCiudad.setAdapter(ArrayAdapter(
+                        this@Perfil,
+                        android.R.layout.simple_spinner_dropdown_item,
+                        ciudades?.toList()!!
+                    ))
+                }else viewModel.setError("No se pudieron obtener las ciudades, por favor inténte más tarde")
+            }
+
+            viewModel.statusDireccion.observe(this@Perfil){ status ->
+                if(status){
+                    viewModel.cliente.value?.let{ cl ->
+                        lifecycleScope.launch(Dispatchers.Main){
+                            async{
+                                if(fotoByteArray.isNotEmpty())
+                                    async{ viewModel.addFotoCliente(cl.id!!, fotoByteArray) }.await()
+
+                                async{ viewModel.updateCliente(cl) }.await()
+                            }.await()
+                        }
+                    }
+                }else mostrarMensaje(Constantes.Mensajes.ERROR, "Hubo un error al actualizar la información de su dirección, por favor inténte más tarde")
+            }
+
+            viewModel.statusCliente.observe(this@Perfil){ status ->
+                if(status){
+                    event.habilitarComponentes(false)
+
+                    mostrarMensaje(Constantes.Mensajes.EXITO, "Información actualizada exitosamente")
+                }
+                else mostrarMensaje(Constantes.Mensajes.ERROR, "Hubo un error al actualizar la información de su cuenta, por favor inténte más tarde")
+            }
+
+            viewModel.statusMedia.observe(this@Perfil){ status ->
+                if(!status) mostrarMensaje(Constantes.Mensajes.ERROR, "Hubo un error al actualizar su foto, por favor inténte más tarde")
+            }
+
+            recuperarIdCliente()
+
+            swipe.apply{
+                setColorSchemeColors(
+                    resources.getColor(R.color.naranjaMediumGreek, theme),
+                    resources.getColor(R.color.splash, theme)
+                )
+                setOnRefreshListener{
+                    lifecycleScope.launch(Dispatchers.Main){
+                        async{
+                            async{ recuperarIdCliente() }.await()
+
+                            event.habilitarComponentes(false)
+                        }.await()
+
+                        isRefreshing = false
+                    }
                 }
             }
         }
-
-        catalogo.municipio.observe(this){
-            it?.let{ municipio ->
-                catalogo.getMunicipiosPorEstado(municipio.idEstado!!)
-
-                catalogo.municipios.value?.let{ mps ->
-                    binding.itemsMunicipio.setSelection(mps.indexOf(municipio))
-                }
-
-                for(i in catalogo.estados.value?.indices!!){
-                    val ed = catalogo.estados.value?.get(i)
-
-                    if(ed?.id == municipio.idEstado)
-                        binding.itemsEstado.setSelection(i)
-                }
-            }
-        }
-
-        catalogo.estados.observe(this){
-            if(verificaciones.listaNoVacia(it))
-                binding.itemsEstado.setAdapter(ArrayAdapter(
-                    this,
-                    android.R.layout.simple_spinner_dropdown_item,
-                    it?.toList()!!
-                ))
-            else mostrarMensaje(Constantes.Mensajes.ERROR, "No se pudieron obtener los estados, por favor inténte más tarde")
-        }
-
-        catalogo.municipios.observe(this){
-            if(verificaciones.listaNoVacia(it))
-                binding.itemsMunicipio.setAdapter(ArrayAdapter(
-                    this,
-                    android.R.layout.simple_spinner_dropdown_item,
-                    it?.toList()!!
-                ))
-            else mostrarMensaje(Constantes.Mensajes.ERROR, "No se pudieron obtener los municipios, por favor inténte más tarde")
-        }
-
-        ciudad.ciudades.observe(this){
-            if(verificaciones.listaNoVacia(it))
-                binding.itemsCiudad.setAdapter(ArrayAdapter(
-                    this,
-                    android.R.layout.simple_spinner_dropdown_item,
-                    it?.toList()!!
-                ))
-            else mostrarMensaje(Constantes.Mensajes.ERROR, "No se pudieron obtener las ciudades, por favor inténte más tarde")
-        }
-
-        direccion.status.observe(this){
-            if(it)
-                cliente.cliente.value?.let{ cl ->
-                    cliente.updateCliente(cl)
-                }
-        }
-
-        cliente.status.observe(this){
-            if(it) mostrarMensaje(Constantes.Mensajes.EXITO, "Información actualizada exitosamente")
-            else mostrarMensaje(Constantes.Mensajes.ERROR, "Hubo un error al actualizar la información, por favor inténte más tarde")
-        }
-
-        media.status.observe(this){
-            if(!it) mostrarMensaje(Constantes.Mensajes.ERROR, "Hubo un error al actualizar la foto, por favor inténte más tarde")
-        }
-
-        catalogo.getEstados()
-        recuperarIdCliente()
     }
 
     fun recuperarIdCliente(){
-        val idCliente = intent.extras?.getInt("idCliente") ?: 0
+        val idCliente = intent.extras?.getInt(Constantes.DataStore.ID_CLIENTE) ?: 0
 
         if(verificaciones.numerico(idCliente))
-            cliente.getCliente(idCliente)
+            viewModel.getCliente(idCliente)
         else mostrarMensaje(Constantes.Mensajes.ERROR, Constantes.Excepciones.DATOS_CLIENTE)
     }
 
     fun mostrarMensaje(titulo: String, contenido: String) =
         mensaje.mostrarMensaje(supportFragmentManager, titulo, contenido)
+
+    fun mostrarMensajeCerrarSesion(titulo: String, contenido: String) =
+        MensajeCerrarSesion(titulo, contenido).show(supportFragmentManager, "MensajeCerrarSesion")
+
+    override fun onDialogPositiveClick(dialog: DialogFragment){
+        lifecycleScope.launch(Dispatchers.Main){
+            async{ viewModel.deleteDataStore() }.await()
+
+            startActivity(Intent(this@Perfil, IniciarSesion::class.java))
+            finishAffinity()
+            finish()
+        }
+    }
 }

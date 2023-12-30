@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grisUltraLightGreek"
     tools:context=".ui.view.activity.CrearCuenta">
 
     <TextView
@@ -11,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:text="Crear Cuenta"
         android:textSize="50sp"
         android:textColor="@color/black"

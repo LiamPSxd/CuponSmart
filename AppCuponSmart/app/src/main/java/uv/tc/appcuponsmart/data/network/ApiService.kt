@@ -50,7 +50,10 @@ class ApiService @Inject constructor(
     suspend fun post(url: String, objeto: Any): String? = withContext(Dispatchers.IO){
         try{
             ion.load(Constantes.Servicios.POST, url)
-                .setHeader(Constantes.Servicios.CONTENT_TYPE, Constantes.Servicios.APPLICATION_JSON)
+                .setHeader(
+                    Constantes.Servicios.CONTENT_TYPE,
+                    Constantes.Servicios.APPLICATION_JSON
+                )
                 .setStringBody(json.toJson(objeto))
                 .asString()
                 .withResponse()
@@ -66,7 +69,10 @@ class ApiService @Inject constructor(
     suspend fun put(url: String, objeto: Any): String? = withContext(Dispatchers.IO){
         try{
             ion.load(Constantes.Servicios.PUT, url)
-                .setHeader(Constantes.Servicios.CONTENT_TYPE, Constantes.Servicios.APPLICATION_JSON)
+                .setHeader(
+                    Constantes.Servicios.CONTENT_TYPE,
+                    Constantes.Servicios.APPLICATION_JSON
+                )
                 .setStringBody(json.toJson(objeto))
                 .asString()
                 .withResponse()

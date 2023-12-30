@@ -1,13 +1,22 @@
 package uv.tc.appcuponsmart.ui.view.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import uv.tc.appcuponsmart.controller.fragment.CrearCuentaEvent
 import uv.tc.appcuponsmart.core.MensajeHelper
 import uv.tc.appcuponsmart.data.model.entidad.Cliente
@@ -15,9 +24,9 @@ import uv.tc.appcuponsmart.data.model.entidad.Direccion
 import uv.tc.appcuponsmart.databinding.FragmentCrearCuentaBinding
 import uv.tc.appcuponsmart.di.Constantes
 import uv.tc.appcuponsmart.di.Verificaciones
-import uv.tc.appcuponsmart.ui.viewmodel.ClienteViewModel
-import uv.tc.appcuponsmart.ui.viewmodel.DireccionViewModel
-import uv.tc.appcuponsmart.ui.viewmodel.MediaViewModel
+import uv.tc.appcuponsmart.ui.viewmodel.model.ClienteViewModel
+import uv.tc.appcuponsmart.ui.viewmodel.model.DireccionViewModel
+import uv.tc.appcuponsmart.ui.viewmodel.model.MediaViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -25,13 +34,14 @@ class CrearCuenta: Fragment(){
     private var _binding: FragmentCrearCuentaBinding? = null
     private val binding get() = _binding!!
 
+    private val media: MediaViewModel by viewModels()
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "almacenamiento")
     val cliente: ClienteViewModel by viewModels()
-    val media: MediaViewModel by viewModels()
     val direccion: DireccionViewModel by viewModels()
 
     private lateinit var event: CrearCuentaEvent
+    private var fotoByteArray: ByteArray? = byteArrayOf()
     var cli: Cliente? = null
-    var fotoByteArray: ByteArray? = byteArrayOf()
     var direc: Direccion? = null
     var correos = mutableListOf<String>()
 
@@ -118,6 +128,12 @@ class CrearCuenta: Fragment(){
         cliente.cliente.observe(this){
             it?.let{
                 cli?.id = it.id
+
+                lifecycleScope.launch(Dispatchers.IO){
+                    activity?.dataStore?.edit{ preferences ->
+                        preferences[intPreferencesKey("idCliente")] = it.id!!
+                    }
+                }
             }
         }
     }
