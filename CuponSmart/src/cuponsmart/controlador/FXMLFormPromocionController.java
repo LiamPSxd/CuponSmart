@@ -386,12 +386,12 @@ public class FXMLFormPromocionController implements Initializable{
     @FXML
     private void finalizar(ActionEvent event){
         String nombre = txtNombre.getText();
-        Integer numeroCupones = Integer.parseInt(txtNumeroCupones.getText());
+        Integer numeroCupones = !txtNumeroCupones.getText().isEmpty() ? Integer.parseInt(txtNumeroCupones.getText()) : 0;
         String codigo = txtCodigo.getText();
-        String fechaInicio = pickerFechaInicio.getValue().toString();
-        String fechaTermino = pickerFechaTermino.getValue().toString();
+        String fechaInicio = pickerFechaInicio != null ? pickerFechaInicio.getValue().toString() : "";
+        String fechaTermino = pickerFechaTermino != null ? pickerFechaTermino.getValue().toString() : "";
         TipoPromocion tipo = comboTipo.getSelectionModel().getSelectedItem();
-        Float valor = Float.parseFloat(txtValor.getText());
+        Float valor = !txtValor.getText().isEmpty() ? Float.parseFloat(txtValor.getText()) : 0;
         
         String descripcion = txtDescripcion.getText();
         String restricciones = txtRestricciones.getText();

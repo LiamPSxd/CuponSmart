@@ -252,6 +252,7 @@ public class FXMLFormSucursalController implements Initializable{
         String nombre = txtNombre.getText();
         String nombreEncargado = txtNombreEncargado.getText();
         String telefono = txtTelefono.getText();
+        Empresa empresa = comboEmpresa.getSelectionModel().getSelectedItem();
         
         String calle = txtCalle.getText();
         String colonia = txtColonia.getText();
@@ -263,9 +264,10 @@ public class FXMLFormSucursalController implements Initializable{
         Municipio municipio = comboMunicipio.getSelectionModel().getSelectedItem();
         Ciudad ciudad = comboCiudad.getSelectionModel().getSelectedItem();
         
-        if(Verificaciones.cadena(nombre) && Verificaciones.cadena(nombreEncargado) && Verificaciones.cadena(telefono) && Verificaciones.cadena(calle) &&
-            Verificaciones.cadena(colonia) && Verificaciones.cadena(numero) && Verificaciones.cadena(codigoPostal) && Verificaciones.cadena(latitud) &&
-            Verificaciones.cadena(longitud) && Verificaciones.claseNoNula(estado) && Verificaciones.claseNoNula(municipio) && Verificaciones.claseNoNula(ciudad)){
+        if(Verificaciones.cadena(nombre) && Verificaciones.cadena(nombreEncargado) && Verificaciones.cadena(telefono) && Verificaciones.claseNoNula(empresa) &&
+            Verificaciones.cadena(calle) && Verificaciones.cadena(colonia) && Verificaciones.cadena(numero) && Verificaciones.cadena(codigoPostal) &&
+            Verificaciones.cadena(latitud) && Verificaciones.cadena(longitud) && Verificaciones.claseNoNula(estado) && Verificaciones.claseNoNula(municipio) &&
+            Verificaciones.claseNoNula(ciudad)){
             if(telefono.length() == 10 && codigoPostal.length() == 5){
                 switch(btnFinalizar.getText()){
                     case "Registrar":

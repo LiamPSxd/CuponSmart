@@ -106,19 +106,27 @@ public class FXMLMainAdminComercialController implements Initializable{
             if(codigo.length() == 8){
                 Promocion cupon = PromocionDAO.obtenerPromocionPorCodigo(codigo);
                 Boolean iniciada = false;
+                Boolean terminada = false;
                 
                 try{
-                    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-                    Date fechaActual = formato.parse(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()));
-                    Date fechaInicio = formato.parse(cupon.getFechaInicio());
+                    if(Verificaciones.claseNoNula(cupon)){
+                        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+                        Date fechaActual = formato.parse(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()));
+                        Date fechaInicio = formato.parse(cupon.getFechaInicio());
+                        Date fechaTermino = formato.parse(cupon.getFechaTermino());
 
-                    if(fechaInicio.before(fechaActual))
-                        iniciada = true;
+                        if(fechaInicio.before(fechaActual))
+                            iniciada = true;
+
+                        if(fechaTermino.after(fechaActual))
+                            terminada = true;
+                    }else
+                        Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.CUPON_FALLO, Alert.AlertType.WARNING);
                 }catch(ParseException e){
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Excepciones.PARSE, Alert.AlertType.ERROR);
                 }
 
-                if(Verificaciones.claseNoNula(cupon) && Verificaciones.numerico(cupon.getNumeroCupones()) && iniciada){
+                if(Verificaciones.numerico(cupon.getNumeroCupones()) && iniciada && terminada){
                     cupon.setNumeroCupones(cupon.getNumeroCupones() - 1);
 
                     if(cupon.getNumeroCupones() == 0){
@@ -129,12 +137,12 @@ public class FXMLMainAdminComercialController implements Initializable{
 
                     Mensaje mensaje = PromocionDAO.modificarPromocion(cupon);
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.EXITO, Constantes.Retornos.CUPON_EXITO, Alert.AlertType.INFORMATION);
-                }else if(Verificaciones.claseNula(cupon))
-                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.CUPON_FALLO, Alert.AlertType.WARNING);
-                else if(!Verificaciones.numerico(cupon.getNumeroCupones()))
+                }else if(!Verificaciones.numerico(cupon.getNumeroCupones()))
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.CUPON_INACTIVO, Alert.AlertType.WARNING);
                 else if(!iniciada)
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.CUPON_NO_INICIADO, Alert.AlertType.WARNING);
+                else if(!terminada)
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.CUPON_INACTIVO, Alert.AlertType.WARNING);
             }else
                 Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Retornos.CUPON_LONG, Alert.AlertType.WARNING);
         }else

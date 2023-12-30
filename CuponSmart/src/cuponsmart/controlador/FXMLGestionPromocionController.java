@@ -248,7 +248,7 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
                 : PromocionDAO.obtenerPromociones();
         
         switch(btnLista.getText()){
-            case "Lista de Cupones":
+            case "Mostrar activos":
                 List<Promocion> cuponesFiltrados = new ArrayList();
                 
                 cupones.forEach((cupon) -> {
@@ -272,12 +272,12 @@ public class FXMLGestionPromocionController implements Initializable, IRespuesta
                 
                 if(Verificaciones.listaNoVacia(cuponesFiltrados)){
                     cupones = cuponesFiltrados;
-                    btnLista.setText("Lista de Promociones");
+                    btnLista.setText("Mostrar todos");
                 }else
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "No hay cupones disponibles para mostrar", Alert.AlertType.WARNING);
                 break;
-            case "Lista de Promociones":
-                btnLista.setText("Lista de Cupones");
+            case "Mostrar todos":
+                btnLista.setText("Mostrar activos");
                 break;
             default:
                 Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Retornos.SELECCION, Alert.AlertType.ERROR);

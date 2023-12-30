@@ -79,9 +79,9 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <Button id="botonSeleccion" fx:id="btnLista" layoutX="805.0" layoutY="45.0" mnemonicParsing="false" onAction="#mostrarCupones" prefHeight="60.0" prefWidth="220.0" stylesheets="@../../utils/Estilos.css" text="Lista de Cupones">
+            <Button id="botonSeleccion" fx:id="btnLista" layoutX="805.0" layoutY="45.0" mnemonicParsing="false" onAction="#mostrarCupones" prefHeight="60.0" prefWidth="220.0" stylesheets="@../../utils/Estilos.css" text="Mostrar activos">
                <font>
-                  <Font name="System Bold" size="18.0" />
+                  <Font name="System Bold" size="20.0" />
                </font>
             </Button>
          </children>
