@@ -11,7 +11,7 @@ public class Sucursal{
     private String direccion;
     private Integer idEmpresa;
     private String empresa;
-    private SimpleBooleanProperty promocion = new SimpleBooleanProperty(false);
+    private final SimpleBooleanProperty promocion = new SimpleBooleanProperty(false);
     
     public Sucursal(){}
 
