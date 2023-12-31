@@ -385,55 +385,59 @@ public class FXMLFormPromocionController implements Initializable{
 
     @FXML
     private void finalizar(ActionEvent event){
-        String nombre = txtNombre.getText();
-        Integer numeroCupones = !txtNumeroCupones.getText().isEmpty() ? Integer.parseInt(txtNumeroCupones.getText()) : 0;
-        String codigo = txtCodigo.getText();
-        String fechaInicio = pickerFechaInicio != null ? pickerFechaInicio.getValue().toString() : "";
-        String fechaTermino = pickerFechaTermino != null ? pickerFechaTermino.getValue().toString() : "";
-        TipoPromocion tipo = comboTipo.getSelectionModel().getSelectedItem();
-        Float valor = !txtValor.getText().isEmpty() ? Float.parseFloat(txtValor.getText()) : 0;
-        
-        String descripcion = txtDescripcion.getText();
-        String restricciones = txtRestricciones.getText();
-        Estatus estatus = comboEstatus.getSelectionModel().getSelectedItem();
-        Categoria categoria = comboCategoria.getSelectionModel().getSelectedItem();
-        Empresa empresa = comboEmpresa.getSelectionModel().getSelectedItem();
-        
-        if(Verificaciones.cadena(nombre) && Verificaciones.numerico(numeroCupones) && Verificaciones.cadena(codigo) && Verificaciones.cadena(fechaInicio) &&
-            Verificaciones.cadena(fechaTermino) && Verificaciones.claseNoNula(tipo) && Verificaciones.numerico(valor) && Verificaciones.cadena(descripcion) &&
-            Verificaciones.cadena(restricciones) && Verificaciones.claseNoNula(estatus) && Verificaciones.claseNoNula(categoria) && Verificaciones.claseNoNula(empresa)){
-            if(codigo.length() == 8){
-                switch(btnFinalizar.getText()){
-                    case "Registrar":
-                        registrarPromocion(new Promocion(0, nombre, descripcion, "", fechaInicio, fechaTermino, restricciones, numeroCupones, codigo, valor, this.idEstatus, this.idCategoria, this.idEmpresa, this.idTipo));
-                        break;
-                    case "Modificar":
-                        if(!this.promocion.getIdEmpresa().equals(this.idEmpresa))
-                            PromocionSucursalDAO.eliminarPromocionSucursales(this.promocion.getId());
-                        
-                        this.promocion.setNombre(nombre);
-                        this.promocion.setNumeroCupones(numeroCupones);
-                        this.promocion.setCodigo(codigo);
-                        this.promocion.setFechaInicio(fechaInicio);
-                        this.promocion.setFechaTermino(fechaTermino);
-                        this.promocion.setIdTipoPromocion(this.idTipo);
-                        this.promocion.setValor(valor);
-                        this.promocion.setDescripcion(descripcion);
-                        this.promocion.setRestricciones(restricciones);
-                        this.promocion.setIdEstatus(this.idEstatus);
-                        this.promocion.setIdCategoria(this.idCategoria);
-                        this.promocion.setIdEmpresa(this.idEmpresa);
+        try{
+            String nombre = txtNombre.getText();
+            Integer numeroCupones = !txtNumeroCupones.getText().isEmpty() ? Integer.parseInt(txtNumeroCupones.getText()) : 0;
+            String codigo = txtCodigo.getText();
+            String fechaInicio = pickerFechaInicio.getValue().toString();
+            String fechaTermino = pickerFechaTermino.getValue().toString();
+            TipoPromocion tipo = comboTipo.getSelectionModel().getSelectedItem();
+            Float valor = !txtValor.getText().isEmpty() ? Float.parseFloat(txtValor.getText()) : 0;
 
-                        modificarPromocion();
-                        break;
-                    default:
-                        Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Retornos.SELECCION, Alert.AlertType.ERROR);
-                }
-            }else
-                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "El código debe de ser de 8 caracteres, favor de verificarlo", Alert.AlertType.WARNING);
-        }else if(!Verificaciones.numerico(numeroCupones) || !Verificaciones.numerico(valor))
-            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Errores.CAMPOS_NUMERICOS, Alert.AlertType.WARNING);
-        else
+            String descripcion = txtDescripcion.getText();
+            String restricciones = txtRestricciones.getText();
+            Estatus estatus = comboEstatus.getSelectionModel().getSelectedItem();
+            Categoria categoria = comboCategoria.getSelectionModel().getSelectedItem();
+            Empresa empresa = comboEmpresa.getSelectionModel().getSelectedItem();
+
+            if(Verificaciones.cadena(nombre) && Verificaciones.numerico(numeroCupones) && Verificaciones.cadena(codigo) && Verificaciones.cadena(fechaInicio) &&
+                Verificaciones.cadena(fechaTermino) && Verificaciones.claseNoNula(tipo) && Verificaciones.numerico(valor) && Verificaciones.cadena(descripcion) &&
+                Verificaciones.cadena(restricciones) && Verificaciones.claseNoNula(estatus) && Verificaciones.claseNoNula(categoria) && Verificaciones.claseNoNula(empresa)){
+                if(codigo.length() == 8){
+                    switch(btnFinalizar.getText()){
+                        case "Registrar":
+                            registrarPromocion(new Promocion(0, nombre, descripcion, "", fechaInicio, fechaTermino, restricciones, numeroCupones, codigo, valor, this.idEstatus, this.idCategoria, this.idEmpresa, this.idTipo));
+                            break;
+                        case "Modificar":
+                            if(!this.promocion.getIdEmpresa().equals(this.idEmpresa))
+                                PromocionSucursalDAO.eliminarPromocionSucursales(this.promocion.getId());
+
+                            this.promocion.setNombre(nombre);
+                            this.promocion.setNumeroCupones(numeroCupones);
+                            this.promocion.setCodigo(codigo);
+                            this.promocion.setFechaInicio(fechaInicio);
+                            this.promocion.setFechaTermino(fechaTermino);
+                            this.promocion.setIdTipoPromocion(this.idTipo);
+                            this.promocion.setValor(valor);
+                            this.promocion.setDescripcion(descripcion);
+                            this.promocion.setRestricciones(restricciones);
+                            this.promocion.setIdEstatus(this.idEstatus);
+                            this.promocion.setIdCategoria(this.idCategoria);
+                            this.promocion.setIdEmpresa(this.idEmpresa);
+
+                            modificarPromocion();
+                            break;
+                        default:
+                            Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ERROR, Constantes.Retornos.SELECCION, Alert.AlertType.ERROR);
+                    }
+                }else
+                    Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "El código debe de ser de 8 caracteres, favor de verificarlo", Alert.AlertType.WARNING);
+            }else if(!Verificaciones.numerico(numeroCupones) || !Verificaciones.numerico(valor))
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Errores.CAMPOS_NUMERICOS, Alert.AlertType.WARNING);
+            else
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.CAMPOS_VACIOS, Constantes.Errores.CAMPOS_VACIOS, Alert.AlertType.WARNING);
+        }catch(NullPointerException e){
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.CAMPOS_VACIOS, Constantes.Errores.CAMPOS_VACIOS, Alert.AlertType.WARNING);
+        }
     }
 }
