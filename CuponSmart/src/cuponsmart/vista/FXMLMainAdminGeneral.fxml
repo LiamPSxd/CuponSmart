@@ -23,7 +23,7 @@
             <Font name="Century Gothic Bold" size="36.0" />
          </font>
       </Label>
-      <Label id="titulo" alignment="CENTER_RIGHT" layoutX="1011.0" layoutY="75.0" style="-fx-text-alignment: center-right; -fx-font-size: 30;" stylesheets="@../../utils/Estilos.css" text="Administrador General" textAlignment="CENTER">
+      <Label id="titulo" alignment="CENTER_RIGHT" layoutX="1011.0" layoutY="75.0" style="-fx-text-alignment: right; -fx-font-size: 30;" stylesheets="@../../utils/Estilos.css" text="Administrador General" textAlignment="CENTER">
          <font>
             <Font name="Century Gothic Bold" size="48.0" />
          </font>
