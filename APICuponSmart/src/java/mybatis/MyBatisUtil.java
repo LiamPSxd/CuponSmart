@@ -7,7 +7,11 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 public class MyBatisUtil{
     public static final String RESOURCE = "mybatis/mybatis-config.xml";
-    public static final String ENVIRONMENT = "development";
+    
+    public static final class ENVIRONMENT{
+        public static final String TEST = "test";
+        public static final String DEVELOPMENT = "development";
+    }
     
     public static SqlSession getSession(){
         SqlSession session = null;
@@ -15,7 +19,7 @@ public class MyBatisUtil{
         try{
             session = new SqlSessionFactoryBuilder().build(
                 Resources.getResourceAsReader(RESOURCE),
-                ENVIRONMENT
+                ENVIRONMENT.DEVELOPMENT
             ).openSession();
         }catch(IOException e){
             e.printStackTrace();
