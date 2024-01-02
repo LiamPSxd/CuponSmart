@@ -1,9 +1,6 @@
 ## Proyecciones - Pruebas
 USE cuponsmart;
 
-##admin
-##Gf2eeBaA5dg3EBDgGBBHDG43DcecHe3c
-
 SELECT * FROM categoria;
 SELECT * FROM ciudad;
 SELECT * FROM cliente;
@@ -25,11 +22,19 @@ CREATE DATABASE IF NOT EXISTS cuponsmart;
 
 USE cuponsmart;
 
-CREATE USER IF NOT EXISTS 'admin'@'localhost' IDENTIFIED BY 'equipo6';
-GRANT ALL PRIVILEGES ON cuponsmart.* TO 'admin'@'localhost';
+## Usuario Root BD Cloud
+## root
+## AHA3EeahfhfdAaFDD-E4FgC2bGbC2DAG
+
+## Usuario Admin BD Local
+## admin
+## equipo6
+
+CREATE USER IF NOT EXISTS 'admin'@'cuponsmart' IDENTIFIED BY 'equipo6';
+GRANT ALL PRIVILEGES ON cuponsmart.* TO 'admin'@'cuponsmart';
 FLUSH PRIVILEGES;
 
-SHOW GRANTS FOR admin@'localhost';
+SHOW GRANTS FOR admin@'cuponsmart';
 
 ## Estado
 DROP TABLE IF EXISTS estado;
