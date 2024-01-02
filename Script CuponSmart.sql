@@ -1,8 +1,23 @@
 ## Proyecciones - Pruebas
 USE cuponsmart;
 
-##SELECT * FROM cliente;
-##SELECT * FROM direccion;
+##admin
+##Gf2eeBaA5dg3EBDgGBBHDG43DcecHe3c
+
+SELECT * FROM categoria;
+SELECT * FROM ciudad;
+SELECT * FROM cliente;
+SELECT * FROM direccion;
+SELECT * FROM empresa;
+SELECT * FROM estado;
+SELECT * FROM estatus;
+SELECT * FROM municipio;
+SELECT * FROM promocion;
+SELECT * FROM promocionSucursal;
+SELECT * FROM rol;
+SELECT * FROM sucursal;
+SELECT * FROM tipoPromocion;
+SELECT * FROM usuario;
 
 ## Script
 DROP DATABASE cuponsmart;
