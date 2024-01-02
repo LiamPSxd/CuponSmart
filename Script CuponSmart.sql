@@ -1,8 +1,20 @@
 ## Proyecciones - Pruebas
 USE cuponsmart;
 
-##SELECT * FROM cliente;
-##SELECT * FROM direccion;
+SELECT * FROM categoria;
+SELECT * FROM ciudad;
+SELECT * FROM cliente;
+SELECT * FROM direccion;
+SELECT * FROM empresa;
+SELECT * FROM estado;
+SELECT * FROM estatus;
+SELECT * FROM municipio;
+SELECT * FROM promocion;
+SELECT * FROM promocionSucursal;
+SELECT * FROM rol;
+SELECT * FROM sucursal;
+SELECT * FROM tipoPromocion;
+SELECT * FROM usuario;
 
 ## Script
 DROP DATABASE cuponsmart;
@@ -10,11 +22,19 @@ CREATE DATABASE IF NOT EXISTS cuponsmart;
 
 USE cuponsmart;
 
-CREATE USER IF NOT EXISTS 'admin'@'localhost' IDENTIFIED BY 'equipo6';
-GRANT ALL PRIVILEGES ON cuponsmart.* TO 'admin'@'localhost';
+## Usuario Root BD Cloud
+## root
+## AHA3EeahfhfdAaFDD-E4FgC2bGbC2DAG
+
+## Usuario Admin BD Local
+## admin
+## equipo6
+
+CREATE USER IF NOT EXISTS 'admin'@'cuponsmart' IDENTIFIED BY 'equipo6';
+GRANT ALL PRIVILEGES ON cuponsmart.* TO 'admin'@'cuponsmart';
 FLUSH PRIVILEGES;
 
-SHOW GRANTS FOR admin@'localhost';
+SHOW GRANTS FOR admin@'cuponsmart';
 
 ## Estado
 DROP TABLE IF EXISTS estado;
@@ -137,6 +157,7 @@ INSERT INTO ciudad(nombre, idMunicipio) VALUES ("San Pedro", 29);
 INSERT INTO ciudad(nombre, idMunicipio) VALUES ("Santa Ana", 30);
 INSERT INTO ciudad(nombre, idMunicipio) VALUES ("Las Fincas", 31);
 INSERT INTO ciudad(nombre, idMunicipio) VALUES ("Coba", 32);
+
 SELECT * FROM ciudad;
 
 ## Rol
@@ -176,10 +197,13 @@ CREATE TABLE IF NOT EXISTS categoria(
 INSERT INTO categoria(nombre) VALUES ("Aerolínea");
 INSERT INTO categoria(nombre) VALUES ("Comida");
 INSERT INTO categoria(nombre) VALUES ("Cafetería");
+INSERT INTO categoria(nombre) VALUES ("Cine");
 INSERT INTO categoria(nombre) VALUES ("Deportes");
 INSERT INTO categoria(nombre) VALUES ("Lectura");
 INSERT INTO categoria(nombre) VALUES ("Farmacia");
 INSERT INTO categoria(nombre) VALUES ("Electrónica");
+INSERT INTO categoria(nombre) VALUES ("Hoteles");
+INSERT INTO categoria(nombre) VALUES ("Ropa");
 INSERT INTO categoria(nombre) VALUES ("Zapatería");
 INSERT INTO categoria(nombre) VALUES ("Otros");
 
@@ -226,7 +250,6 @@ INSERT INTO direccion(calle, numero, codigoPostal, colonia, latitud, longitud, i
 INSERT INTO direccion(calle, numero, codigoPostal, colonia, latitud, longitud, idCiudad) VALUES ("Calle Seis", "32", "91780", "Viejo Barrio", "19.5533221100", "-96.8877665544", 11);
 INSERT INTO direccion(calle, numero, codigoPostal, colonia, latitud, longitud, idCiudad) VALUES ("Boulevard de la Luna", "987", "91890", "Lunar", "19.5566554433", "-96.8800111222", 12);
 
-
 SELECT * FROM direccion;
 
 ## Empresa
@@ -259,7 +282,6 @@ INSERT INTO empresa(nombre, nombreComercial, logo, nombreRepresentanteLegal, cor
 INSERT INTO empresa(nombre, nombreComercial, logo, nombreRepresentanteLegal, correo, telefono, paginaWeb, rfc, idEstatus, idDireccion) VALUES ("Farmacia San José", "San José", "", "Mario Jiménez", "info@farmaciasanjose.com", "2281453317", "www.farmaciasanjose.com", "FSJ789012345", 1, 9);
 INSERT INTO empresa(nombre, nombreComercial, logo, nombreRepresentanteLegal, correo, telefono, paginaWeb, rfc, idEstatus, idDireccion) VALUES ("Electrónicos TechCity", "TechCity", "", "Sofía Pérez", "info@techcity.com", "2281452237", "www.techcity.com", "TEC123456789", 1, 10);
 INSERT INTO empresa(nombre, nombreComercial, logo, nombreRepresentanteLegal, correo, telefono, paginaWeb, rfc, idEstatus, idDireccion) VALUES ("Florería Primavera", "Primavera", "", "Alejandro Flores", "info@floreriaprimavera.com", "2281782417", "www.floreriaprimavera.com", "FLP987654321", 1, 11);
-
 
 SELECT * FROM empresa;
 

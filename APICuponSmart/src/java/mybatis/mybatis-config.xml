@@ -11,7 +11,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
             
             <dataSource type="POOLED" >
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://admin:equipo6@roundhouse.proxy.rlwy.net:27815/cuponsmart"/>
+                <property name="url" value="jdbc:mysql://monorail.proxy.rlwy.net:30163/cuponsmart"/>
                 <property name="username" value="admin"/>
                 <property name="password" value="equipo6"/>
                 <property name="poolMaximumActiveConnections" value="50"/>
