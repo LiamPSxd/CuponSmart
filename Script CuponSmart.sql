@@ -156,6 +156,7 @@ INSERT INTO categoria(nombre) VALUES ("Deportes");
 INSERT INTO categoria(nombre) VALUES ("Lectura");
 INSERT INTO categoria(nombre) VALUES ("Farmacia");
 INSERT INTO categoria(nombre) VALUES ("Electrónica");
+INSERT INTO categoria(nombre) VALUES ("Zapatería");
 INSERT INTO categoria(nombre) VALUES ("Otros");
 
 SELECT * FROM categoria;
