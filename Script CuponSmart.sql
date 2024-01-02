@@ -244,7 +244,6 @@ INSERT INTO direccion(calle, numero, codigoPostal, colonia, latitud, longitud, i
 INSERT INTO direccion(calle, numero, codigoPostal, colonia, latitud, longitud, idCiudad) VALUES ("Calle Seis", "32", "91780", "Viejo Barrio", "19.5533221100", "-96.8877665544", 11);
 INSERT INTO direccion(calle, numero, codigoPostal, colonia, latitud, longitud, idCiudad) VALUES ("Boulevard de la Luna", "987", "91890", "Lunar", "19.5566554433", "-96.8800111222", 12);
 
-
 SELECT * FROM direccion;
 
 ## Empresa
