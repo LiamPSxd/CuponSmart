@@ -50,6 +50,11 @@ INSERT INTO estado(nombre) VALUES ("Sonora");
 INSERT INTO estado(nombre) VALUES ("Oaxaca");
 INSERT INTO estado(nombre) VALUES ("Sinaloa");
 INSERT INTO estado(nombre) VALUES ("Jalisco");
+INSERT INTO estado(nombre) VALUES ("Aguascalientes");
+INSERT INTO estado(nombre) VALUES ("Baja California");
+INSERT INTO estado(nombre) VALUES ("Baja California Sur");
+INSERT INTO estado(nombre) VALUES ("Ciudad de México");
+INSERT INTO estado(nombre) VALUES ("Quintana Roo");
 
 SELECT * FROM estado;
 
@@ -85,6 +90,16 @@ INSERT INTO municipio(nombre, idEstado) VALUES ("Culiacán", 10);
 INSERT INTO municipio(nombre, idEstado) VALUES ("Mazatlán", 10);
 INSERT INTO municipio(nombre, idEstado) VALUES ("El Salto", 11);
 INSERT INTO municipio(nombre, idEstado) VALUES ("Guadalajara", 11);
+INSERT INTO municipio(nombre, idEstado) VALUES ("Asientos", 12);
+INSERT INTO municipio(nombre, idEstado) VALUES ("Calvillo", 12);
+INSERT INTO municipio(nombre, idEstado) VALUES ("Ensenada", 13);
+INSERT INTO municipio(nombre, idEstado) VALUES ("Mexicali", 13);
+INSERT INTO municipio(nombre, idEstado) VALUES ("La Paz", 14);
+INSERT INTO municipio(nombre, idEstado) VALUES ("Loreto", 14);
+INSERT INTO municipio(nombre, idEstado) VALUES ("Ecatepec", 15);
+INSERT INTO municipio(nombre, idEstado) VALUES ("Hermosillo", 15);
+INSERT INTO municipio(nombre, idEstado) VALUES ("Cozumel", 16);
+INSERT INTO municipio(nombre, idEstado) VALUES ("Tulum", 16);
 
 SELECT * FROM municipio;
 
@@ -126,7 +141,16 @@ INSERT INTO ciudad(nombre, idMunicipio) VALUES ("El Salto", 21);
 INSERT INTO ciudad(nombre, idMunicipio) VALUES ("Las Pintitas", 21);
 INSERT INTO ciudad(nombre, idMunicipio) VALUES ("Guadalajara", 22);
 INSERT INTO ciudad(nombre, idMunicipio) VALUES ("Membrillos", 22);
-
+INSERT INTO ciudad(nombre, idMunicipio) VALUES ("Lázaro Cárdenas", 23);
+INSERT INTO ciudad(nombre, idMunicipio) VALUES ("El Cuervo", 24);
+INSERT INTO ciudad(nombre, idMunicipio) VALUES ("Los Nogales", 25);
+INSERT INTO ciudad(nombre, idMunicipio) VALUES ("Zavala", 26);
+INSERT INTO ciudad(nombre, idMunicipio) VALUES ("La parcela", 27);
+INSERT INTO ciudad(nombre, idMunicipio) VALUES ("Agua Amarga", 28);
+INSERT INTO ciudad(nombre, idMunicipio) VALUES ("San Pedro", 29);
+INSERT INTO ciudad(nombre, idMunicipio) VALUES ("Santa Ana", 30);
+INSERT INTO ciudad(nombre, idMunicipio) VALUES ("Las Fincas", 31);
+INSERT INTO ciudad(nombre, idMunicipio) VALUES ("Coba", 32);
 
 SELECT * FROM ciudad;
 
@@ -167,10 +191,14 @@ CREATE TABLE IF NOT EXISTS categoria(
 INSERT INTO categoria(nombre) VALUES ("Aerolínea");
 INSERT INTO categoria(nombre) VALUES ("Comida");
 INSERT INTO categoria(nombre) VALUES ("Cafetería");
+INSERT INTO categoria(nombre) VALUES ("Cine");
 INSERT INTO categoria(nombre) VALUES ("Deportes");
 INSERT INTO categoria(nombre) VALUES ("Lectura");
 INSERT INTO categoria(nombre) VALUES ("Farmacia");
 INSERT INTO categoria(nombre) VALUES ("Electrónica");
+INSERT INTO categoria(nombre) VALUES ("Hoteles");
+INSERT INTO categoria(nombre) VALUES ("Ropa");
+INSERT INTO categoria(nombre) VALUES ("Zapatería");
 INSERT INTO categoria(nombre) VALUES ("Otros");
 
 SELECT * FROM categoria;
