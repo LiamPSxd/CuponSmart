@@ -206,13 +206,13 @@ public class FXMLFormPromocionController implements Initializable{
                     });
                 }
             });
-            
-            this.sucursales.clear();
-            this.sucursales.addAll(scrs);
-
-            tbSucursales.setItems(this.sucursales);
         }else
             Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "La empresa no cuenta con sucursales a las que aplicar", Alert.AlertType.WARNING);
+        
+        this.sucursales.clear();
+        this.sucursales.addAll(scrs);
+
+        tbSucursales.setItems(this.sucursales);
     }
     
     private void mostrarFoto(String fotoBase64){
@@ -395,14 +395,21 @@ public class FXMLFormPromocionController implements Initializable{
             Float valor = !txtValor.getText().isEmpty() ? Float.parseFloat(txtValor.getText()) : 0;
 
             String descripcion = txtDescripcion.getText();
-            String restricciones = txtRestricciones.getText();
+            String restricciones = !txtRestricciones.getText().isEmpty() ? txtRestricciones.getText() : "No aplica";
             Estatus estatus = comboEstatus.getSelectionModel().getSelectedItem();
             Categoria categoria = comboCategoria.getSelectionModel().getSelectedItem();
             Empresa empresa = comboEmpresa.getSelectionModel().getSelectedItem();
+            Boolean sucursales = false;
+            
+            for(Sucursal sucursal : tbSucursales.getItems()){
+                if(sucursal.getPromocion())
+                    sucursales = true;
+            }
 
             if(Verificaciones.cadena(nombre) && Verificaciones.numerico(numeroCupones) && Verificaciones.cadena(codigo) && Verificaciones.cadena(fechaInicio) &&
                 Verificaciones.cadena(fechaTermino) && Verificaciones.claseNoNula(tipo) && Verificaciones.numerico(valor) && Verificaciones.cadena(descripcion) &&
-                Verificaciones.cadena(restricciones) && Verificaciones.claseNoNula(estatus) && Verificaciones.claseNoNula(categoria) && Verificaciones.claseNoNula(empresa)){
+                Verificaciones.cadena(restricciones) && Verificaciones.claseNoNula(estatus) && Verificaciones.claseNoNula(categoria) && Verificaciones.claseNoNula(empresa) &&
+                Verificaciones.listaNoVacia(tbSucursales.getItems()) && sucursales){
                 if(codigo.length() == 8){
                     switch(btnFinalizar.getText()){
                         case "Registrar":
@@ -434,6 +441,10 @@ public class FXMLFormPromocionController implements Initializable{
                     Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, "El código debe de ser de 8 caracteres, favor de verificarlo", Alert.AlertType.WARNING);
             }else if(!Verificaciones.numerico(numeroCupones) || !Verificaciones.numerico(valor))
                 Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Errores.CAMPOS_NUMERICOS, Alert.AlertType.WARNING);
+            else if(!Verificaciones.listaNoVacia(tbSucursales.getItems()))
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Errores.SIN_SUCURSALES, Alert.AlertType.WARNING);
+            else if(!sucursales)
+                Utilidades.mostrarAlertaSimple(Constantes.Pantallas.ALERTA, Constantes.Errores.SIN_SELECCION_SUCURSAL, Alert.AlertType.WARNING);
             else
                 Utilidades.mostrarAlertaSimple(Constantes.Pantallas.CAMPOS_VACIOS, Constantes.Errores.CAMPOS_VACIOS, Alert.AlertType.WARNING);
         }catch(NullPointerException e){

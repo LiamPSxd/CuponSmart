@@ -72,6 +72,8 @@ public class Constantes{
         public static final String COMBO_CATEGORIA = "Lo sentimos, no se pudieron cargar las categorías, " + MAS_TARDE;
         public static final String COMBO_ROL = "Lo sentimos, no se pudieron cargar los roles, " + MAS_TARDE;
         public static final String CAMPOS_NUMERICOS = "Los campos deben ser numéricos, " + VERIFICAR;
+        public static final String SIN_SUCURSALES = "La empresa seleccionada no cuenta con sucursales, por favor seleccione otra";
+        public static final String SIN_SELECCION_SUCURSAL = "No ha seleccionado ninguna sucursal, por favor seleccione una";
     }
     
     public class Excepciones{
