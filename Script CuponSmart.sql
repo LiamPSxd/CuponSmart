@@ -278,7 +278,6 @@ INSERT INTO empresa(nombre, nombreComercial, logo, nombreRepresentanteLegal, cor
 INSERT INTO empresa(nombre, nombreComercial, logo, nombreRepresentanteLegal, correo, telefono, paginaWeb, rfc, idEstatus, idDireccion) VALUES ("Electrónicos TechCity", "TechCity", "", "Sofía Pérez", "info@techcity.com", "2281452237", "www.techcity.com", "TEC123456789", 1, 10);
 INSERT INTO empresa(nombre, nombreComercial, logo, nombreRepresentanteLegal, correo, telefono, paginaWeb, rfc, idEstatus, idDireccion) VALUES ("Florería Primavera", "Primavera", "", "Alejandro Flores", "info@floreriaprimavera.com", "2281782417", "www.floreriaprimavera.com", "FLP987654321", 1, 11);
 
-
 SELECT * FROM empresa;
 
 ## Sucursal
