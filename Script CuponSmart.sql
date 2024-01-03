@@ -421,5 +421,15 @@ CREATE TABLE IF NOT EXISTS promocionSucursal(
 );
 
 INSERT INTO promocionSucursal VALUES (1, 1);
+INSERT INTO promocionSucursal VALUES (2, 3);
+INSERT INTO promocionSucursal VALUES (3, 4);
+INSERT INTO promocionSucursal VALUES (4, 5);
+INSERT INTO promocionSucursal VALUES (5, 6);
+INSERT INTO promocionSucursal VALUES (6, 7);
+INSERT INTO promocionSucursal VALUES (7, 8);
+INSERT INTO promocionSucursal VALUES (8, 9);
+INSERT INTO promocionSucursal VALUES (9, 10);
+INSERT INTO promocionSucursal VALUES (10, 11);
+INSERT INTO promocionSucursal VALUES (11, 12);
 
 SELECT * FROM promocionSucursal;
