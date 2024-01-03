@@ -42,15 +42,15 @@ class SucursalRepository @Inject constructor(
             withContext(Dispatchers.IO){
                 direccionRepository.getDireccion(sucursal!!.idDireccion!!)
             }?.let{ direccion ->
-                sucursal!!.coordenadas[Constantes.Utileria.LATITUD] = if(direccion.latitud?.toDouble()!! > 0.0)
-                    direccion.latitud!!.toDouble()
-                else Constantes.Utileria.VALOR_LATITUD
+                direccion.latitud?.let{ latitud ->
+                    sucursal!!.coordenadas[Constantes.Utileria.LATITUD] = latitud.toDouble()
+                }
 
-                sucursal.coordenadas[Constantes.Utileria.LONGITUD] = if(direccion.longitud?.toDouble()!! > 0.0)
-                    direccion.longitud!!.toDouble()
-                else Constantes.Utileria.VALOR_LONGITUD
+                direccion.longitud?.let{ longitud ->
+                    sucursal!!.coordenadas[Constantes.Utileria.LONGITUD] = longitud.toDouble()
+                }
 
-                sucursal.direccionPromo = "${direccion.calle}, No. ${direccion.numero}, Col. ${direccion.colonia}"
+                sucursal!!.direccionPromo = "${direccion.calle}, No. ${direccion.numero}, Col. ${direccion.colonia}"
                 sucursal.direccion = "${direccion.calle}, No. ${direccion.numero}\nCol. ${direccion.colonia}, ${direccion.codigoPostal}"
 
                 withContext(Dispatchers.IO){

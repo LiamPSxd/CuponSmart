@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -13,6 +14,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import uv.tc.appcuponsmart.R
 import uv.tc.appcuponsmart.core.MensajeHelper
 import uv.tc.appcuponsmart.data.model.entidad.Sucursal
@@ -29,7 +33,8 @@ class DetalleSucursal: AppCompatActivity(), OnMapReadyCallback{
     private val viewModel: DetalleSucursalViewModel by viewModels()
 
     private lateinit var map: GoogleMap
-    private var coordenadas = hashMapOf<String, Double>()
+    private var latitud = 0.0
+    private var longitud = 0.0
 
     @Inject
     lateinit var mensaje: MensajeHelper
@@ -86,13 +91,17 @@ class DetalleSucursal: AppCompatActivity(), OnMapReadyCallback{
                     txtDireccion.text = suc.direccion
                     txtUbicacion.text = suc.ubicacion
 
-                    coordenadas[Constantes.Utileria.LATITUD] = suc.coordenadas[Constantes.Utileria.LATITUD]!!
-                    coordenadas[Constantes.Utileria.LONGITUD] = suc.coordenadas[Constantes.Utileria.LONGITUD]!!
+                    latitud = suc.coordenadas[Constantes.Utileria.LATITUD] ?: Constantes.Utileria.VALOR_LATITUD
+                    longitud = suc.coordenadas[Constantes.Utileria.LONGITUD] ?: Constantes.Utileria.VALOR_LONGITUD
                 }
             }
 
-            recuperarSucursal()
-            crearMapa()
+            lifecycleScope.launch(Dispatchers.Main){
+                async{ recuperarSucursal() }.await()
+                async{ crearMapa() }.await()
+
+                crearMarcador()
+            }
         }
     }
 
@@ -108,10 +117,7 @@ class DetalleSucursal: AppCompatActivity(), OnMapReadyCallback{
     }
 
     private fun crearMarcador(){
-        val coordenadas = LatLng(
-            this.coordenadas[Constantes.Utileria.LATITUD] ?: Constantes.Utileria.VALOR_LATITUD,
-            this.coordenadas[Constantes.Utileria.LONGITUD] ?: Constantes.Utileria.VALOR_LONGITUD
-        )
+        val coordenadas = LatLng(latitud, longitud)
 
         map.addMarker(
             MarkerOptions().position(coordenadas).title(binding.txtNombre.text.toString())
@@ -125,6 +131,5 @@ class DetalleSucursal: AppCompatActivity(), OnMapReadyCallback{
 
     override fun onMapReady(googleMaps: GoogleMap){
         map = googleMaps
-        crearMarcador()
     }
 }
