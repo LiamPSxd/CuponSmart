@@ -6,31 +6,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="promocionesSucursales">
     <select id="obtenerPromocionesSucursales" resultType="modelo.pojo.entidad.PromocionSucursal">
-        SELECT * FROM promocionsucursal
+        SELECT * FROM promocionSucursal
     </select>
     
     <select id="obtenerPromocionesSucursalesPorIdPromocion" resultType="modelo.pojo.entidad.PromocionSucursal" parameterType="Integer">
-        SELECT * FROM promocionsucursal 
+        SELECT * FROM promocionSucursal 
         WHERE idPromocion = #{idPromocion}
     </select>
     
     <select id="obtenerPromocionesSucursalesPorIdSucursal" resultType="modelo.pojo.entidad.PromocionSucursal" parameterType="Integer">
-        SELECT * FROM promocionsucursal 
+        SELECT * FROM promocionSucursal 
         WHERE idSucursal = #{idSucursal}
     </select>
     
     <insert id="registrarPromocionSucursal" parameterType="modelo.pojo.entidad.PromocionSucursal">
-        INSERT INTO promocionsucursal 
+        INSERT INTO promocionSucursal 
         VALUE (#{idPromocion}, #{idSucursal})
     </insert>
     
     <delete id="eliminarPromocionSucursal" parameterType="modelo.pojo.entidad.PromocionSucursal">
-        DELETE FROM promocionsucursal 
+        DELETE FROM promocionSucursal 
         WHERE idPromocion = #{idPromocion} AND idSucursal = #{idSucursal}
     </delete>
     
     <delete id="eliminarPromocionSucursales" parameterType="Integer">
-        DELETE FROM promocionsucursal 
+        DELETE FROM promocionSucursal 
         WHERE idPromocion = #{idPromocion}
     </delete>
 </mapper>
