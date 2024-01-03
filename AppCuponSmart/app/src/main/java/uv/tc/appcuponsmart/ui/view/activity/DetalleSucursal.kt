@@ -1,6 +1,8 @@
 package uv.tc.appcuponsmart.ui.view.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -36,10 +38,32 @@ class DetalleSucursal: AppCompatActivity(), OnMapReadyCallback{
     @Inject
     lateinit var json: Gson
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         binding = ActivityDetalleSucursalBinding.inflate(layoutInflater).apply{
             setContentView(root)
+
+            ventana.setOnTouchListener{ _, event ->
+                when(event.action){
+                    MotionEvent.ACTION_DOWN -> {
+                        scrollView.requestDisallowInterceptTouchEvent(true)
+                        false
+                    }
+
+                    MotionEvent.ACTION_UP -> {
+                        scrollView.requestDisallowInterceptTouchEvent(false)
+                        true
+                    }
+
+                    MotionEvent.ACTION_MOVE -> {
+                        scrollView.requestDisallowInterceptTouchEvent(true)
+                        false
+                    }
+
+                    else -> true
+                }
+            }
 
             viewModel.error.observe(this@DetalleSucursal){ error ->
                 error?.let{ err ->

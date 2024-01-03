@@ -3,6 +3,7 @@ package uv.tc.appcuponsmart.controller.activity
 import android.view.View
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
+import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import uv.tc.appcuponsmart.di.Constantes
 import uv.tc.appcuponsmart.ui.view.activity.Perfil
@@ -41,9 +42,9 @@ class PerfilEvent(
             val colonia = txtColonia.text.toString()
             val numero = txtNumero.text.toString()
             val codigoPostal = txtCodigoPostal.text.toString()
-            val estado = !itemsEstado.text.contains("Seleccione un estado")
-            val municipio = !itemsMunicipio.text.contains("Seleccione un municipio")
-            val ciudad = !itemsCiudad.text.contains("Seleccione una ciudad")
+            val estado = itemsEstado.text.isNotEmpty()
+            val municipio = itemsMunicipio.text.isNotEmpty()
+            val ciudad = itemsCiudad.text.isNotEmpty()
 
             val contrasenia = txtContrasenia.text.toString()
             val confirmarContrasenia = txtConfirmarContrasenia.text.toString()
@@ -273,9 +274,12 @@ class PerfilEvent(
         val formato = SimpleDateFormat(Constantes.Utileria.FORMATO_FECHA, Locale.getDefault())
 
         val datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Seleccione una fecha")
+            .setTitleText(Constantes.Utileria.TITULO_PICKER)
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .setTextInputFormat(formato)
+            .setCalendarConstraints(
+                CalendarConstraints.Builder().setEnd(MaterialDatePicker.todayInUtcMilliseconds()).build()
+            )
             .build()
 
         datePicker.addOnPositiveButtonClickListener{

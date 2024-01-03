@@ -56,6 +56,18 @@ class IniciarSesion: AppCompatActivity(){
                 }
             }else mostrarMensaje(Constantes.Mensajes.ADVERTENCIA, "Las credenciales son incorrectas, favor de verificarlas")
         }
+
+        buscarCorreo()
+    }
+
+    private fun buscarCorreo(){
+        val correo = intent.extras?.getString(Constantes.DataStore.CORREO_CLIENTE) ?: ""
+
+        if(verificaciones.cadena(correo)){
+            binding.txtCorreo.setText(correo)
+
+            mostrarMensaje(Constantes.Mensajes.EXITO, "Su cuenta se ha creado exitosamente, ahora ingrese su contraseña para confirmarla")
+        }
     }
 
     private fun mostrarMensaje(titulo: String, contenido: String) =

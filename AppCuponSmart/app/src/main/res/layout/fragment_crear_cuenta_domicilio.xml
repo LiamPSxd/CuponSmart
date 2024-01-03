@@ -23,7 +23,7 @@
                 android:id="@+id/tituloDomicilio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginHorizontal="20dp"
                 android:text="Ahora, los datos de su domicilio"
                 android:textSize="24sp"
@@ -151,6 +151,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="16dp"
+                            android:imeOptions="actionDone"
                             android:autofillHints="phone"
                             android:inputType="number"
                             android:textColor="@color/black"
@@ -190,6 +191,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="16dp"
+                            android:imeOptions="actionDone"
                             android:autofillHints="postalCode"
                             android:inputType="number"
                             android:textColor="@color/black"
@@ -208,12 +210,11 @@
                         android:layout_alignParentStart="true"
                         android:layout_alignParentEnd="true"
                         android:layout_below="@+id/etqCodigoPostal"
-                        android:hint="Estado"
                         android:gravity="start|center"
+                        android:hint="Estado"
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         android:textColorHint="@color/gris"
-                        android:enabled="false"
                         app:placeholderText="Seleccione un estado"
                         app:hintAnimationEnabled="true"
                         app:boxBackgroundMode="outline"
@@ -234,7 +235,8 @@
                             android:textColor="@color/black"
                             android:textSize="22sp"
                             android:textColorHighlight="@color/splash"
-                            android:gravity="start|center" />
+                            android:gravity="start|center"
+                            app:dropDownBackgroundTint="@color/ripple" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -247,12 +249,11 @@
                         android:layout_alignParentStart="true"
                         android:layout_alignParentEnd="true"
                         android:layout_below="@+id/comboEstado"
-                        android:hint="Municipio"
                         android:gravity="start|center"
+                        android:hint="Municipio"
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         android:textColorHint="@color/gris"
-                        android:enabled="false"
                         app:placeholderText="Seleccione un municipio"
                         app:hintAnimationEnabled="true"
                         app:boxBackgroundMode="outline"
@@ -273,7 +274,8 @@
                             android:textColor="@color/black"
                             android:textSize="22sp"
                             android:textColorHighlight="@color/splash"
-                            android:gravity="start|center" />
+                            android:gravity="start|center"
+                            app:dropDownBackgroundTint="@color/ripple" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -286,12 +288,11 @@
                         android:layout_alignParentStart="true"
                         android:layout_alignParentEnd="true"
                         android:layout_below="@+id/comboMunicipio"
-                        android:hint="Ciudad"
                         android:gravity="start|center"
+                        android:hint="Ciudad"
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         android:textColorHint="@color/gris"
-                        android:enabled="false"
                         app:placeholderText="Seleccione una ciudad"
                         app:hintAnimationEnabled="true"
                         app:boxBackgroundMode="outline"
@@ -312,7 +313,8 @@
                             android:textColor="@color/black"
                             android:textSize="22sp"
                             android:textColorHighlight="@color/splash"
-                            android:gravity="start|center" />
+                            android:gravity="start|center"
+                            app:dropDownBackgroundTint="@color/ripple" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>

@@ -9,14 +9,20 @@ object FuncionHelper{
     fun validarCorreo(correo: String): Boolean =
         Patterns.EMAIL_ADDRESS.matcher(correo).matches()
 
-    fun validarCorreoNoRegistrado(correo: String, correos: MutableList<String>): Boolean =
-        !correos.contains(correo)
+    fun byteArrayToBase64(byteArray: ByteArray): String? =
+        if(byteArray.isNotEmpty()){
+            Base64.encodeToString(byteArray, Base64.DEFAULT)
+    } else null
 
-    fun base64ToBitMap(base64: String): Bitmap?{
-        return if(base64.isNotEmpty()){
-            val bytes = Base64.decode(base64, Base64.DEFAULT)
+    fun base64ToByteArray(base64: String): ByteArray =
+        if(base64.isNotEmpty()){
+            Base64.decode(base64, Base64.DEFAULT)
+    } else byteArrayOf()
+
+    fun base64ToBitMap(base64: String): Bitmap? =
+        if(base64.isNotEmpty()){
+            val bytes = base64ToByteArray(base64)
 
             BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-        } else null
-    }
+    } else null
 }

@@ -28,10 +28,10 @@ class Bienvenida: AppCompatActivity(){
         setContentView(binding.root)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            viewModel.idCliente.observe(this){
-                if(verificaciones.numerico(it))
+            viewModel.idCliente.observe(this){ idCliente ->
+                if(verificaciones.numerico(idCliente))
                     startActivity(Intent(this, Home::class.java)
-                        .putExtra(Constantes.DataStore.ID_CLIENTE, it)
+                        .putExtra(Constantes.DataStore.ID_CLIENTE, idCliente)
                     )
                 else
                     startActivity(Intent(this, IniciarSesion::class.java))

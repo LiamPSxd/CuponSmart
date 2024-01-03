@@ -6,32 +6,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="tipospromocion">
     <select id="obtenerTiposPromocion" resultType="modelo.pojo.entidad.TipoPromocion">
-        SELECT * FROM tipopromocion
+        SELECT * FROM tipoPromocion
     </select>
     
     <select id="obtenerTipoPromocionPorId" resultType="modelo.pojo.entidad.TipoPromocion" parameterType="Integer">
-        SELECT * FROM tipopromocion 
+        SELECT * FROM tipoPromocion 
         WHERE id = #{id}
     </select>
     
     <select id="obtenerTipoPromocionPorTipo" resultType="modelo.pojo.entidad.TipoPromocion" parameterType="String">
-        SELECT * FROM tipopromocion 
+        SELECT * FROM tipoPromocion 
         WHERE tipo = #{tipo}
     </select>
     
     <insert id="registrarTipoPromocion" parameterType="modelo.pojo.entidad.TipoPromocion">
-        INSERT INTO tipopromocion(tipo) 
+        INSERT INTO tipoPromocion(tipo) 
         VALUE (#{tipo})
     </insert>
     
     <update id="modificarTipoPromocion" parameterType="modelo.pojo.entidad.TipoPromocion">
-        UPDATE tipopromocion 
+        UPDATE tipoPromocion 
         SET tipo = #{tipo} 
         WHERE id = #{id}
     </update>
     
     <delete id="eliminarTipoPromocion" parameterType="Integer">
-        DELETE FROM tipopromocion 
+        DELETE FROM tipoPromocion 
         WHERE id = #{id}
     </delete>
 </mapper>

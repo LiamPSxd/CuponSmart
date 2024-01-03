@@ -6,7 +6,7 @@ data class Direccion(
     var numero: String? = null,
     var codigoPostal: String? = null,
     var colonia: String? = null,
-    var latitud: String? = null,
-    var longitud: String? = null,
+    var latitud: String? = "",
+    var longitud: String? = "",
     var idCiudad: Int? = null,
 )

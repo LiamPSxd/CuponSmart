@@ -71,7 +71,8 @@ class Home: AppCompatActivity(), NotificarClicPromocion{
 
                     if(verificaciones.numerico(accion)){
                         viewModel.putNombreCliente("$nombre, 0")
-                        mostrarMensaje(Constantes.Mensajes.EXITO, Constantes.Mensajes.bienvenida(nombre))
+
+                        mostrarMensaje("¡Hola!", Constantes.Mensajes.bienvenida(nombre))
                     }
                 }
             }
