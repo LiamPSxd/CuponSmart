@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="ripple">#EAE3DE</color>
+
+    <!-->Paleta #1<-->
+    <color name="grisaceoGriego">#8d95a1</color>
+    <color name="azuladoGriego">#bbcdd7</color>
+    <color name="cafeLigeroGriego">#c1ab9a</color>
+    <color name="cafeMedioGriego">#baa481</color>
+    <color name="cafeOscuroGriego">#756152</color>
+
+    <!-->Paleta #2<-->
+    <color name="naranjaGriega">#e99600</color>
+    <color name="cremaGriega">#d9b787</color>
+    <color name="huesoGriego">#e7ddd4</color>
+    <color name="azulLigeroGriego">#93a2c7</color>
+    <color name="azulFuerteGriego">#3f78dd</color>
+
+    <!-->Paleta #3<-->
+    <color name="blancoGreek">#F5F5F5</color>
+    <color name="grisUltraLightGreek">#E6E6E7</color>
+    <color name="grisLightGreek">#d6d5db</color>
+    <color name="grisGreek">#aea5a2</color>
+    <color name="cremaLightGreek">#f1dac6</color>
+    <color name="cremaGreek">#e4d4bc</color>
+    <color name="cremaStrongGreek">#dfc4a8</color>
+    <color name="naranjaLightGreek">#dba25a</color>
+    <color name="naranjaMediumGreek">#d28d51</color>
+    <color name="naranjeStrongGreek">#be6833</color>
+    <color name="rojizoGreek">#a7542a</color>
+    <color name="splash">#FF8E3A</color>
+
+    <!-->Paleta #4<-->
+    <color name="greek1">#35517a</color>
+    <color name="greek2">#2c5c94</color>
+    <color name="greek3">#5eaac5</color>
+    <color name="greek4">#ade1f2</color>
+    <color name="greek5">#3fa0cb</color>
+    <color name="greek6">#365460</color>
+    <color name="greek7">#88c1dc</color>
+    <color name="greek8">#ffa06c</color>
+    <color name="greek9">#f7b365</color>
+    <color name="greek10">#fbcc8a</color>
+    <color name="greek11">#fa685b</color>
+    <color name="greek12">#e26059</color>
+    <color name="greek13">#b04f4f</color>
+    <color name="greek14">#397996</color>
+    <color name="greek15">#3085a6</color>
+    <color name="greek16">#ab7647</color>
+    <color name="greek17">#eebc82</color>
+    <color name="greek18">#fddab0</color>
+    <color name="greek19">#fed3c3</color>
+    <color name="greek20">#e99a95</color>
+    <color name="greek21">#ee7769</color>
+    <color name="greek22">#fad8d8</color>
+    <color name="greek23">#52629a</color>
+    <color name="greek24">#c0a5d0</color>
+    <color name="greek25">#fce7d8</color>
+    <color name="greek26">#776fa2</color>
+    <color name="greek27">#8d91c0</color>
+    <color name="greek28">#ffe0ea</color>
+    <color name="greek29">#fda9a8</color>
+    <color name="greek30">#fda9a8</color>
+
+    <!-- Paleta 5 -->
+    <color name="rojo">#E84646</color>
+    <color name="rojizo">#BF244E</color>
+    <color name="gris">#434140</color>
+    <color name="grisaceo">#6E6A69</color>
+    <color name="azulado">#DFFEF8</color>
+    <color name="naranjado">#F28066</color>
+    <color name="naranjadoRipple">#E3BAB2</color>
+    <color name="blanquecino">#F2F2F2</color>
+    <color name="azuladoO">#225F67</color>
+</resources>

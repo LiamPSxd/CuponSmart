@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CuponSmart</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAjpE85o3xc1yj7v7KK99P3aLYduONRkvY</string>
+    <string name="registrarse"><u>Regístrate aquí</u></string>
+</resources>

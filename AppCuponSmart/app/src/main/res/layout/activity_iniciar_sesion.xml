@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grisUltraLightGreek"
+    tools:context=".ui.view.activity.IniciarSesion">
+
+    <TextView
+        android:id="@+id/cuponSmart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="CuponSmart"
+        android:textSize="60sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/gilroy_black"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:layout_marginHorizontal="22dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/cuponSmart"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etqCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:hint="Correo electrónico"
+                android:gravity="start|center"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textColorHint="@color/gris"
+                app:hintAnimationEnabled="true"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeWidth="0dp"
+                app:boxCollapsedPaddingTop="10dp"
+                app:boxBackgroundColor="@color/blancoGreek"
+                app:boxCornerRadiusTopStart="25dp"
+                app:boxCornerRadiusTopEnd="25dp"
+                app:boxCornerRadiusBottomStart="25dp"
+                app:boxCornerRadiusBottomEnd="25dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtCorreo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:autofillHints="emailAddress"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
+                    android:textColorHighlight="@color/splash"
+                    android:gravity="start|center" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etqContrasenia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_below="@+id/etqCorreo"
+                android:layout_centerHorizontal="true"
+                android:hint="Contraseña"
+                android:gravity="start|center"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textColorHint="@color/gris"
+                app:hintAnimationEnabled="true"
+                app:endIconMode="password_toggle"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeWidth="0dp"
+                app:boxCollapsedPaddingTop="10dp"
+                app:boxBackgroundColor="@color/blancoGreek"
+                app:boxCornerRadiusTopStart="25dp"
+                app:boxCornerRadiusTopEnd="25dp"
+                app:boxCornerRadiusBottomStart="25dp"
+                app:boxCornerRadiusBottomEnd="25dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtContrasenia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:autofillHints="password"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
+                    android:textColorHighlight="@color/splash"
+                    android:gravity="start|center" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnIniciarSesion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:text="Iniciar Sesión"
+                android:textSize="20sp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/etqContrasenia" />
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        android:layout_marginEnd="-35dp"
+        android:text="¿Aún no tienes una cuenta?"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:gravity="end|center"
+        android:fontFamily="@font/gilroy_bold"
+        android:layout_alignEnd="@+id/espacio"
+        android:layout_below="@+id/card" />
+
+    <TextView
+        android:id="@+id/espacio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/card" />
+
+    <TextView
+        android:id="@+id/crearCuenta"
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        android:layout_below="@+id/card"
+        android:layout_marginStart="40dp"
+        android:layout_toEndOf="@+id/text2"
+        android:autoLink="all"
+        android:fontFamily="@font/gilroy_bold"
+        android:linksClickable="true"
+        android:maxLines="1"
+        android:gravity="start|center"
+        android:text="@string/registrarse"
+        android:textColor="@color/azulFuerteGriego"
+        android:textSize="18sp" />
+</RelativeLayout>

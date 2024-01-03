@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grisLightGreek"
+    tools:context=".ui.view.activity.DetalleSucursal">
+
+    <TextView
+        android:id="@+id/txtNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="start|center"
+        android:fontFamily="@font/gilroy_extra_bold"
+        android:text="Sucursal"
+        android:textColor="@color/black"
+        android:textSize="50sp" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/txtNombre"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:scrollbarThumbVertical="@null">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/tituloContacto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentTop="true"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:fontFamily="@font/gilroy_black"
+                        android:text="Contacto"
+                        android:textColor="@color/black"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/txtNombreEncargado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/tituloContacto"
+                        android:ellipsize="end"
+                        android:gravity="start|center"
+                        android:fontFamily="@font/gilroy_bold"
+                        android:text="Nombre Encargado"
+                        android:textColor="@color/gris"
+                        android:textSize="22sp"
+                        android:drawablePadding="5dp"
+                        app:drawableStartCompat="@drawable/encargado" />
+
+                    <TextView
+                        android:id="@+id/txtTelefono"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginVertical="5dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/txtNombreEncargado"
+                        android:ellipsize="end"
+                        android:gravity="start|center"
+                        android:fontFamily="@font/gilroy_bold"
+                        android:text="Teléfono"
+                        android:textColor="@color/gris"
+                        android:textSize="22sp"
+                        android:drawablePadding="5dp"
+                        app:drawableStartCompat="@drawable/telefono" />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/cardInfo"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/tituloDireccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentTop="true"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:fontFamily="@font/gilroy_black"
+                        android:text="Dirección"
+                        android:textColor="@color/black"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/txtDireccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/tituloDireccion"
+                        android:ellipsize="end"
+                        android:gravity="start|center"
+                        android:fontFamily="@font/gilroy_bold"
+                        android:text="Calle, Número\nColonia, Código Postal"
+                        android:textColor="@color/gris"
+                        android:textSize="22sp"
+                        android:drawablePadding="5dp"
+                        app:drawableStartCompat="@drawable/direccion" />
+
+                    <TextView
+                        android:id="@+id/txtUbicacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/txtDireccion"
+                        android:ellipsize="end"
+                        android:gravity="start|center"
+                        android:fontFamily="@font/gilroy_bold"
+                        android:text="Ciudad, Municipio, Estado"
+                        android:textColor="@color/gris"
+                        android:textSize="22sp"
+                        android:drawablePadding="5dp"
+                        app:drawableStartCompat="@drawable/ubicacion" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardMapa"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/txtUbicacion"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardCornerRadius="30dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <fragment
+                                android:id="@+id/maps"
+                                android:name="com.google.android.gms.maps.SupportMapFragment"
+                                android:layout_width="match_parent"
+                                android:layout_height="300dp"
+                                android:layout_centerInParent="true" />
+
+                            <ImageView
+                                android:id="@+id/ventana"
+                                android:layout_width="match_parent"
+                                android:layout_height="300dp"
+                                android:src="@color/transparent"
+                                android:layout_centerInParent="true" />
+                        </RelativeLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+</RelativeLayout>
