@@ -106,6 +106,7 @@ INSERT INTO municipio(nombre, idEstado) VALUES ("Hermosillo", 15);
 INSERT INTO municipio(nombre, idEstado) VALUES ("Cozumel", 16);
 INSERT INTO municipio(nombre, idEstado) VALUES ("Tulum", 16);
 
+
 SELECT * FROM municipio;
 
 ## Ciudad

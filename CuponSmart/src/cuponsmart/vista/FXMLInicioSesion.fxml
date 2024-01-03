@@ -12,12 +12,10 @@
 
 <AnchorPane id="fondo" prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: #ebe4d8;" stylesheets="@../../utils/Estilos.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cuponsmart.controlador.FXMLInicioSesionController">
    <children>
-      <Label id="titulo" layoutX="825.0" layoutY="25.0" style="-fx-font-size: 64;" stylesheets="@../../utils/Estilos.css" text="CuponSmart" textAlignment="CENTER">
-         <font>
-            <Font name="Century Gothic Bold" size="48.0" />
-         </font>
-      </Label>
-      <ImageView fx:id="imagen" fitHeight="768.0" fitWidth="658.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="imagen" fitHeight="558.0" fitWidth="552.0" layoutX="82.0" layoutY="114.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../img/logo.png" />
+         </image></ImageView>
       <AnchorPane id="tarjeta" layoutX="708.0" layoutY="120.0" prefHeight="600.0" prefWidth="608.0" stylesheets="@../../utils/Estilos.css">
          <children>
             <Label id="subtitulo" layoutX="156.0" layoutY="50.0" style="-fx-font-size: 48;" stylesheets="@../../utils/Estilos.css" text="Iniciar Sesión">
