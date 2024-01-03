@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import uv.tc.appcuponsmart.R
 import uv.tc.appcuponsmart.controller.fragment.CrearCuentaPersonalEvent
 import uv.tc.appcuponsmart.core.MensajeHelper
 import uv.tc.appcuponsmart.databinding.FragmentCrearCuentaPersonalBinding
@@ -39,7 +42,7 @@ class CrearCuentaPersonal: Fragment(){
     ): View{
         _binding = FragmentCrearCuentaPersonalBinding.inflate(inflater, container, false)
 
-        event = CrearCuentaPersonalEvent(this, savedInstanceState)
+        event = CrearCuentaPersonalEvent(this)
 
         binding.apply{
             btnCambiarFoto.setOnClickListener(event)
@@ -47,6 +50,15 @@ class CrearCuentaPersonal: Fragment(){
             btnContinuar.setOnClickListener(event)
 
             txtFechaNacimiento.inputType = InputType.TYPE_NULL
+
+            viewModel.cliente.observe(viewLifecycleOwner){
+                if(!verificaciones.isClassNull(savedInstanceState))
+                    parentFragmentManager.commit{
+                        setReorderingAllowed(true)
+
+                        replace<CrearCuentaDomicilio>(R.id.contenedorFragment)
+                    }
+            }
 
             return root
         }
@@ -59,7 +71,6 @@ class CrearCuentaPersonal: Fragment(){
 
     companion object{
         @JvmStatic
-        fun newInstance() =
-            CrearCuentaPersonal()
+        fun newInstance() = CrearCuentaPersonal()
     }
 }

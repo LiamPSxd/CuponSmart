@@ -56,18 +56,19 @@ class Perfil: AppCompatActivity(), MensajeCerrarSesion.MensajeCerrarSesionListen
             btnCerrarSesion.setOnClickListener(event)
             btnCambiarFoto.setOnClickListener(event)
             txtFechaNacimiento.setOnClickListener(event)
+
             txtFechaNacimiento.inputType = InputType.TYPE_NULL
 
             itemsEstado.setOnItemClickListener{ parent, _, position, _ ->
-                municipioItem.nombre = "Seleccione un municipio"
-                ciudadItem.nombre = "Seleccione una ciudad"
+                municipioItem.nombre = ""
+                ciudadItem.nombre = ""
 
                 val idEstado = (parent.getItemAtPosition(position) as Estado).id ?: 0
                 viewModel.getMunicipiosPorEstado(idEstado)
             }
 
             itemsMunicipio.setOnItemClickListener{ parent, _, position, _ ->
-                ciudadItem.nombre = "Seleccione una ciudad"
+                ciudadItem.nombre = ""
 
                 val idMunicipio = (parent.getItemAtPosition(position) as Municipio).id ?: 0
                 viewModel.getCiudadesPorMunicipio(idMunicipio)
@@ -164,7 +165,7 @@ class Perfil: AppCompatActivity(), MensajeCerrarSesion.MensajeCerrarSesionListen
                         android.R.layout.simple_spinner_dropdown_item,
                         estados?.toList()!!
                     ))
-                }else viewModel.setError("No se pudieron obtener los estados, por favor inténte más tarde")
+                }else viewModel.setError(Constantes.Errores.COMBO_ESTADOS)
             }
 
             viewModel.municipios.observe(this@Perfil){ municipios ->
@@ -178,7 +179,7 @@ class Perfil: AppCompatActivity(), MensajeCerrarSesion.MensajeCerrarSesionListen
                         android.R.layout.simple_spinner_dropdown_item,
                         municipios?.toList()!!
                     ))
-                }else viewModel.setError("No se pudieron obtener los municipios, por favor inténte más tarde")
+                }else viewModel.setError(Constantes.Errores.COMBO_MUNICIPIOS)
             }
 
             viewModel.ciudades.observe(this@Perfil){ ciudades ->
@@ -192,7 +193,7 @@ class Perfil: AppCompatActivity(), MensajeCerrarSesion.MensajeCerrarSesionListen
                         android.R.layout.simple_spinner_dropdown_item,
                         ciudades?.toList()!!
                     ))
-                }else viewModel.setError("No se pudieron obtener las ciudades, por favor inténte más tarde")
+                }else viewModel.setError(Constantes.Errores.COMBO_CIUDADES)
             }
 
             viewModel.statusDireccion.observe(this@Perfil){ status ->

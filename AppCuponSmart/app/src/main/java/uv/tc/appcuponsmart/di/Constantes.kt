@@ -31,14 +31,17 @@ object Constantes{
         const val DATOS_SUCURSAL = "No se encontraron los datos de la sucursal, por favor inténte más tarde"
     }
 
+    object Errores{
+        const val COMBO_ESTADOS = "No se pudieron obtener los estados, por favor inténte más tarde"
+        const val COMBO_MUNICIPIOS = "No se pudieron obtener los municipios, por favor inténte más tarde"
+        const val COMBO_CIUDADES = "No se pudieron obtener las ciudades, por favor inténte más tarde"
+    }
+
     object Utileria{
         const val FORMATO_FECHA = "yyyy-MM-dd"
         const val FORMATO_VIGENCIA = "dd/MM/yyyy"
         const val TIME_ZONE = "UTC"
-
-        const val CLIENTE = "cliente"
-        const val FOTO = "foto"
-        const val DIRECCION = "direccion"
+        const val TITULO_PICKER = "Seleccione su fecha de nacimiento"
 
         const val LATITUD = "latitud"
         const val LONGITUD = "longitud"
@@ -52,12 +55,9 @@ object Constantes{
 
         const val ID_CLIENTE = "idCliente"
         const val NOMBRE_CLIENTE = "nombre"
+        const val CORREO_CLIENTE = "correo"
 
         const val PROMOCION = "promocion"
         const val SUCURSAL = "sucursal"
-
-        const val CLIENTE = "cliente"
-        const val FOTO_BASE_64 = "fotoBase64"
-        const val DIRECCION = "direccion"
     }
 }

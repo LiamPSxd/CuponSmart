@@ -1,49 +1,40 @@
 package uv.tc.appcuponsmart.ui.view.fragment
 
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import uv.tc.appcuponsmart.controller.fragment.CrearCuentaEvent
 import uv.tc.appcuponsmart.core.MensajeHelper
-import uv.tc.appcuponsmart.data.model.entidad.Cliente
-import uv.tc.appcuponsmart.data.model.entidad.Direccion
 import uv.tc.appcuponsmart.databinding.FragmentCrearCuentaBinding
 import uv.tc.appcuponsmart.di.Constantes
 import uv.tc.appcuponsmart.di.Verificaciones
-import uv.tc.appcuponsmart.ui.viewmodel.model.ClienteViewModel
-import uv.tc.appcuponsmart.ui.viewmodel.model.DireccionViewModel
-import uv.tc.appcuponsmart.ui.viewmodel.model.MediaViewModel
+import uv.tc.appcuponsmart.ui.view.activity.IniciarSesion
+import uv.tc.appcuponsmart.ui.viewmodel.view.CrearCuentaViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class CrearCuenta: Fragment(){
     private var _binding: FragmentCrearCuentaBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
-    private val media: MediaViewModel by viewModels()
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "almacenamiento")
-    val cliente: ClienteViewModel by viewModels()
-    val direccion: DireccionViewModel by viewModels()
+    val viewModel: CrearCuentaViewModel by activityViewModels()
 
     private lateinit var event: CrearCuentaEvent
-    private var fotoByteArray: ByteArray? = byteArrayOf()
-    var cli: Cliente? = null
-    var direc: Direccion? = null
-    var correos = mutableListOf<String>()
+
+    private var fotoByteArray = byteArrayOf()
+    private var show = true
+    private var correo = ""
+    var idCliente = 0
 
     @Inject
     lateinit var mensaje: MensajeHelper
@@ -52,99 +43,107 @@ class CrearCuenta: Fragment(){
     @Inject
     lateinit var json: Gson
 
-    override fun onCreate(savedInstanceState: Bundle?){
-        super.onCreate(savedInstanceState)
-
-        arguments?.let{
-            cli = json.fromJson(it.getString(Constantes.Utileria.CLIENTE), Cliente::class.java)
-            fotoByteArray = it.getByteArray(Constantes.Utileria.FOTO)
-            direc = json.fromJson(it.getString(Constantes.Utileria.DIRECCION), Direccion::class.java)
-        }
-
-        event = CrearCuentaEvent(this, binding)
-
-        binding.btnCrearCuenta.setOnClickListener(event)
-
-        cliente.error.observe(this){
-            it?.let{ error ->
-                mostrarMensaje(Constantes.Mensajes.ERROR, error)
-            }
-        }
-
-        media.error.observe(this){
-            it?.let{ error ->
-                mostrarMensaje(Constantes.Mensajes.ERROR, error)
-            }
-        }
-
-        direccion.error.observe(this){
-            it?.let{ error ->
-                mostrarMensaje(Constantes.Mensajes.ERROR, error)
-            }
-        }
-
-        cliente.clientes.observe(this){
-            if(verificaciones.listaNoVacia(it)){
-                it?.forEach{ cliente ->
-                    correos.add(cliente.correo!!)
-                }
-            }
-        }
-
-        cliente.status.observe(this){
-            if(it){
-                cliente.getCliente(cli?.correo.toString())
-
-                if(verificaciones.numerico(cli?.id!!)) {
-                    media.addFotoCliente(cli?.id!!, fotoByteArray!!)
-                }
-
-                mostrarMensaje(Constantes.Mensajes.EXITO, Constantes.Mensajes.bienvenida(cliente.cliente.value?.nombre.toString()))
-            }
-            else mostrarMensaje(Constantes.Mensajes.ERROR, "Hubo un error al registrar la cuenta, por favor inténte más tarde")
-        }
-
-        media.status.observe(this){
-            if(!it) mostrarMensaje(Constantes.Mensajes.ERROR, "Hubo un error al registrar la foto, por favor inténte más tarde")
-        }
-
-        direccion.status.observe(this){
-            if(it) direccion.getDirecciones()
-            else mostrarMensaje(Constantes.Mensajes.ERROR, "Hubo un error al registrar la dirección, por favor inténte más tarde")
-        }
-
-        direccion.direcciones.observe(this){
-            if(verificaciones.listaNoVacia(it)){
-                direc?.id = it?.filter{ dir ->
-                    direc?.calle?.equals(dir.calle) == true &&
-                    direc?.colonia?.equals(dir.colonia) == true &&
-                    direc?.numero?.equals(dir.numero) == true &&
-                    direc?.codigoPostal?.equals(dir.codigoPostal) == true &&
-                    direc?.idCiudad?.equals(dir.idCiudad) == true
-                }?.get(0)?.id ?: 0
-            }
-        }
-
-        cliente.cliente.observe(this){
-            it?.let{
-                cli?.id = it.id
-
-                lifecycleScope.launch(Dispatchers.IO){
-                    activity?.dataStore?.edit{ preferences ->
-                        preferences[intPreferencesKey("idCliente")] = it.id!!
-                    }
-                }
-            }
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View{
         _binding = FragmentCrearCuentaBinding.inflate(inflater, container, false)
-        return binding.root
+
+        event = CrearCuentaEvent(this)
+
+        binding.apply{
+            btnCrearCuenta.setOnClickListener(event)
+
+            viewModel.error.observe(viewLifecycleOwner){ error ->
+                error?.let{ err ->
+                    mostrarMensaje(Constantes.Mensajes.ERROR, err)
+                }
+            }
+
+            viewModel.idCliente.observe(viewLifecycleOwner){ idCliente ->
+                if(verificaciones.numerico(idCliente)){
+                    this@CrearCuenta.idCliente = idCliente
+
+                    if(show)
+                        mostrarMensaje(Constantes.Mensajes.ERROR, "El correo ya está registrado")
+                    else lifecycleScope.launch(Dispatchers.Main){
+                        async{
+                            if(fotoByteArray.isNotEmpty())
+                                async{ viewModel.addFotoCliente(idCliente, fotoByteArray) }.await()
+
+                            viewModel.putIdCliente(idCliente)
+                        }.await()
+
+                        startActivity(Intent(requireContext(), IniciarSesion::class.java)
+                            .putExtra(Constantes.DataStore.CORREO_CLIENTE, correo)
+                        )
+                        activity?.finishAffinity()
+                        activity?.finish()
+                    }
+                }else
+                    viewModel.addDireccion(viewModel.direccion.value!!)
+            }
+
+            viewModel.statusDireccion.observe(viewLifecycleOwner){ statusDireccion ->
+                if(statusDireccion)
+                    viewModel.getDirecciones()
+                else mostrarMensaje(Constantes.Mensajes.ERROR, "Hubo un error al registrar la dirección, por favor inténte más tarde")
+            }
+
+            viewModel.direcciones.observe(viewLifecycleOwner){ direcciones ->
+                if(verificaciones.listaNoVacia(direcciones)){
+                    val direccion = viewModel.direccion.value!!
+
+                    val idDireccion = direcciones?.filter{ dir ->
+                        direccion.calle?.equals(dir.calle) == true &&
+                        direccion.colonia?.equals(dir.colonia) == true &&
+                        direccion.numero?.equals(dir.numero) == true &&
+                        direccion.codigoPostal?.equals(dir.codigoPostal) == true &&
+                        direccion.idCiudad?.equals(dir.idCiudad) == true
+                    }?.let{
+                        it[0].id ?: 0
+                    }
+
+                    viewModel.cliente.value?.let{ cliente ->
+                        cliente.correo = txtCorreo.text.toString()
+                        cliente.contrasenia = txtContrasenia.text.toString()
+                        cliente.idDireccion = idDireccion
+
+                        viewModel.setCliente(cliente)
+                    }
+                }else mostrarMensaje(Constantes.Mensajes.ERROR, "Hubo un problema hay crear su cuenta, por favor inténtelo más tarde")
+            }
+
+            viewModel.cliente.observe(viewLifecycleOwner){ cliente ->
+                cliente?.let{
+                    if(cliente.correo?.isNotEmpty() == true){
+                        idCliente = 0
+                        fotoByteArray = verificaciones.base64ToByteArray(cliente.fotoBase64 ?: "")
+
+                        viewModel.putNombreCliente("${cliente.nombre}, 1")
+                        viewModel.addCliente(cliente)
+                    }
+                }
+            }
+
+            viewModel.statusCliente.observe(viewLifecycleOwner){ statusCliente ->
+                if(statusCliente){
+                    lifecycleScope.launch(Dispatchers.Main){
+                        show = false
+                        correo = viewModel.cliente.value?.correo!!
+
+                        viewModel.getIdCliente(correo)
+                    }
+                }else mostrarMensaje(Constantes.Mensajes.ERROR, "Hubo un error al registrar la cuenta, por favor inténte más tarde")
+            }
+
+            viewModel.statusMedia.observe(viewLifecycleOwner){ statusMedia ->
+                if(!statusMedia) mostrarMensaje(Constantes.Mensajes.ERROR, "Hubo un error al registrar la foto, por favor inténte más tarde")
+            }
+
+            return root
+        }
     }
 
     override fun onDestroy(){
@@ -157,13 +156,6 @@ class CrearCuenta: Fragment(){
 
     companion object{
         @JvmStatic
-        fun newInstance(cliente: String, fotoByteArray: ByteArray, direccion: String) =
-            CrearCuenta().apply{
-                arguments = Bundle().apply{
-                    putString(Constantes.Utileria.CLIENTE, cliente)
-                    putByteArray(Constantes.Utileria.FOTO, fotoByteArray)
-                    putString(Constantes.Utileria.DIRECCION, direccion)
-                }
-            }
+        fun newInstance() = CrearCuenta()
     }
 }

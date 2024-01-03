@@ -23,9 +23,10 @@
         android:textSize="50sp" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:layout_below="@id/txtNombre"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
@@ -45,7 +46,7 @@
                 android:layout_alignParentTop="true"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="30dp"
-                app:cardElevation="20dp">
+                app:cardElevation="10dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -113,7 +114,7 @@
                 android:layout_below="@+id/cardInfo"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="30dp"
-                app:cardElevation="20dp">
+                app:cardElevation="10dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -187,8 +188,14 @@
                                 android:name="com.google.android.gms.maps.SupportMapFragment"
                                 android:layout_width="match_parent"
                                 android:layout_height="300dp"
-                                android:layout_centerInParent="true"
-                                android:layout_centerVertical="true" />
+                                android:layout_centerInParent="true" />
+
+                            <ImageView
+                                android:id="@+id/ventana"
+                                android:layout_width="match_parent"
+                                android:layout_height="300dp"
+                                android:src="@color/transparent"
+                                android:layout_centerInParent="true" />
                         </RelativeLayout>
                     </com.google.android.material.card.MaterialCardView>
                 </RelativeLayout>
