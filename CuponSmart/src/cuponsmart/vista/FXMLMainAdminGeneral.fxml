@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.image.*?>
 <?import java.net.*?>
@@ -99,6 +100,9 @@
                </children>
             </AnchorPane>
         </content>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
       </ScrollPane>
    </children>
 </AnchorPane>
